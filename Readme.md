@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Снайпер](https://up.htmlacademy.ru/javascript/12/user/432537).
-* Наставник: `Неизвестно`.
+* Наставник: [Антон Попов](https://up.htmlacademy.ru/javascript/12/user/78239).
 
 ---
 
