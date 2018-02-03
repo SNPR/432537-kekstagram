@@ -38,14 +38,14 @@ var randomArrayIndex = function (array) {
  */
 var shuffleArray = function (array) {
   var arrayCopy = array.slice();
-  var result = [];
+  var mixedArray = [];
   for (i = 0; i < arrayCopy.length; i++) {
-    var radnomArrayIndex = Math.floor(Math.random() * arrayCopy.length);
-    result.push(arrayCopy[radnomArrayIndex]);
-    arrayCopy.splice(radnomArrayIndex, 1);
+    var radnomIndex = randomArrayIndex(arrayCopy);
+    mixedArray.push(arrayCopy[radnomIndex]);
+    arrayCopy.splice(radnomIndex, 1);
     i--;
   }
-  return result;
+  return mixedArray;
 };
 
 /**
