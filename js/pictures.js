@@ -48,16 +48,26 @@ var shuffleArray = function (array) {
   return result;
 };
 
-var numberOfComments = function () {
+/**
+ * Вспомогательная функция, возвращающая -0 или 1. Нужна для
+ * определения количества комментариев к фото (1 или 2).
+ * @return {number}
+ */
+var getZeroOrOne = function () {
   return Math.ceil(Math.random() - 0.5);
 };
 
-var randomCommentsCount = function (commentsArray) {
+/**
+ * Функция, для получания массива комментариев,
+ * состоящих из одного или двух предложений.
+ * @return {Array}
+ */
+var getArrayOfRandomCommentsCount = function () {
   var commentsShuffle = shuffleArray(COMMENTS);
   var result = [];
 
   for (i = 0; i < commentsShuffle.length; i++) {
-    if (numberOfComments() === 1 && commentsShuffle[i + 1]) {
+    if (getZeroOrOne() === 1 && commentsShuffle[i + 1]) {
       result.push(commentsShuffle[i] + ' ' + commentsShuffle[i + 1]);
     } else {
       result.push(commentsShuffle[i]);
@@ -66,25 +76,24 @@ var randomCommentsCount = function (commentsArray) {
   return result;
 };
 
-// /**
-//  * Генерирует массив объектов с данными о фотографиях.
-//  * @param {number} amountOfPhotos Количество генерируемых объектов в массиве.
-//  * @return {Array}
-//  */
-// var generatePhotos = function (amountOfPhotos) {
-//   var randomPhotosUrl = shuffleArray(photos);
-//   var randomNumberOfLikes = shuffleArray(likes);
-//   var photosArray = [];
-//   for (i = 0; i < amountOfPhotos; i++) {
-//     photosArray.push({
-//       url: randomPhotosUrl[i],
-//       likes: randomNumberOfLikes[i],
-//       comments: COMMENTS[randomArrayIndex(COMMENTS)] + ' ' + COMMENTS[randomArrayIndex(COMMENTS)]
-//     });
-//   }
-//   return photosArray;
-// };
+/**
+ * Генерирует массив заданного количества объектов с данными о фотографиях.
+ * @param {number} amountOfPhotos Количество генерируемых объектов в массиве.
+ * @return {Array}
+ */
+var generatePhotos = function (amountOfPhotos) {
+  var randomPhotosUrl = shuffleArray(photos);
+  var randomNumberOfLikes = shuffleArray(likes);
+  var photosArray = [];
+  var randomComments = getArrayOfRandomCommentsCount();
+  for (i = 0; i < amountOfPhotos; i++) {
+    photosArray.push({
+      url: randomPhotosUrl[i],
+      likes: randomNumberOfLikes[i],
+      comments: randomComments[randomArrayIndex(randomComments)]
+    });
+  }
+  return photosArray;
+};
 
-// generatePhotos(TOTAL_PHOTOS)
-
-randomCommentsCount(COMMENTS);
+generatePhotos(TOTAL_PHOTOS);
