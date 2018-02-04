@@ -14,7 +14,7 @@ var COMMENTS = [
 
 var photos = [];
 for (var i = 1; i <= TOTAL_PHOTOS; i++) {
-  photos.push('photos/{{' + i + '}}.jpg');
+  photos.push('photos/' + i + '.jpg');
 }
 
 var likes = [];
