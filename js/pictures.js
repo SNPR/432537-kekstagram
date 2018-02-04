@@ -49,15 +49,6 @@ var shuffleArray = function (array) {
 };
 
 /**
- * Вспомогательная функция, возвращающая -0 или 1. Нужна для
- * определения количества комментариев к фото (1 или 2).
- * @return {number}
- */
-var getZeroOrOne = function () {
-  return Math.ceil(Math.random() - 0.5);
-};
-
-/**
  * Функция, для получания массива комментариев,
  * состоящих из одного или двух предложений.
  * @return {Array}
@@ -67,10 +58,10 @@ var getArrayOfRandomCommentsCount = function () {
   var result = [];
 
   for (i = 0; i < commentsShuffle.length; i++) {
-    if (getZeroOrOne() === 1 && commentsShuffle[i + 1]) {
-      result.push(commentsShuffle[i] + ' ' + commentsShuffle[i + 1]);
+    if (Math.random() > 0.5 && commentsShuffle[i + 1]) {
+      result.push([commentsShuffle[i] + ' ' + commentsShuffle[i + 1]]);
     } else {
-      result.push(commentsShuffle[i]);
+      result.push([commentsShuffle[i]]);
     }
   }
   return result;
