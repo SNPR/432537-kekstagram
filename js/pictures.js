@@ -87,6 +87,11 @@ var generatePhotos = function (amountOfPhotos) {
   return photosArray;
 };
 
+/**
+ * Заполняет шаблон фотографии данными из объекта фотографии.
+ * @param {Object} photo Объект с параметрами фотографии.
+ * @return {*} Заполенный данными элемент фотографии.
+ */
 var renderPhotos = function (photo) {
   var photoTemplate = document.querySelector('#picture-template').content;
   var photoElement = photoTemplate.cloneNode(true);
@@ -97,14 +102,15 @@ var renderPhotos = function (photo) {
   return photoElement;
 };
 
-var similarListElement = document.querySelector('.pictures');
+var picturesElement = document.querySelector('.pictures');
 var pictures = generatePhotos(TOTAL_PHOTOS);
 var fragment = document.createDocumentFragment();
+
 for (i = 0; i < TOTAL_PHOTOS; i++) {
   fragment.appendChild(renderPhotos(pictures[i]));
 }
 
-similarListElement.appendChild(fragment);
+picturesElement.appendChild(fragment);
 
 document.querySelector('.gallery-overlay-image').setAttribute('src', pictures[0].url);
 document.querySelector('.likes-count').textContent = pictures[0].likes;
