@@ -69,37 +69,40 @@ var shuffleArray = function (array) {
 /**
  * Функция, для получания массива комментариев,
  * состоящих из одного или двух случайных комментариев.
- * @param {number} totalComments Количество массивов с комментариями.
- * @return {Array} Массив строк с комментариями.
+ * @param {Array} arrayOfComments Исходный массив с комментариями.
+ * @return {Array} Массив строк с одним или двумя комментариями.
  */
-var getArrayOfRandomCommentsCount = function () {
+var getArrayOfRandomCommentsCount = function (arrayOfComments) {
   var commentsArray = [];
   if (Math.random() < 0.5) {
-    commentsArray.push(COMMENTS[randomArrayIndex(COMMENTS)], COMMENTS[randomArrayIndex(COMMENTS)]);
+    commentsArray.push(arrayOfComments[randomArrayIndex(arrayOfComments)], arrayOfComments[randomArrayIndex(arrayOfComments)]);
     while (commentsArray[0] === commentsArray[1]) {
-      commentsArray[1] = COMMENTS[randomArrayIndex(COMMENTS)];
+      commentsArray[1] = arrayOfComments[randomArrayIndex(arrayOfComments)];
     }
   } else {
-    commentsArray.push([COMMENTS[randomArrayIndex(COMMENTS)]]);
+    commentsArray.push([arrayOfComments[randomArrayIndex(arrayOfComments)]]);
   }
   return commentsArray;
 };
 
 /**
  * Генерирует массив заданного количества объектов с данными о фотографиях.
- * @param {number} amountOfPhotos Количество генерируемых объектов в массиве.
- * @param {Array} likesArray Массив чисел с количеством лайков.
+ * @param {number} minLikes Минимальное количество лайков.
+ * @param {number} maxLikes Максимальное количество лайков.
+ * @param {number} minPhotos Минимальное количество фотографий.
+ * @param {number} totalPhotos Общее количество фотографий.
+ * @param {Array} arrayOfComments Исходный массив с комментариями.
  * @return {Array} Массив объектов с параметрами фотографий.
  */
-var generatePhotos = function (amountOfPhotos) {
-  var randomPhotosUrl = shuffleArray(getArrayOfPhotosUrl(MIN_PHOTOS, TOTAL_PHOTOS));
-  var randomNumberOfLikes = shuffleArray(getArrayOfLikes(LIKES_MIN, LIKES_MAX));
+var generatePhotos = function (minLikes, maxLikes, minPhotos, totalPhotos, arrayOfComments) {
+  var randomPhotosUrl = shuffleArray(getArrayOfPhotosUrl(minPhotos, totalPhotos));
+  var randomNumberOfLikes = shuffleArray(getArrayOfLikes(minLikes, maxLikes));
   var photosArray = [];
-  for (var i = 0; i < amountOfPhotos; i++) {
+  for (var i = 0; i < totalPhotos; i++) {
     photosArray.push({
       url: randomPhotosUrl[i],
       likes: randomNumberOfLikes[i],
-      comments: getArrayOfRandomCommentsCount()
+      comments: getArrayOfRandomCommentsCount(arrayOfComments)
     });
   }
   return photosArray;
@@ -121,7 +124,7 @@ var renderPhotos = function (photo) {
 };
 
 var picturesElement = document.querySelector('.pictures');
-var pictures = generatePhotos(TOTAL_PHOTOS);
+var pictures = generatePhotos(LIKES_MIN, LIKES_MAX, MIN_PHOTOS, TOTAL_PHOTOS, COMMENTS);
 var fragment = document.createDocumentFragment();
 
 for (var i = 0; i < TOTAL_PHOTOS; i++) {
