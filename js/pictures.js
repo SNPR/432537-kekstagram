@@ -27,10 +27,19 @@ var getArrayOfPhotosUrl = function (minPhotos, totalPhotos) {
   return photos;
 };
 
-var likes = [];
-for (var i = LIKES_MIN; i <= LIKES_MAX; i++) {
-  likes.push(i);
-}
+/**
+ * Генерирует массив лайков.
+ * @param {number} minLikes Минимальное количество лайков.
+ * @param {number} maxLikes Максимальное количество лайков.
+ * @return {Array} Массив лайков.
+ */
+var getArrayOfLikes = function (minLikes, maxLikes) {
+  var likes = [];
+  for (var i = minLikes; i <= maxLikes; i++) {
+    likes.push(i);
+  }
+  return likes;
+};
 
 /**
  * Возвращает случайный индекс массива
@@ -61,7 +70,7 @@ var shuffleArray = function (array) {
  * Функция, для получания массива комментариев,
  * состоящих из одного или двух случайных комментариев.
  * @param {number} totalComments Количество массивов с комментариями.
- * @return {Array} Массив массивов строк с комментариями.
+ * @return {Array} Массив строк с комментариями.
  */
 var getArrayOfRandomCommentsCount = function (totalComments) {
   var commentsArray = [];
@@ -85,12 +94,12 @@ var getArrayOfRandomCommentsCount = function (totalComments) {
  * @param {Array} likesArray Массив чисел с количеством лайков.
  * @return {Array} Массив объектов с параметрами фотографий.
  */
-var generatePhotos = function (amountOfPhotos, likesArray) {
+var generatePhotos = function (amountOfPhotos) {
   var randomPhotosUrl = shuffleArray(getArrayOfPhotosUrl(MIN_PHOTOS, TOTAL_PHOTOS));
-  var randomNumberOfLikes = shuffleArray(likesArray);
+  var randomNumberOfLikes = shuffleArray(getArrayOfLikes(LIKES_MIN, LIKES_MAX));
   var randomComments = getArrayOfRandomCommentsCount(amountOfPhotos);
   var photosArray = [];
-  for (i = 0; i < amountOfPhotos; i++) {
+  for (var i = 0; i < amountOfPhotos; i++) {
     photosArray.push({
       url: randomPhotosUrl[i],
       likes: randomNumberOfLikes[i],
@@ -116,10 +125,10 @@ var renderPhotos = function (photo) {
 };
 
 var picturesElement = document.querySelector('.pictures');
-var pictures = generatePhotos(TOTAL_PHOTOS, likes);
+var pictures = generatePhotos(TOTAL_PHOTOS);
 var fragment = document.createDocumentFragment();
 
-for (i = 0; i < TOTAL_PHOTOS; i++) {
+for (var i = 0; i < TOTAL_PHOTOS; i++) {
   fragment.appendChild(renderPhotos(pictures[i]));
 }
 
