@@ -39,11 +39,10 @@ var randomArrayIndex = function (array) {
 var shuffleArray = function (array) {
   var arrayCopy = array.slice();
   var mixedArray = [];
-  for (i = 0; i < arrayCopy.length; i++) {
+  while (mixedArray.length < array.length) {
     var radnomIndex = randomArrayIndex(arrayCopy);
     mixedArray.push(arrayCopy[radnomIndex]);
     arrayCopy.splice(radnomIndex, 1);
-    i--;
   }
   return mixedArray;
 };
