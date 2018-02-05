@@ -1,5 +1,6 @@
 'use strict';
 
+var MIN_PHOTOS = 1;
 var TOTAL_PHOTOS = 25;
 var LIKES_MIN = 15;
 var LIKES_MAX = 200;
@@ -12,13 +13,22 @@ var COMMENTS = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-var photos = [];
-for (var i = 1; i <= TOTAL_PHOTOS; i++) {
-  photos.push('photos/' + i + '.jpg');
-}
+/**
+ * Генерирует массив адресов фотографий.
+ * @param {number} minPhotos Минимальное количество фотографий.
+ * @param {number} totalPhotos Общее количество фотографий.
+ * @return {Array} Массив строк с адресами фотографий.
+ */
+var getArrayOfPhotosUrl = function (minPhotos, totalPhotos) {
+  var photos = [];
+  for (var i = minPhotos; i <= totalPhotos; i++) {
+    photos.push('photos/' + i + '.jpg');
+  }
+  return photos;
+};
 
 var likes = [];
-for (i = LIKES_MIN; i <= LIKES_MAX; i++) {
+for (var i = LIKES_MIN; i <= LIKES_MAX; i++) {
   likes.push(i);
 }
 
@@ -72,14 +82,13 @@ var getArrayOfRandomCommentsCount = function (totalComments) {
 /**
  * Генерирует массив заданного количества объектов с данными о фотографиях.
  * @param {number} amountOfPhotos Количество генерируемых объектов в массиве.
- * @param {Array} photosUrlArray Массив строк с адресами фотографий.
- * @param {Array} likesUrlArray Массив чисел с количеством лайков.
+ * @param {Array} likesArray Массив чисел с количеством лайков.
  * @return {Array} Массив объектов с параметрами фотографий.
  */
-var generatePhotos = function (amountOfPhotos, photosUrlArray, likesUrlArray) {
-  var randomPhotosUrl = shuffleArray(photosUrlArray);
-  var randomNumberOfLikes = shuffleArray(likesUrlArray);
-  var randomComments = getArrayOfRandomCommentsCount(TOTAL_PHOTOS);
+var generatePhotos = function (amountOfPhotos, likesArray) {
+  var randomPhotosUrl = shuffleArray(getArrayOfPhotosUrl(MIN_PHOTOS, TOTAL_PHOTOS));
+  var randomNumberOfLikes = shuffleArray(likesArray);
+  var randomComments = getArrayOfRandomCommentsCount(amountOfPhotos);
   var photosArray = [];
   for (i = 0; i < amountOfPhotos; i++) {
     photosArray.push({
@@ -107,7 +116,7 @@ var renderPhotos = function (photo) {
 };
 
 var picturesElement = document.querySelector('.pictures');
-var pictures = generatePhotos(TOTAL_PHOTOS, photos, likes);
+var pictures = generatePhotos(TOTAL_PHOTOS, likes);
 var fragment = document.createDocumentFragment();
 
 for (i = 0; i < TOTAL_PHOTOS; i++) {
