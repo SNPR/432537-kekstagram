@@ -73,11 +73,13 @@ var getArrayOfRandomCommentsCount = function (totalComments) {
 /**
  * Генерирует массив заданного количества объектов с данными о фотографиях.
  * @param {number} amountOfPhotos Количество генерируемых объектов в массиве.
+ * @param {Array} photosUrlArray Массив строк с адресами фотографий.
+ * @param {Array} likesUrlArray Массив чисел с количеством лайков.
  * @return {Array} Массив объектов с параметрами фотографий.
  */
-var generatePhotos = function (amountOfPhotos) {
-  var randomPhotosUrl = shuffleArray(photos);
-  var randomNumberOfLikes = shuffleArray(likes);
+var generatePhotos = function (amountOfPhotos, photosUrlArray, likesUrlArray) {
+  var randomPhotosUrl = shuffleArray(photosUrlArray);
+  var randomNumberOfLikes = shuffleArray(likesUrlArray);
   var randomComments = getArrayOfRandomCommentsCount(TOTAL_PHOTOS);
   var photosArray = [];
   for (i = 0; i < amountOfPhotos; i++) {
@@ -106,7 +108,7 @@ var renderPhotos = function (photo) {
 };
 
 var picturesElement = document.querySelector('.pictures');
-var pictures = generatePhotos(TOTAL_PHOTOS);
+var pictures = generatePhotos(TOTAL_PHOTOS, photos, likes);
 var fragment = document.createDocumentFragment();
 
 for (i = 0; i < TOTAL_PHOTOS; i++) {
