@@ -60,8 +60,7 @@ var getArrayOfRandomCommentsCount = function (totalComments) {
     if (Math.random() < 0.5) {
       commentsArray.push([COMMENTS[randomArrayIndex(COMMENTS)], COMMENTS[randomArrayIndex(COMMENTS)]]);
       while (commentsArray[i][0] === commentsArray[i][1]) {
-        commentsArray[i].splice(1, 1);
-        commentsArray[i].push(COMMENTS[randomArrayIndex(COMMENTS)]);
+        commentsArray[i][1] = COMMENTS[randomArrayIndex(COMMENTS)];
       }
     } else {
       commentsArray.push([COMMENTS[randomArrayIndex(COMMENTS)]]);
