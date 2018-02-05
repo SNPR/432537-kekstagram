@@ -51,7 +51,7 @@ var shuffleArray = function (array) {
  * Функция, для получания массива комментариев,
  * состоящих из одного или двух случайных комментариев.
  * @param {number} totalComments Количество массивов с комментариями.
- * @return {Array} Массив массивов комментариев.
+ * @return {Array} Массив массивов строк с комментариями.
  */
 var getArrayOfRandomCommentsCount = function (totalComments) {
   var commentsArray = [];
@@ -59,6 +59,10 @@ var getArrayOfRandomCommentsCount = function (totalComments) {
   for (i = 0; i < totalComments; i++) {
     if (Math.random() < 0.5) {
       commentsArray.push([COMMENTS[randomArrayIndex(COMMENTS)], COMMENTS[randomArrayIndex(COMMENTS)]]);
+      while (commentsArray[i][0] === commentsArray[i][1]) {
+        commentsArray[i].splice(1, 1);
+        commentsArray[i].push(COMMENTS[randomArrayIndex(COMMENTS)]);
+      }
     } else {
       commentsArray.push([COMMENTS[randomArrayIndex(COMMENTS)]]);
     }
