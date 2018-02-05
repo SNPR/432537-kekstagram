@@ -25,7 +25,7 @@ for (i = LIKES_MIN; i <= LIKES_MAX; i++) {
 /**
  * Возвращает случайный индекс массива
  * @param {Array} array Массив с данными любого типа.
- * @return {number}
+ * @return {number} Случайный индекс массива, переданного функции.
  */
 var randomArrayIndex = function (array) {
   return Math.floor(Math.random() * array.length);
@@ -52,7 +52,7 @@ var shuffleArray = function (array) {
  * Функция, для получания массива комментариев,
  * состоящих из одного или двух случайных комментариев.
  * @param {number} totalComments Количество массивов с комментариями.
- * @return {Array}
+ * @return {Array} Массив массивов комментариев.
  */
 var getArrayOfRandomCommentsCount = function (totalComments) {
   var commentsArray = [];
@@ -70,7 +70,7 @@ var getArrayOfRandomCommentsCount = function (totalComments) {
 /**
  * Генерирует массив заданного количества объектов с данными о фотографиях.
  * @param {number} amountOfPhotos Количество генерируемых объектов в массиве.
- * @return {Array}
+ * @return {Array} Массив объектов с параметрами фотографий.
  */
 var generatePhotos = function (amountOfPhotos) {
   var randomPhotosUrl = shuffleArray(photos);
