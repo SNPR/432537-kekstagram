@@ -112,7 +112,7 @@ var renderPhotos = function (photo) {
   var photoTemplate = document.querySelector('#picture-template').content;
   var photoElement = photoTemplate.cloneNode(true);
 
-  photoElement.querySelector('img').setAttribute('src', photo.url);
+  photoElement.querySelector('img').src = photo.url;
   photoElement.querySelector('.picture-likes').textContent = photo.likes;
   photoElement.querySelector('.picture-comments').textContent = photo.comments.length;
   return photoElement;
@@ -128,7 +128,7 @@ for (var i = 0; i < TOTAL_PHOTOS; i++) {
 
 picturesElement.appendChild(fragment);
 
-document.querySelector('.gallery-overlay-image').setAttribute('src', pictures[0].url);
+document.querySelector('.gallery-overlay-image').src = pictures[0].url;
 document.querySelector('.likes-count').textContent = pictures[0].likes;
 document.querySelector('.comments-count').textContent = pictures[0].comments.length;
 document.querySelector('.gallery-overlay').classList.remove('hidden');
