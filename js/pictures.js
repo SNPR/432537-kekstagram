@@ -80,7 +80,7 @@ var getArrayOfRandomCommentsCount = function (arrayOfComments) {
       commentsArray[1] = arrayOfComments[randomArrayIndex(arrayOfComments)];
     }
   } else {
-    commentsArray.push([arrayOfComments[randomArrayIndex(arrayOfComments)]]);
+    commentsArray.push(arrayOfComments[randomArrayIndex(arrayOfComments)]);
   }
   return commentsArray;
 };
