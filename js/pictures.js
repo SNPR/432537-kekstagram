@@ -59,9 +59,9 @@ var shuffleArray = function (array) {
   var arrayCopy = array.slice();
   var mixedArray = [];
   while (mixedArray.length < array.length) {
-    var radnomIndex = getRandomIndex(arrayCopy);
-    mixedArray.push(arrayCopy[radnomIndex]);
-    arrayCopy.splice(radnomIndex, 1);
+    var randomIndex = getRandomIndex(arrayCopy);
+    mixedArray.push(arrayCopy[randomIndex]);
+    arrayCopy.splice(randomIndex, 1);
   }
   return mixedArray;
 };
