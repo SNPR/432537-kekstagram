@@ -46,7 +46,7 @@ var getArrayOfLikes = function (minLikes, maxLikes) {
  * @param {Array} array Массив с данными любого типа.
  * @return {number} Случайный индекс массива, переданного функции.
  */
-var randomArrayIndex = function (array) {
+var getRandomIndex = function (array) {
   return Math.floor(Math.random() * array.length);
 };
 
@@ -59,7 +59,7 @@ var shuffleArray = function (array) {
   var arrayCopy = array.slice();
   var mixedArray = [];
   while (mixedArray.length < array.length) {
-    var radnomIndex = randomArrayIndex(arrayCopy);
+    var radnomIndex = getRandomIndex(arrayCopy);
     mixedArray.push(arrayCopy[radnomIndex]);
     arrayCopy.splice(radnomIndex, 1);
   }
@@ -69,20 +69,20 @@ var shuffleArray = function (array) {
 /**
  * Функция, для получания массива комментариев,
  * состоящих из одного или двух случайных комментариев.
- * @param {Array} arrayOfComments Исходный массив с комментариями.
+ * @param {Array} commentsArray Исходный массив с комментариями.
  * @return {Array} Массив строк с одним или двумя комментариями.
  */
-var getArrayOfRandomCommentsCount = function (arrayOfComments) {
-  var commentsArray = [];
+var getArrayOfRandomComments = function (commentsArray) {
+  var comments = [];
   if (Math.random() < 0.5) {
-    commentsArray.push(arrayOfComments[randomArrayIndex(arrayOfComments)], arrayOfComments[randomArrayIndex(arrayOfComments)]);
-    while (commentsArray[0] === commentsArray[1]) {
-      commentsArray[1] = arrayOfComments[randomArrayIndex(arrayOfComments)];
+    comments.push(commentsArray[getRandomIndex(commentsArray)], commentsArray[getRandomIndex(commentsArray)]);
+    while (comments[0] === comments[1]) {
+      comments[1] = commentsArray[getRandomIndex(commentsArray)];
     }
   } else {
-    commentsArray.push(arrayOfComments[randomArrayIndex(arrayOfComments)]);
+    comments.push(commentsArray[getRandomIndex(commentsArray)]);
   }
-  return commentsArray;
+  return comments;
 };
 
 /**
@@ -102,7 +102,7 @@ var generatePhotos = function (minLikes, maxLikes, minPhotos, totalPhotos, array
     photosArray.push({
       url: randomPhotosUrl[i],
       likes: randomNumberOfLikes[i],
-      comments: getArrayOfRandomCommentsCount(arrayOfComments)
+      comments: getArrayOfRandomComments(arrayOfComments)
     });
   }
   return photosArray;
