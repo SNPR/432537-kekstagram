@@ -31,14 +31,10 @@ var getArrayOfPhotosUrl = function (minPhotos, totalPhotos) {
  * Генерирует массив лайков.
  * @param {number} minLikes Минимальное количество лайков.
  * @param {number} maxLikes Максимальное количество лайков.
- * @return {Array} Массив лайков.
+ * @return {number} Случайное число в диапазоне от minLikes до maxLikes.
  */
-var getArrayOfLikes = function (minLikes, maxLikes) {
-  var likes = [];
-  for (var i = minLikes; i <= maxLikes; i++) {
-    likes.push(i);
-  }
-  return likes;
+var getRandomLikes = function (minLikes, maxLikes) {
+  return Math.round(Math.random() * (maxLikes - minLikes) + minLikes);
 };
 
 /**
@@ -96,12 +92,11 @@ var getArrayOfRandomComments = function (commentsArray) {
  */
 var generatePhotos = function (minLikes, maxLikes, minPhotos, totalPhotos, arrayOfComments) {
   var randomPhotosUrl = shuffleArray(getArrayOfPhotosUrl(minPhotos, totalPhotos));
-  var randomNumberOfLikes = shuffleArray(getArrayOfLikes(minLikes, maxLikes));
   var photosArray = [];
   for (var i = 0; i < totalPhotos; i++) {
     photosArray.push({
       url: randomPhotosUrl[i],
-      likes: randomNumberOfLikes[i],
+      likes: getRandomLikes(minLikes, maxLikes),
       comments: getArrayOfRandomComments(arrayOfComments)
     });
   }
