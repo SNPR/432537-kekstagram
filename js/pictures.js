@@ -152,7 +152,13 @@ var getActiveElement = function () {
  * @param {object} evt Объект текущего события.
  */
 var onKeyPress = function (evt) {
-  if (evt.keyCode === ESC_KEYCODE && getActiveElement() !== 'INPUT') {
+  if (evt.keyCode === ESC_KEYCODE) {
+    if (getActiveElement() === 'INPUT') {
+      return;
+    }
+    if (getActiveElement() === 'TEXTAREA') {
+      return;
+    }
     closeUploadForm();
   }
 };
