@@ -131,4 +131,10 @@ picturesElement.appendChild(fragment);
 document.querySelector('.gallery-overlay-image').src = pictures[0].url;
 document.querySelector('.likes-count').textContent = pictures[0].likes;
 document.querySelector('.comments-count').textContent = pictures[0].comments.length;
-document.querySelector('.gallery-overlay').classList.remove('hidden');
+
+var uploadFile = document.querySelector('#upload-file');
+var uploadOverlay = document.querySelector('.upload-overlay');
+
+uploadFile.addEventListener('change', function () {
+  uploadOverlay.classList.remove('hidden');
+});
