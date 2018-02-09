@@ -198,11 +198,10 @@ uploadForm.addEventListener('keydown', function (evt) {
 var picture = document.querySelectorAll('.picture');
 for (i = 0; i < picture.length; i++) {
   picture[i].addEventListener('click', function (evt) {
+    document.querySelector('.gallery-overlay-image').src = evt.target.src;
+    document.querySelector('.likes-count').textContent = evt.target.parentNode.querySelector('.picture-likes').textContent;
+    document.querySelector('.comments-count').textContent = evt.target.parentNode.querySelector('.picture-comments').textContent;
     evt.preventDefault();
     galleryOverlay.classList.remove('hidden');
   });
-  document.querySelector('.gallery-overlay-image').src = picture[i].querySelector('img').src;
-  document.querySelector('.likes-count').textContent = picture[i].querySelector('.picture-likes').textContent;
-  document.querySelector('.comments-count').textContent = picture[i].querySelector('.picture-comments').textContent;
 }
-
