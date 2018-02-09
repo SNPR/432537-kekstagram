@@ -129,14 +129,15 @@ for (var i = 0; i < TOTAL_PHOTOS; i++) {
 
 picturesElement.appendChild(fragment);
 
-document.querySelector('.gallery-overlay-image').src = pictures[0].url;
-document.querySelector('.likes-count').textContent = pictures[0].likes;
-document.querySelector('.comments-count').textContent = pictures[0].comments.length;
+// document.querySelector('.gallery-overlay-image').src = pictures[0].url;
+// document.querySelector('.likes-count').textContent = pictures[0].likes;
+// document.querySelector('.comments-count').textContent = pictures[0].comments.length;
 
 var uploadFile = document.querySelector('#upload-file');
 var uploadForm = document.querySelector('.upload-overlay');
 var uploadFormClose = uploadForm.querySelector('#upload-cancel');
 var uploadControl = document.querySelector('.upload-control');
+var galleryOverlay = document.querySelector('.gallery-overlay');
 
 /**
  * Определяет текущий активный элемент на странице.
@@ -193,3 +194,15 @@ uploadForm.addEventListener('keydown', function (evt) {
     closeUploadForm();
   }
 });
+
+var picture = document.querySelectorAll('.picture');
+for (i = 0; i < picture.length; i++) {
+  picture[i].addEventListener('click', function (evt) {
+    evt.preventDefault();
+    galleryOverlay.classList.remove('hidden');
+  });
+  document.querySelector('.gallery-overlay-image').src = picture[i].querySelector('img').src;
+  document.querySelector('.likes-count').textContent = picture[i].querySelector('.picture-likes').textContent;
+  document.querySelector('.comments-count').textContent = picture[i].querySelector('.picture-comments').textContent;
+}
+
