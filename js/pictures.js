@@ -1,9 +1,10 @@
 'use strict';
-
 var MIN_PHOTOS = 1;
 var TOTAL_PHOTOS = 25;
 var LIKES_MIN = 15;
 var LIKES_MAX = 200;
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
 var COMMENTS = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -133,8 +134,22 @@ document.querySelector('.likes-count').textContent = pictures[0].likes;
 document.querySelector('.comments-count').textContent = pictures[0].comments.length;
 
 var uploadFile = document.querySelector('#upload-file');
-var uploadOverlay = document.querySelector('.upload-overlay');
+var uploadForm = document.querySelector('.upload-overlay');
+var uploadFormClose = uploadForm.querySelector('#upload-cancel');
+
+var openUploadForm = function () {
+  uploadForm.classList.remove('hidden');
+};
+
+var closeUploadForm = function () {
+  uploadFile.value = '';
+  uploadForm.classList.add('hidden');
+};
 
 uploadFile.addEventListener('change', function () {
-  uploadOverlay.classList.remove('hidden');
+  openUploadForm();
+});
+
+uploadFormClose.addEventListener('click', function () {
+  uploadForm.classList.add('hidden');
 });
