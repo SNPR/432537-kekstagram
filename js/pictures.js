@@ -138,13 +138,34 @@ var uploadForm = document.querySelector('.upload-overlay');
 var uploadFormClose = uploadForm.querySelector('#upload-cancel');
 var uploadControl = document.querySelector('.upload-control');
 
+/**
+ * Определяет текущий активный элемент на странице.
+ * @return{string} Наименование текущего активного элемента.
+ */
+var getActiveElement = function () {
+  return document.activeElement.tagName;
+};
+
+/**
+ * Вспомогательная функция обработчика события для закрытия окна при нажатии клавиши 'ESC'.
+ * Нажатие 'ESC' не срабатывает, если фокус находится в поле изменения имени персонажа.
+ * @param {object} evt Объект текущего события.
+ */
+var onKeyPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE && getActiveElement() !== 'INPUT') {
+    closeUploadForm();
+  }
+};
+
 var openUploadForm = function () {
   uploadForm.classList.remove('hidden');
+  document.addEventListener('keydown', onKeyPress);
 };
 
 var closeUploadForm = function () {
   uploadFile.value = '';
   uploadForm.classList.add('hidden');
+  document.removeEventListener('keydown', onKeyPress);
 };
 
 uploadFile.addEventListener('change', function () {
@@ -158,5 +179,11 @@ uploadFormClose.addEventListener('click', function () {
 uploadControl.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     uploadFile.click();
+  }
+});
+
+uploadForm.addEventListener('keydown', function (evt) {
+  if (evt.target === uploadFormClose && evt.keyCode === ENTER_KEYCODE) {
+    closeUploadForm();
   }
 });
