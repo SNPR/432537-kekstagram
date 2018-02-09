@@ -136,6 +136,7 @@ document.querySelector('.comments-count').textContent = pictures[0].comments.len
 var uploadFile = document.querySelector('#upload-file');
 var uploadForm = document.querySelector('.upload-overlay');
 var uploadFormClose = uploadForm.querySelector('#upload-cancel');
+var uploadControl = document.querySelector('.upload-control');
 
 var openUploadForm = function () {
   uploadForm.classList.remove('hidden');
@@ -151,5 +152,11 @@ uploadFile.addEventListener('change', function () {
 });
 
 uploadFormClose.addEventListener('click', function () {
-  uploadForm.classList.add('hidden');
+  closeUploadForm();
+});
+
+uploadControl.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    uploadFile.click();
+  }
 });
