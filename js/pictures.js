@@ -129,15 +129,14 @@ for (var i = 0; i < TOTAL_PHOTOS; i++) {
 
 picturesElement.appendChild(fragment);
 
-// document.querySelector('.gallery-overlay-image').src = pictures[0].url;
-// document.querySelector('.likes-count').textContent = pictures[0].likes;
-// document.querySelector('.comments-count').textContent = pictures[0].comments.length;
 
 var uploadFile = document.querySelector('#upload-file');
 var uploadForm = document.querySelector('.upload-overlay');
 var uploadFormClose = uploadForm.querySelector('#upload-cancel');
 var uploadControl = document.querySelector('.upload-control');
 var galleryOverlay = document.querySelector('.gallery-overlay');
+var galleryOverlayClose = document.querySelector('.gallery-overlay-close');
+var picture = document.querySelectorAll('.picture');
 
 /**
  * Определяет текущий активный элемент на странице.
@@ -149,7 +148,7 @@ var getActiveElement = function () {
 
 /**
  * Вспомогательная функция обработчика события для закрытия окна при нажатии клавиши 'ESC'.
- * Нажатие 'ESC' не срабатывает, если фокус находится в поле изменения имени персонажа.
+ * Нажатие 'ESC' не срабатывает, если фокус находится в поле ввода хэш-тега или комментария.
  * @param {object} evt Объект текущего события.
  */
 var onKeyPress = function (evt) {
@@ -195,7 +194,6 @@ uploadForm.addEventListener('keydown', function (evt) {
   }
 });
 
-var picture = document.querySelectorAll('.picture');
 for (i = 0; i < picture.length; i++) {
   picture[i].addEventListener('click', function (evt) {
     document.querySelector('.gallery-overlay-image').src = evt.target.src;
@@ -205,3 +203,13 @@ for (i = 0; i < picture.length; i++) {
     galleryOverlay.classList.remove('hidden');
   });
 }
+
+galleryOverlayClose.addEventListener('click', function () {
+  galleryOverlay.classList.add('hidden');
+});
+
+document.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    galleryOverlay.classList.add('hidden');
+  }
+});
