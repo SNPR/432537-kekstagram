@@ -29,13 +29,13 @@ var getArrayOfPhotosUrl = function (minPhotos, totalPhotos) {
 };
 
 /**
- * Генерирует массив лайков.
- * @param {number} minLikes Минимальное количество лайков.
- * @param {number} maxLikes Максимальное количество лайков.
- * @return {number} Случайное число в диапазоне от minLikes до maxLikes.
+ * Возвращает случайное число в заданном диапазоне.
+ * @param {number} min Минимальное значение.
+ * @param {number} max Максимальное значение.
+ * @return {number} Случайное число в диапазоне от min до max.
  */
-var getRandomLikes = function (minLikes, maxLikes) {
-  return Math.round(Math.random() * (maxLikes - minLikes) + minLikes);
+var getRandomNumber = function (min, max) {
+  return Math.round(Math.random() * (max - min) + min);
 };
 
 /**
@@ -84,20 +84,20 @@ var getArrayOfRandomComments = function (commentsArray) {
 
 /**
  * Генерирует массив заданного количества объектов с данными о фотографиях.
- * @param {number} minLikes Минимальное количество лайков.
- * @param {number} maxLikes Максимальное количество лайков.
+ * @param {number} min Минимальное количество лайков.
+ * @param {number} max Максимальное количество лайков.
  * @param {number} minPhotos Минимальное количество фотографий.
  * @param {number} totalPhotos Общее количество фотографий.
  * @param {Array} arrayOfComments Исходный массив с комментариями.
  * @return {Array} Массив объектов с параметрами фотографий.
  */
-var generatePhotos = function (minLikes, maxLikes, minPhotos, totalPhotos, arrayOfComments) {
+var generatePhotos = function (min, max, minPhotos, totalPhotos, arrayOfComments) {
   var randomPhotosUrl = shuffleArray(getArrayOfPhotosUrl(minPhotos, totalPhotos));
   var photosArray = [];
   for (var i = 0; i < totalPhotos; i++) {
     photosArray.push({
       url: randomPhotosUrl[i],
-      likes: getRandomLikes(minLikes, maxLikes),
+      likes: getRandomNumber(min, max),
       comments: getArrayOfRandomComments(arrayOfComments)
     });
   }
@@ -163,11 +163,19 @@ var onKeyPress = function (evt) {
   }
 };
 
+/**
+ * Вспомогательная функция, открывающая окно загрузки файла
+ * и добавляющая обработчик события, ожидающий нажатия Escape.
+ */
 var openUploadForm = function () {
   uploadForm.classList.remove('hidden');
   document.addEventListener('keydown', onKeyPress);
 };
 
+/**
+ * Вспомогательная функция, скрывающая окно загрузки файла
+ * и удаляющая обработчик события, ожидающий нажатия Escape.
+ */
 var closeUploadForm = function () {
   uploadFile.value = '';
   uploadForm.classList.add('hidden');
