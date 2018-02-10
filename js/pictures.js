@@ -224,8 +224,39 @@ document.addEventListener('keydown', function (evt) {
 
 var effectImagePreview = document.querySelector('.effect-image-preview');
 
+/**
+ * Удаляет все эффекты у изображения.
+ */
+var removeEffects = function () {
+  var effects = ['effect-chrome', 'effect-sepia', 'effect-marvin', 'effect-phobos', 'effect-heat'];
+  for (i = 0; i < effects.length; i++) {
+    effectImagePreview.classList.remove(effects[i]);
+  }
+};
+
+
 uploadForm.addEventListener('click', function (evt) {
+  if (evt.target === document.querySelector('#upload-effect-none')) {
+    removeEffects();
+  }
   if (evt.target === document.querySelector('#upload-effect-chrome')) {
+    removeEffects();
     effectImagePreview.classList.add('effect-chrome');
+  }
+  if (evt.target === document.querySelector('#upload-effect-sepia')) {
+    removeEffects();
+    effectImagePreview.classList.add('effect-sepia');
+  }
+  if (evt.target === document.querySelector('#upload-effect-marvin')) {
+    removeEffects();
+    effectImagePreview.classList.add('effect-marvin');
+  }
+  if (evt.target === document.querySelector('#upload-effect-phobos')) {
+    removeEffects();
+    effectImagePreview.classList.add('effect-phobos');
+  }
+  if (evt.target === document.querySelector('#upload-effect-heat')) {
+    removeEffects();
+    effectImagePreview.classList.add('effect-heat');
   }
 });
