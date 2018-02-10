@@ -221,3 +221,11 @@ document.addEventListener('keydown', function (evt) {
     galleryOverlay.classList.add('hidden');
   }
 });
+
+var effectImagePreview = document.querySelector('.effect-image-preview');
+
+uploadForm.addEventListener('click', function (evt) {
+  if (evt.target === document.querySelector('#upload-effect-chrome')) {
+    effectImagePreview.classList.add('effect-chrome');
+  }
+});
