@@ -136,7 +136,7 @@ var uploadFormClose = uploadForm.querySelector('#upload-cancel');
 var uploadControl = document.querySelector('.upload-control');
 var galleryOverlay = document.querySelector('.gallery-overlay');
 var galleryOverlayClose = document.querySelector('.gallery-overlay-close');
-var picture = document.querySelectorAll('.picture');
+var picturesCollection = document.querySelectorAll('.picture');
 
 /**
  * Определяет текущий активный элемент на странице.
@@ -202,8 +202,8 @@ uploadForm.addEventListener('keydown', function (evt) {
   }
 });
 
-for (i = 0; i < picture.length; i++) {
-  picture[i].addEventListener('click', function (evt) {
+for (i = 0; i < picturesCollection.length; i++) {
+  picturesCollection[i].addEventListener('click', function (evt) {
     document.querySelector('.gallery-overlay-image').src = evt.target.src;
     document.querySelector('.likes-count').textContent = evt.target.parentNode.querySelector('.picture-likes').textContent;
     document.querySelector('.comments-count').textContent = evt.target.parentNode.querySelector('.picture-comments').textContent;
@@ -262,5 +262,45 @@ uploadForm.addEventListener('click', function (evt) {
   if (evt.target === document.querySelector('#upload-effect-heat')) {
     removeEffects();
     effectImagePreview.classList.add('effect-heat');
+  }
+});
+
+var hashTagInput = document.querySelector('.upload-form-hashtags');
+
+/**
+ * Проверяет, если ли в массиве повторяющиеся соседние значения.
+ * @param {Array} array Массив строк или чисел.
+ * @return {(number|string)} Первое повторяющееся значение.
+ */
+var checkSimilarValues = function (array) {
+  for (var j = 0; j < array.length; j++) {
+    if (array[j] === array[j + 1]) {
+      break;
+    }
+  }
+  return array[j];
+};
+
+hashTagInput.addEventListener('input', function (evt) {
+  var target = evt.target;
+  var hashtags = target.value.toLowerCase().split(' ').sort();
+
+  for (i = 0; i < hashtags.length; i++) {
+    if (hashtags[i] === '') {
+      hashtags.splice(i, 1);
+      i--;
+    } else if (hashtags.length > 5) {
+      target.setCustomValidity('Хэштегов должно быть не больше пяти');
+    } else if (hashtags[i] && hashtags[i].charAt(0) !== '#') {
+      target.setCustomValidity('Хэштеги должны начинаться с символа "#"');
+    } else if (hashtags[i].length > 20) {
+      target.setCustomValidity('Длина хэштега должна быть не более 20 символов');
+    } else if (hashtags[i].lastIndexOf('#') !== 0) {
+      target.setCustomValidity('Хэштеги должны разделяться пробелами');
+    } else if (checkSimilarValues(hashtags)) {
+      target.setCustomValidity('Хэштеги не должны повторяться');
+    } else {
+      target.setCustomValidity('');
+    }
   }
 });
