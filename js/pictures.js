@@ -1,9 +1,10 @@
 'use strict';
-
 var MIN_PHOTOS = 1;
 var TOTAL_PHOTOS = 25;
 var LIKES_MIN = 15;
 var LIKES_MAX = 200;
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
 var COMMENTS = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -28,13 +29,13 @@ var getArrayOfPhotosUrl = function (minPhotos, totalPhotos) {
 };
 
 /**
- * Генерирует массив лайков.
- * @param {number} minLikes Минимальное количество лайков.
- * @param {number} maxLikes Максимальное количество лайков.
- * @return {number} Случайное число в диапазоне от minLikes до maxLikes.
+ * Возвращает случайное число в заданном диапазоне.
+ * @param {number} min Минимальное значение.
+ * @param {number} max Максимальное значение.
+ * @return {number} Случайное число в диапазоне от min до max.
  */
-var getRandomLikes = function (minLikes, maxLikes) {
-  return Math.round(Math.random() * (maxLikes - minLikes) + minLikes);
+var getRandomNumber = function (min, max) {
+  return Math.round(Math.random() * (max - min) + min);
 };
 
 /**
@@ -83,20 +84,20 @@ var getArrayOfRandomComments = function (commentsArray) {
 
 /**
  * Генерирует массив заданного количества объектов с данными о фотографиях.
- * @param {number} minLikes Минимальное количество лайков.
- * @param {number} maxLikes Максимальное количество лайков.
+ * @param {number} min Минимальное количество лайков.
+ * @param {number} max Максимальное количество лайков.
  * @param {number} minPhotos Минимальное количество фотографий.
  * @param {number} totalPhotos Общее количество фотографий.
  * @param {Array} arrayOfComments Исходный массив с комментариями.
  * @return {Array} Массив объектов с параметрами фотографий.
  */
-var generatePhotos = function (minLikes, maxLikes, minPhotos, totalPhotos, arrayOfComments) {
+var generatePhotos = function (min, max, minPhotos, totalPhotos, arrayOfComments) {
   var randomPhotosUrl = shuffleArray(getArrayOfPhotosUrl(minPhotos, totalPhotos));
   var photosArray = [];
   for (var i = 0; i < totalPhotos; i++) {
     photosArray.push({
       url: randomPhotosUrl[i],
-      likes: getRandomLikes(minLikes, maxLikes),
+      likes: getRandomNumber(min, max),
       comments: getArrayOfRandomComments(arrayOfComments)
     });
   }
@@ -128,7 +129,138 @@ for (var i = 0; i < TOTAL_PHOTOS; i++) {
 
 picturesElement.appendChild(fragment);
 
-document.querySelector('.gallery-overlay-image').src = pictures[0].url;
-document.querySelector('.likes-count').textContent = pictures[0].likes;
-document.querySelector('.comments-count').textContent = pictures[0].comments.length;
-document.querySelector('.gallery-overlay').classList.remove('hidden');
+
+var uploadFile = document.querySelector('#upload-file');
+var uploadForm = document.querySelector('.upload-overlay');
+var uploadFormClose = uploadForm.querySelector('#upload-cancel');
+var uploadControl = document.querySelector('.upload-control');
+var galleryOverlay = document.querySelector('.gallery-overlay');
+var galleryOverlayClose = document.querySelector('.gallery-overlay-close');
+var picture = document.querySelectorAll('.picture');
+
+/**
+ * Определяет текущий активный элемент на странице.
+ * @return{string} Наименование текущего активного элемента.
+ */
+var getActiveElement = function () {
+  return document.activeElement.tagName;
+};
+
+/**
+ * Вспомогательная функция обработчика события для закрытия окна при нажатии клавиши 'ESC'.
+ * Нажатие 'ESC' не срабатывает, если фокус находится в поле ввода хэш-тега или комментария.
+ * @param {object} evt Объект текущего события.
+ */
+var onKeyPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    if (getActiveElement() === 'INPUT') {
+      return;
+    }
+    if (getActiveElement() === 'TEXTAREA') {
+      return;
+    }
+    closeUploadForm();
+  }
+};
+
+/**
+ * Вспомогательная функция, открывающая окно загрузки файла
+ * и добавляющая обработчик события, ожидающий нажатия Escape.
+ */
+var openUploadForm = function () {
+  uploadForm.classList.remove('hidden');
+  document.addEventListener('keydown', onKeyPress);
+};
+
+/**
+ * Вспомогательная функция, скрывающая окно загрузки файла
+ * и удаляющая обработчик события, ожидающий нажатия Escape.
+ */
+var closeUploadForm = function () {
+  uploadFile.value = '';
+  uploadForm.classList.add('hidden');
+  document.removeEventListener('keydown', onKeyPress);
+};
+
+uploadFile.addEventListener('change', function () {
+  openUploadForm();
+});
+
+uploadFormClose.addEventListener('click', function () {
+  closeUploadForm();
+});
+
+uploadControl.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    uploadFile.click();
+  }
+});
+
+uploadForm.addEventListener('keydown', function (evt) {
+  if (evt.target === uploadFormClose && evt.keyCode === ENTER_KEYCODE) {
+    closeUploadForm();
+  }
+});
+
+for (i = 0; i < picture.length; i++) {
+  picture[i].addEventListener('click', function (evt) {
+    document.querySelector('.gallery-overlay-image').src = evt.target.src;
+    document.querySelector('.likes-count').textContent = evt.target.parentNode.querySelector('.picture-likes').textContent;
+    document.querySelector('.comments-count').textContent = evt.target.parentNode.querySelector('.picture-comments').textContent;
+    evt.preventDefault();
+    galleryOverlay.classList.remove('hidden');
+  });
+}
+
+galleryOverlayClose.addEventListener('click', function () {
+  galleryOverlay.classList.add('hidden');
+});
+
+document.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    galleryOverlay.classList.add('hidden');
+  }
+});
+
+var effectImagePreview = document.querySelector('.effect-image-preview');
+var uploadEffectControl = document.querySelector('.upload-effect-level');
+
+/**
+ * Удаляет все эффекты у изображения.
+ */
+var removeEffects = function () {
+  var effects = ['effect-chrome', 'effect-sepia', 'effect-marvin', 'effect-phobos', 'effect-heat'];
+  for (i = 0; i < effects.length; i++) {
+    effectImagePreview.classList.remove(effects[i]);
+    uploadEffectControl.classList.remove('hidden');
+  }
+};
+
+uploadEffectControl.classList.add('hidden');
+
+uploadForm.addEventListener('click', function (evt) {
+  if (evt.target === document.querySelector('#upload-effect-none')) {
+    removeEffects();
+    uploadEffectControl.classList.add('hidden');
+  }
+  if (evt.target === document.querySelector('#upload-effect-chrome')) {
+    removeEffects();
+    effectImagePreview.classList.add('effect-chrome');
+  }
+  if (evt.target === document.querySelector('#upload-effect-sepia')) {
+    removeEffects();
+    effectImagePreview.classList.add('effect-sepia');
+  }
+  if (evt.target === document.querySelector('#upload-effect-marvin')) {
+    removeEffects();
+    effectImagePreview.classList.add('effect-marvin');
+  }
+  if (evt.target === document.querySelector('#upload-effect-phobos')) {
+    removeEffects();
+    effectImagePreview.classList.add('effect-phobos');
+  }
+  if (evt.target === document.querySelector('#upload-effect-heat')) {
+    removeEffects();
+    effectImagePreview.classList.add('effect-heat');
+  }
+});

@@ -26,7 +26,7 @@
 <form class="upload-form" id="upload-select-image" method="post" enctype="multipart/form-data" autocomplete="off">
   <div class="upload-image">
     <input type="file" id="upload-file" class="upload-input" name="filename" required>
-    <label class="upload-file upload-control" for="upload-file"></label>
+    <label class="upload-file upload-control" for="upload-file" tabindex="0"></label>
   </div>
 
   <div class="upload-overlay hidden">
@@ -97,7 +97,7 @@
 
         <textarea class="upload-form-description" name="description" placeholder="Ваш комментарий..."></textarea>
 
-        <button class="upload-form-cancel" type="reset" id="upload-cancel">Закрыть</button>
+        <button class="upload-form-cancel" type="reset" id="upload-cancel" tabindex="0">Закрыть</button>
         <button class="upload-form-submit" type="submit" id="upload-submit">Отправить</button>
       </div>
     </div>
