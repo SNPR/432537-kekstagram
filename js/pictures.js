@@ -180,6 +180,9 @@ var closeUploadForm = function () {
   uploadFile.value = '';
   uploadForm.classList.add('hidden');
   document.removeEventListener('keydown', onKeyPress);
+  scale = 1;
+  scaleValue.value = scale * 100 + '' + '%';
+  effectImagePreview.style.transform = 'scale(' + 1 + '' + ')';
 };
 
 uploadFile.addEventListener('change', function () {
@@ -307,22 +310,31 @@ hashTagInput.addEventListener('input', function (evt) {
 
 var decreasePhotoButton = document.querySelector('.upload-resize-controls-button-dec');
 var increasePhotoButton = document.querySelector('.upload-resize-controls-button-inc');
+var scaleValue = document.querySelector('.upload-resize-controls-value');
 
-var defaultScale = 1;
+
+var scale = 1;
+var step = 0.25;
+
 var decreasePhoto = function () {
-  var step = 0.25;
-  if (defaultScale > 0.25) {
-    effectImagePreview.style.transform = 'scale(' + (defaultScale -= step) + '' + ')';
+  if (scale > step) {
+    effectImagePreview.style.transform = 'scale(' + (scale -= step) + '' + ')';
+  }
+};
+
+var increasePhoto = function () {
+  if (scale < 1) {
+    effectImagePreview.style.transform = 'scale(' + (scale += step) + '' + ')';
   }
 };
 
 uploadForm.addEventListener('click', function (evt) {
-
   if (evt.target === decreasePhotoButton) {
     decreasePhoto();
-    uploadEffectControl.classList.add('hidden');
-  } else if (evt.target === increasePhotoButton) {
-    removeEffects();
-    effectImagePreview.classList.add('effect-chrome');
+    scaleValue.value = scale * 100 + '' + '%';
+  }
+  if (evt.target === increasePhotoButton) {
+    increasePhoto();
+    scaleValue.value = scale * 100 + '' + '%';
   }
 });
