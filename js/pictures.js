@@ -304,3 +304,25 @@ hashTagInput.addEventListener('input', function (evt) {
     }
   }
 });
+
+var decreasePhotoButton = document.querySelector('.upload-resize-controls-button-dec');
+var increasePhotoButton = document.querySelector('.upload-resize-controls-button-inc');
+
+var defaultScale = 1;
+var decreasePhoto = function () {
+  var step = 0.25;
+  if (defaultScale > 0.25) {
+    effectImagePreview.style.transform = 'scale(' + (defaultScale -= step) + '' + ')';
+  }
+};
+
+uploadForm.addEventListener('click', function (evt) {
+
+  if (evt.target === decreasePhotoButton) {
+    decreasePhoto();
+    uploadEffectControl.classList.add('hidden');
+  } else if (evt.target === increasePhotoButton) {
+    removeEffects();
+    effectImagePreview.classList.add('effect-chrome');
+  }
+});
