@@ -155,8 +155,7 @@ var onKeyPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
     if (getActiveElement() === 'INPUT') {
       return;
-    }
-    if (getActiveElement() === 'TEXTAREA') {
+    } else if (getActiveElement() === 'TEXTAREA') {
       return;
     }
     closeUploadForm();
@@ -170,6 +169,7 @@ var onKeyPress = function (evt) {
 var openUploadForm = function () {
   uploadForm.classList.remove('hidden');
   document.addEventListener('keydown', onKeyPress);
+  uploadEffectLevel.classList.add('hidden');
 };
 
 /**
@@ -182,8 +182,7 @@ var closeUploadForm = function () {
   document.removeEventListener('keydown', onKeyPress);
   scale = 1;
   effectImagePreview.style.transform = 'scale(1)';
-  removeEffects();
-  uploadEffectLevel.classList.add('hidden');
+  effectImagePreview.classList = '';
 };
 
 uploadFile.addEventListener('change', function () {
@@ -230,53 +229,19 @@ var effectImagePreview = document.querySelector('.effect-image-preview');
 var uploadEffectLevel = document.querySelector('.upload-effect-level');
 var uploadEffectsControl = document.querySelector('.upload-effect-controls');
 
-/**
- * Удаляет все эффекты у изображения.
- */
-var removeEffects = function () {
-  var effects = ['effect-chrome', 'effect-sepia', 'effect-marvin', 'effect-phobos', 'effect-heat'];
-  for (i = 0; i < effects.length; i++) {
-    effectImagePreview.classList.remove(effects[i]);
+var applyFilter = function (filterName) {
+  effectImagePreview.classList = '';
+  effectImagePreview.classList.add('effect-' + filterName);
+  if (filterName === 'none') {
+    uploadEffectLevel.classList.add('hidden');
+  } else {
     uploadEffectLevel.classList.remove('hidden');
   }
 };
 
-uploadEffectLevel.classList.add('hidden');
-
-// var applyFilter = function (filterName) {
-//   removeEffects();
-//   effectImagePreview.classList.add('effect-' + filterName);
-// };
-//
-// uploadEffectsControl.addEventListener('click', function (evt) {
-//   var filterName = evt.target.value;
-//   applyFilter(filterName);
-// });
-
-uploadForm.addEventListener('click', function (evt) {
-  if (evt.target === document.querySelector('#upload-effect-none')) {
-    removeEffects();
-    uploadEffectLevel.classList.add('hidden');
-  }
-  if (evt.target === document.querySelector('#upload-effect-chrome')) {
-    removeEffects();
-    effectImagePreview.classList.add('effect-chrome');
-  }
-  if (evt.target === document.querySelector('#upload-effect-sepia')) {
-    removeEffects();
-    effectImagePreview.classList.add('effect-sepia');
-  }
-  if (evt.target === document.querySelector('#upload-effect-marvin')) {
-    removeEffects();
-    effectImagePreview.classList.add('effect-marvin');
-  }
-  if (evt.target === document.querySelector('#upload-effect-phobos')) {
-    removeEffects();
-    effectImagePreview.classList.add('effect-phobos');
-  }
-  if (evt.target === document.querySelector('#upload-effect-heat')) {
-    removeEffects();
-    effectImagePreview.classList.add('effect-heat');
+uploadEffectsControl.addEventListener('click', function (evt) {
+  if (evt.target.type === 'radio') {
+    applyFilter(evt.target.value);
   }
 });
 
@@ -324,10 +289,12 @@ var decreasePhotoButton = document.querySelector('.upload-resize-controls-button
 var increasePhotoButton = document.querySelector('.upload-resize-controls-button-inc');
 var scaleValue = document.querySelector('.upload-resize-controls-value');
 
-
 var scale = 1;
 var step = 0.25;
 
+/**
+ * Увеличивает фото при нажатии на '+'.
+ */
 var decreasePhoto = function () {
   if (scale > step) {
     effectImagePreview.style.transform = 'scale(' + (scale -= step) + '' + ')';
@@ -335,6 +302,9 @@ var decreasePhoto = function () {
   }
 };
 
+/**
+ * Уменьшает фото при нажатии на '-'.
+ */
 var increasePhoto = function () {
   if (scale < 1) {
     effectImagePreview.style.transform = 'scale(' + (scale += step) + '' + ')';
