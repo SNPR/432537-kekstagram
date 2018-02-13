@@ -181,8 +181,7 @@ var closeUploadForm = function () {
   uploadForm.classList.add('hidden');
   document.removeEventListener('keydown', onKeyPress);
   scale = 1;
-  scaleValue.value = scale * 100 + '' + '%';
-  effectImagePreview.style.transform = 'scale(' + 1 + '' + ')';
+  effectImagePreview.style.transform = 'scale(1)';
 };
 
 uploadFile.addEventListener('change', function () {
@@ -226,7 +225,7 @@ document.addEventListener('keydown', function (evt) {
 });
 
 var effectImagePreview = document.querySelector('.effect-image-preview');
-var uploadEffectControl = document.querySelector('.upload-effect-level');
+var uploadEffectLevel = document.querySelector('.upload-effect-level');
 
 /**
  * Удаляет все эффекты у изображения.
@@ -235,16 +234,16 @@ var removeEffects = function () {
   var effects = ['effect-chrome', 'effect-sepia', 'effect-marvin', 'effect-phobos', 'effect-heat'];
   for (i = 0; i < effects.length; i++) {
     effectImagePreview.classList.remove(effects[i]);
-    uploadEffectControl.classList.remove('hidden');
+    uploadEffectLevel.classList.remove('hidden');
   }
 };
 
-uploadEffectControl.classList.add('hidden');
+uploadEffectLevel.classList.add('hidden');
 
 uploadForm.addEventListener('click', function (evt) {
   if (evt.target === document.querySelector('#upload-effect-none')) {
     removeEffects();
-    uploadEffectControl.classList.add('hidden');
+    uploadEffectLevel.classList.add('hidden');
   }
   if (evt.target === document.querySelector('#upload-effect-chrome')) {
     removeEffects();
@@ -319,22 +318,22 @@ var step = 0.25;
 var decreasePhoto = function () {
   if (scale > step) {
     effectImagePreview.style.transform = 'scale(' + (scale -= step) + '' + ')';
+    scaleValue.value = scale * 100 + '' + '%';
   }
 };
 
 var increasePhoto = function () {
   if (scale < 1) {
     effectImagePreview.style.transform = 'scale(' + (scale += step) + '' + ')';
+    scaleValue.value = scale * 100 + '' + '%';
   }
 };
 
 uploadForm.addEventListener('click', function (evt) {
   if (evt.target === decreasePhotoButton) {
     decreasePhoto();
-    scaleValue.value = scale * 100 + '' + '%';
   }
   if (evt.target === increasePhotoButton) {
     increasePhoto();
-    scaleValue.value = scale * 100 + '' + '%';
   }
 });
