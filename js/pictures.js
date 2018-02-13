@@ -182,6 +182,8 @@ var closeUploadForm = function () {
   document.removeEventListener('keydown', onKeyPress);
   scale = 1;
   effectImagePreview.style.transform = 'scale(1)';
+  removeEffects();
+  uploadEffectLevel.classList.add('hidden');
 };
 
 uploadFile.addEventListener('change', function () {
@@ -226,6 +228,7 @@ document.addEventListener('keydown', function (evt) {
 
 var effectImagePreview = document.querySelector('.effect-image-preview');
 var uploadEffectLevel = document.querySelector('.upload-effect-level');
+var uploadEffectsControl = document.querySelector('.upload-effect-controls');
 
 /**
  * Удаляет все эффекты у изображения.
@@ -239,6 +242,16 @@ var removeEffects = function () {
 };
 
 uploadEffectLevel.classList.add('hidden');
+
+// var applyFilter = function (filterName) {
+//   removeEffects();
+//   effectImagePreview.classList.add('effect-' + filterName);
+// };
+//
+// uploadEffectsControl.addEventListener('click', function (evt) {
+//   var filterName = evt.target.value;
+//   applyFilter(filterName);
+// });
 
 uploadForm.addEventListener('click', function (evt) {
   if (evt.target === document.querySelector('#upload-effect-none')) {
