@@ -153,12 +153,11 @@ var getActiveElement = function () {
  */
 var onKeyPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
-    if (getActiveElement() === 'INPUT') {
+    if (getActiveElement() === 'INPUT' || getActiveElement() === 'TEXTAREA') {
       return;
-    } else if (getActiveElement() === 'TEXTAREA') {
-      return;
+    } else {
+      closeUploadForm();
     }
-    closeUploadForm();
   }
 };
 
