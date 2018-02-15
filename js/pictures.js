@@ -173,6 +173,7 @@ var openUploadForm = function () {
   effectLevelPin.style.left = '455px';
   effectLevelScale.style.width = '100%';
   uploadEffectsControl.addEventListener('click', onFilterChange);
+  hashTagInput.addEventListener('input', onHashtagsType);
 };
 
 /**
@@ -189,6 +190,7 @@ var closeUploadForm = function () {
   effectImagePreview.style.filter = '';
   uploadForm.removeEventListener('click', onResizePhoto);
   uploadEffectsControl.removeEventListener('click', onFilterChange);
+  hashTagInput.removeEventListener('input', onHashtagsType);
 };
 
 /**
@@ -304,7 +306,11 @@ var checkSimilarHashtags = function (array) {
   return false;
 };
 
-hashTagInput.addEventListener('input', function (evt) {
+/**
+ * Функция-обработчик событий, валидирующая поле ввода хэштегов.
+ * @param {Object} evt Объект текущего события.
+ */
+var onHashtagsType = function (evt) {
   var target = evt.target;
   var hashtags = target.value.toLowerCase().split(' ').sort();
 
@@ -326,7 +332,7 @@ hashTagInput.addEventListener('input', function (evt) {
       target.setCustomValidity('');
     }
   }
-});
+};
 
 var decreasePhotoButton = document.querySelector('.upload-resize-controls-button-dec');
 var increasePhotoButton = document.querySelector('.upload-resize-controls-button-inc');
