@@ -167,6 +167,7 @@ var onKeyPress = function (evt) {
  * и добавляющая обработчик события, ожидающий нажатия Escape.
  */
 var openUploadForm = function () {
+  uploadForm.addEventListener('click', onResizePhoto);
   uploadForm.classList.remove('hidden');
   document.addEventListener('keydown', onKeyPress);
   uploadEffectLevel.classList.add('hidden');
@@ -186,6 +187,7 @@ var closeUploadForm = function () {
   effectImagePreview.style.transform = 'scale(1)';
   effectImagePreview.classList = '';
   effectImagePreview.style.filter = '';
+  uploadForm.removeEventListener('click', onResizePhoto);
 };
 
 uploadFile.addEventListener('change', function () {
@@ -296,33 +298,19 @@ var scale = 1;
 var step = 0.25;
 
 /**
- * Увеличивает фото при нажатии на '+'.
+ * Увеличивает фото при нажатии на '+' и уменьшает при нажатии на '-'.
+ * @param {Object} evt Объект текущего события.
  */
-var decreasePhoto = function () {
-  if (scale > step) {
-    effectImagePreview.style.transform = 'scale(' + (scale -= step) + '' + ')';
-    scaleValue.value = scale * 100 + '' + '%';
+var onResizePhoto = function (evt) {
+  if (evt.target === decreasePhotoButton && scale > step) {
+    scale -= step;
   }
+  if (evt.target === increasePhotoButton && scale < 1) {
+    scale += step;
+  }
+  effectImagePreview.style.transform = 'scale(' + scale + ')';
+  scaleValue.value = scale * 100 + '%';
 };
-
-/**
- * Уменьшает фото при нажатии на '-'.
- */
-var increasePhoto = function () {
-  if (scale < 1) {
-    effectImagePreview.style.transform = 'scale(' + (scale += step) + '' + ')';
-    scaleValue.value = scale * 100 + '' + '%';
-  }
-};
-
-uploadForm.addEventListener('click', function (evt) {
-  if (evt.target === decreasePhotoButton) {
-    decreasePhoto();
-  }
-  if (evt.target === increasePhotoButton) {
-    increasePhoto();
-  }
-});
 
 var effectLevelPin = document.querySelector('.upload-effect-level-pin');
 var effectLevelScale = document.querySelector('.upload-effect-level-val');
