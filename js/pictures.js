@@ -170,6 +170,8 @@ var openUploadForm = function () {
   uploadForm.classList.remove('hidden');
   document.addEventListener('keydown', onKeyPress);
   uploadEffectLevel.classList.add('hidden');
+  effectLevelPin.style.left = '455px';
+  effectLevelScale.style.width = '100%';
 };
 
 /**
@@ -183,6 +185,7 @@ var closeUploadForm = function () {
   scale = 1;
   effectImagePreview.style.transform = 'scale(1)';
   effectImagePreview.classList = '';
+  effectImagePreview.style.filter = '';
 };
 
 uploadFile.addEventListener('change', function () {
@@ -320,3 +323,32 @@ uploadForm.addEventListener('click', function (evt) {
     increasePhoto();
   }
 });
+
+var effectLevelPin = document.querySelector('.upload-effect-level-pin');
+var effectLevelScale = document.querySelector('.upload-effect-level-val');
+
+effectLevelPin.addEventListener('mousedown', function (evt) {
+  var currentPinPosition = parseFloat(effectLevelPin.style.left);
+  var startCoordinate = evt.clientX;
+  var onMouseMove = function (moveEvt) {
+    var shift = moveEvt.clientX - startCoordinate;
+    effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) / 4.55 + '%';
+    effectLevelPin.style.left = currentPinPosition + shift + 'px';
+    effectImagePreview.style.filter = 'grayscale(' + parseFloat(effectLevelPin.style.left) / 455 + ')';
+
+    if (parseFloat(effectLevelPin.style.left) < 0) {
+      effectLevelPin.style.left = 0;
+    } else if (parseFloat(effectLevelPin.style.left) > 455) {
+      effectLevelPin.style.left = '455px';
+      effectLevelScale.style.width = '100%';
+    }
+  };
+  var onMouseUp = function () {
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  };
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+
+});
+
