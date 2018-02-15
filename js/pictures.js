@@ -281,6 +281,8 @@ var uploadEffectsControl = document.querySelector('.upload-effect-controls');
 var applyFilter = function (filterName) {
   effectImagePreview.classList = '';
   effectImagePreview.classList.add('effect-' + filterName);
+  effectLevelPin.style.left = EFFECT_LEVEL_VALUE + 'px';
+  effectLevelScale.style.width = '100%';
   if (filterName === 'none') {
     uploadEffectLevel.classList.add('hidden');
   } else {
