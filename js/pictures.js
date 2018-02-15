@@ -174,6 +174,7 @@ var openUploadForm = function () {
   effectLevelScale.style.width = '100%';
   uploadEffectsControl.addEventListener('click', onFilterChange);
   hashTagInput.addEventListener('input', onHashtagsType);
+  effectLevelPin.addEventListener('mousedown', onPinMove);
 };
 
 /**
@@ -191,6 +192,7 @@ var closeUploadForm = function () {
   uploadForm.removeEventListener('click', onResizePhoto);
   uploadEffectsControl.removeEventListener('click', onFilterChange);
   hashTagInput.removeEventListener('input', onHashtagsType);
+  effectLevelPin.removeEventListener('mousedown', onPinMove);
 };
 
 /**
@@ -359,7 +361,11 @@ var onResizePhoto = function (evt) {
 var effectLevelPin = document.querySelector('.upload-effect-level-pin');
 var effectLevelScale = document.querySelector('.upload-effect-level-val');
 
-effectLevelPin.addEventListener('mousedown', function (evt) {
+/**
+ * Изменяет глубину эффекта при перемещении слайдера.
+ * @param {Object} evt Объект текущего события.
+ */
+var onPinMove = function (evt) {
   var currentPinPosition = parseFloat(effectLevelPin.style.left);
   var startCoordinate = evt.clientX;
 
@@ -381,7 +387,7 @@ effectLevelPin.addEventListener('mousedown', function (evt) {
     }
   };
   /**
-   * Удаляет обработчики событий при отпускании мыши.
+   * Удаляет обработчики событий движения и опускания мыши.
    */
   var onMouseUp = function () {
     document.removeEventListener('mousemove', onMouseMove);
@@ -389,6 +395,5 @@ effectLevelPin.addEventListener('mousedown', function (evt) {
   };
   document.addEventListener('mousemove', onMouseMove);
   document.addEventListener('mouseup', onMouseUp);
-
-});
+};
 
