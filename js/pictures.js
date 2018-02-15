@@ -129,14 +129,13 @@ for (var i = 0; i < TOTAL_PHOTOS; i++) {
 
 picturesElement.appendChild(fragment);
 
-
 var uploadFile = document.querySelector('#upload-file');
 var uploadForm = document.querySelector('.upload-overlay');
 var uploadFormClose = uploadForm.querySelector('#upload-cancel');
 var uploadControl = document.querySelector('.upload-control');
 var galleryOverlay = document.querySelector('.gallery-overlay');
 var galleryOverlayClose = document.querySelector('.gallery-overlay-close');
-var picturesCollection = document.querySelectorAll('.picture');
+var thumbnails = document.querySelectorAll('.picture');
 
 /**
  * Определяет текущий активный элемент на странице.
@@ -210,8 +209,8 @@ uploadForm.addEventListener('keydown', function (evt) {
   }
 });
 
-for (i = 0; i < picturesCollection.length; i++) {
-  picturesCollection[i].addEventListener('click', function (evt) {
+for (i = 0; i < thumbnails.length; i++) {
+  thumbnails[i].addEventListener('click', function (evt) {
     document.querySelector('.gallery-overlay-image').src = evt.target.src;
     document.querySelector('.likes-count').textContent = evt.target.parentNode.querySelector('.picture-likes').textContent;
     document.querySelector('.comments-count').textContent = evt.target.parentNode.querySelector('.picture-comments').textContent;
