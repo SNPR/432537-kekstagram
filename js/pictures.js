@@ -273,6 +273,7 @@ for (i = 0; i < thumbnails.length; i++) {
 var effectImagePreview = document.querySelector('.effect-image-preview');
 var uploadEffectLevel = document.querySelector('.upload-effect-level');
 var uploadEffectsControl = document.querySelector('.upload-effect-controls');
+var activeFilter;
 
 /**
  * Применяет полученный в качестве аргументра фильтр в форме редактирования изображения.
@@ -288,6 +289,7 @@ var applyFilter = function (filterName) {
   } else {
     uploadEffectLevel.classList.remove('hidden');
   }
+  activeFilter = filterName;
 };
 
 /**
