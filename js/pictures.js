@@ -251,17 +251,17 @@ uploadEffectsControl.addEventListener('click', function (evt) {
 var hashTagInput = document.querySelector('.upload-form-hashtags');
 
 /**
- * Проверяет, если ли в массиве повторяющиеся соседние значения.
+ * Проверяет, если ли в массиве повторяющиеся соседние хэштеги.
  * @param {Array} array Массив строк или чисел.
- * @return {(number|string)} Первое повторяющееся значение.
+ * @return {boolean} Если есть совпадения - true, иначе - false.
  */
-var checkSimilarValues = function (array) {
+var checkSimilarHashtags = function (array) {
   for (var j = 0; j < array.length; j++) {
     if (array[j] === array[j + 1]) {
-      break;
+      return true;
     }
   }
-  return array[j];
+  return false;
 };
 
 hashTagInput.addEventListener('input', function (evt) {
@@ -280,7 +280,7 @@ hashTagInput.addEventListener('input', function (evt) {
       target.setCustomValidity('Длина хэштега должна быть не более 20 символов');
     } else if (hashtags[i].lastIndexOf('#') !== 0) {
       target.setCustomValidity('Хэштеги должны разделяться пробелами');
-    } else if (checkSimilarValues(hashtags)) {
+    } else if (checkSimilarHashtags(hashtags)) {
       target.setCustomValidity('Хэштеги не должны повторяться');
     } else {
       target.setCustomValidity('');
