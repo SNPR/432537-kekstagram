@@ -254,7 +254,7 @@ uploadForm.addEventListener('keydown', function (evt) {
 
 for (i = 0; i < thumbnails.length; i++) {
   thumbnails[i].addEventListener('click', function (evt) {
-    document.querySelector('.gallery-overlay-image').src = evt.target.src;
+    document.querySelector('.gallery-overlay-image').src = evt.currentTarget.querySelector('img').src;
     document.querySelector('.likes-count').textContent = evt.target.parentNode.querySelector('.picture-likes').textContent;
     document.querySelector('.comments-count').textContent = evt.target.parentNode.querySelector('.picture-comments').textContent;
     evt.preventDefault();
