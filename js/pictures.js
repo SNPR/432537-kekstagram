@@ -5,7 +5,7 @@ var LIKES_MIN = 15;
 var LIKES_MAX = 200;
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
-var EFFECT_LEVEL_VALUE = 455;
+var MAX_EFFECT_LEVEL_VALUE = 455;
 var COMMENTS = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -170,7 +170,7 @@ var openUploadForm = function () {
   uploadForm.classList.remove('hidden');
   document.addEventListener('keydown', onKeyPress);
   uploadEffectLevel.classList.add('hidden');
-  effectLevelPin.style.left = EFFECT_LEVEL_VALUE + 'px';
+  effectLevelPin.style.left = MAX_EFFECT_LEVEL_VALUE + 'px';
   effectLevelScale.style.width = '100%';
   uploadEffectsControl.addEventListener('click', onFilterChange);
   hashTagInput.addEventListener('input', onHashtagsType);
@@ -281,7 +281,7 @@ var uploadEffectsControl = document.querySelector('.upload-effect-controls');
 var applyFilter = function (filterName) {
   effectImagePreview.classList = '';
   effectImagePreview.classList.add('effect-' + filterName);
-  effectLevelPin.style.left = EFFECT_LEVEL_VALUE + 'px';
+  effectLevelPin.style.left = MAX_EFFECT_LEVEL_VALUE + 'px';
   effectLevelScale.style.width = '100%';
   if (filterName === 'none') {
     uploadEffectLevel.classList.add('hidden');
@@ -383,14 +383,14 @@ var onPinMove = function (evt) {
    */
   var onMouseMove = function (moveEvt) {
     var shift = moveEvt.clientX - startCoordinate;
-    effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) / (EFFECT_LEVEL_VALUE / 100) + '%';
+    effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) / (MAX_EFFECT_LEVEL_VALUE / 100) + '%';
     effectLevelPin.style.left = currentPinPosition + shift + 'px';
-    effectImagePreview.style.filter = 'grayscale(' + parseFloat(effectLevelPin.style.left) / EFFECT_LEVEL_VALUE + ')';
+    effectImagePreview.style.filter = 'grayscale(' + parseFloat(effectLevelPin.style.left) / MAX_EFFECT_LEVEL_VALUE + ')';
 
     if (parseFloat(effectLevelPin.style.left) < 0) {
       effectLevelPin.style.left = 0;
-    } else if (parseFloat(effectLevelPin.style.left) > EFFECT_LEVEL_VALUE) {
-      effectLevelPin.style.left = EFFECT_LEVEL_VALUE + 'px';
+    } else if (parseFloat(effectLevelPin.style.left) > MAX_EFFECT_LEVEL_VALUE) {
+      effectLevelPin.style.left = MAX_EFFECT_LEVEL_VALUE + 'px';
       effectLevelScale.style.width = '100%';
     }
   };
