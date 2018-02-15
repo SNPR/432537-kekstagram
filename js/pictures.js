@@ -281,6 +281,7 @@ var activeFilter;
  */
 var applyFilter = function (filterName) {
   effectImagePreview.classList = '';
+  effectImagePreview.style.filter = '';
   effectImagePreview.classList.add('effect-' + filterName);
   effectLevelPin.style.left = MAX_EFFECT_LEVEL_VALUE + 'px';
   effectLevelScale.style.width = '100%';
@@ -387,7 +388,17 @@ var onPinMove = function (evt) {
     var shift = moveEvt.clientX - startCoordinate;
     effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) / (MAX_EFFECT_LEVEL_VALUE / 100) + '%';
     effectLevelPin.style.left = currentPinPosition + shift + 'px';
-    effectImagePreview.style.filter = 'grayscale(' + parseFloat(effectLevelPin.style.left) / MAX_EFFECT_LEVEL_VALUE + ')';
+    if (activeFilter === 'chrome') {
+      effectImagePreview.style.filter = 'grayscale(' + parseFloat(effectLevelPin.style.left) / MAX_EFFECT_LEVEL_VALUE + ')';
+    } else if (activeFilter === 'sepia') {
+      effectImagePreview.style.filter = 'sepia(' + parseFloat(effectLevelPin.style.left) / MAX_EFFECT_LEVEL_VALUE + ')';
+    } else if (activeFilter === 'marvin') {
+      effectImagePreview.style.filter = 'invert(' + parseFloat(effectLevelPin.style.left) / (MAX_EFFECT_LEVEL_VALUE / 100) + '%)';
+    } else if (activeFilter === 'phobos') {
+      effectImagePreview.style.filter = 'blur(' + parseFloat(effectLevelPin.style.left) / (MAX_EFFECT_LEVEL_VALUE / 3) + 'px)';
+    } else if (activeFilter === 'heat') {
+      effectImagePreview.style.filter = 'brightness(' + parseFloat(effectLevelPin.style.left) / (MAX_EFFECT_LEVEL_VALUE / 3) + ')';
+    }
 
     if (parseFloat(effectLevelPin.style.left) < 0) {
       effectLevelPin.style.left = 0;
@@ -396,6 +407,7 @@ var onPinMove = function (evt) {
       effectLevelScale.style.width = '100%';
     }
   };
+
   /**
    * Удаляет обработчики событий движения и опускания мыши.
    */
