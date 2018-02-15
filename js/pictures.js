@@ -189,6 +189,9 @@ var closeUploadForm = function () {
   uploadForm.removeEventListener('click', onResizePhoto);
 };
 
+/**
+ * Функция-обработчик событий, реагирующая на клик по кнопке закрытия полномасштабного изображения.
+ */
 var onCloseClickInGallery = function () {
   galleryOverlay.classList.add('hidden');
   galleryOverlayClose.removeEventListener('click', onCloseClickInGallery);
@@ -196,6 +199,10 @@ var onCloseClickInGallery = function () {
   document.removeEventListener('keydown', onEscPressInGallery);
 };
 
+/**
+ * Функция-обработчик событий, реагирующая на нажатие Enter по кнопке закрытия полномасштабного изображения.
+ * @param {object} evt Объект текущего события.
+ */
 var onClosePressInGallery = function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     galleryOverlay.classList.add('hidden');
@@ -205,6 +212,10 @@ var onClosePressInGallery = function (evt) {
   }
 };
 
+/**
+ * Функция-обработчик событий, реагирующая на нажатие Esc в режиме просмотра полномасштабного изображения.
+ * @param {object} evt Объект текущего события.
+ */
 var onEscPressInGallery = function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
     galleryOverlay.classList.add('hidden');
@@ -251,6 +262,10 @@ var effectImagePreview = document.querySelector('.effect-image-preview');
 var uploadEffectLevel = document.querySelector('.upload-effect-level');
 var uploadEffectsControl = document.querySelector('.upload-effect-controls');
 
+/**
+ * Применяет полученный в качестве аргументра фильтр в форме редактирования изображения.
+ * @param {string} filterName Имя фильтра.
+ */
 var applyFilter = function (filterName) {
   effectImagePreview.classList = '';
   effectImagePreview.classList.add('effect-' + filterName);
@@ -335,6 +350,11 @@ var effectLevelScale = document.querySelector('.upload-effect-level-val');
 effectLevelPin.addEventListener('mousedown', function (evt) {
   var currentPinPosition = parseFloat(effectLevelPin.style.left);
   var startCoordinate = evt.clientX;
+
+  /**
+   * Реагирует на перемещение мыши, позволяет слайдеру двигаться.
+   * @param {Object} moveEvt Объект текущего ссобытия.
+   */
   var onMouseMove = function (moveEvt) {
     var shift = moveEvt.clientX - startCoordinate;
     effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) / 4.55 + '%';
@@ -348,6 +368,9 @@ effectLevelPin.addEventListener('mousedown', function (evt) {
       effectLevelScale.style.width = '100%';
     }
   };
+  /**
+   * Удаляет обработчики событий при отпускании мыши.
+   */
   var onMouseUp = function () {
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
