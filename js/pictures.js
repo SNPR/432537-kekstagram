@@ -172,6 +172,7 @@ var openUploadForm = function () {
   uploadEffectLevel.classList.add('hidden');
   effectLevelPin.style.left = '455px';
   effectLevelScale.style.width = '100%';
+  uploadEffectsControl.addEventListener('click', onFilterChange);
 };
 
 /**
@@ -187,6 +188,7 @@ var closeUploadForm = function () {
   effectImagePreview.classList = '';
   effectImagePreview.style.filter = '';
   uploadForm.removeEventListener('click', onResizePhoto);
+  uploadEffectsControl.removeEventListener('click', onFilterChange);
 };
 
 /**
@@ -276,11 +278,15 @@ var applyFilter = function (filterName) {
   }
 };
 
-uploadEffectsControl.addEventListener('click', function (evt) {
+/**
+ * Функция-обработчик событий. Помогает менять фильтры изображений.
+ * @param {Object} evt Объект текущего события.
+ */
+var onFilterChange = function (evt) {
   if (evt.target.type === 'radio') {
     applyFilter(evt.target.value);
   }
-});
+};
 
 var hashTagInput = document.querySelector('.upload-form-hashtags');
 
