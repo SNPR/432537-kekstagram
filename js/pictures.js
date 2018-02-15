@@ -189,6 +189,31 @@ var closeUploadForm = function () {
   uploadForm.removeEventListener('click', onResizePhoto);
 };
 
+var onCloseClickInGallery = function () {
+  galleryOverlay.classList.add('hidden');
+  galleryOverlayClose.removeEventListener('click', onCloseClickInGallery);
+  galleryOverlayClose.removeEventListener('keydown', onClosePressInGallery);
+  document.removeEventListener('keydown', onEscPressInGallery);
+};
+
+var onClosePressInGallery = function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    galleryOverlay.classList.add('hidden');
+    galleryOverlayClose.removeEventListener('click', onCloseClickInGallery);
+    galleryOverlayClose.removeEventListener('keydown', onClosePressInGallery);
+    document.removeEventListener('keydown', onEscPressInGallery);
+  }
+};
+
+var onEscPressInGallery = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    galleryOverlay.classList.add('hidden');
+    galleryOverlayClose.removeEventListener('click', onCloseClickInGallery);
+    galleryOverlayClose.removeEventListener('keydown', onClosePressInGallery);
+    document.removeEventListener('keydown', onEscPressInGallery);
+  }
+};
+
 uploadFile.addEventListener('change', function () {
   openUploadForm();
 });
@@ -216,18 +241,11 @@ for (i = 0; i < thumbnails.length; i++) {
     document.querySelector('.comments-count').textContent = evt.target.parentNode.querySelector('.picture-comments').textContent;
     evt.preventDefault();
     galleryOverlay.classList.remove('hidden');
+    galleryOverlayClose.addEventListener('click', onCloseClickInGallery);
+    galleryOverlayClose.addEventListener('keydown', onClosePressInGallery);
+    document.addEventListener('keydown', onEscPressInGallery);
   });
 }
-
-galleryOverlayClose.addEventListener('click', function () {
-  galleryOverlay.classList.add('hidden');
-});
-
-document.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === ESC_KEYCODE) {
-    galleryOverlay.classList.add('hidden');
-  }
-});
 
 var effectImagePreview = document.querySelector('.effect-image-preview');
 var uploadEffectLevel = document.querySelector('.upload-effect-level');
