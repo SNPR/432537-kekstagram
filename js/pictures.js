@@ -231,6 +231,21 @@ var onEscPressInGallery = function (evt) {
   }
 };
 
+/**
+ * Функция-обработчик событий, реагирующая на клик по миниатюре изображения.
+ * @param {object} evt Объект текущего события.
+ */
+var onGalleryOverlayOpen = function (evt) {
+  document.querySelector('.gallery-overlay-image').src = evt.currentTarget.querySelector('img').src;
+  document.querySelector('.likes-count').textContent = evt.target.parentNode.querySelector('.picture-likes').textContent;
+  document.querySelector('.comments-count').textContent = evt.target.parentNode.querySelector('.picture-comments').textContent;
+  evt.preventDefault();
+  galleryOverlay.classList.remove('hidden');
+  galleryOverlayClose.addEventListener('click', onCloseClickInGallery);
+  galleryOverlayClose.addEventListener('keydown', onClosePressInGallery);
+  document.addEventListener('keydown', onEscPressInGallery);
+};
+
 uploadFile.addEventListener('change', function () {
   openUploadForm();
 });
@@ -252,16 +267,7 @@ uploadForm.addEventListener('keydown', function (evt) {
 });
 
 for (i = 0; i < thumbnails.length; i++) {
-  thumbnails[i].addEventListener('click', function (evt) {
-    document.querySelector('.gallery-overlay-image').src = evt.currentTarget.querySelector('img').src;
-    document.querySelector('.likes-count').textContent = evt.target.parentNode.querySelector('.picture-likes').textContent;
-    document.querySelector('.comments-count').textContent = evt.target.parentNode.querySelector('.picture-comments').textContent;
-    evt.preventDefault();
-    galleryOverlay.classList.remove('hidden');
-    galleryOverlayClose.addEventListener('click', onCloseClickInGallery);
-    galleryOverlayClose.addEventListener('keydown', onClosePressInGallery);
-    document.addEventListener('keydown', onEscPressInGallery);
-  });
+  thumbnails[i].addEventListener('click', onGalleryOverlayOpen);
 }
 
 var effectImagePreview = document.querySelector('.effect-image-preview');
