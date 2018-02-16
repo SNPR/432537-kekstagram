@@ -1,6 +1,8 @@
 'use strict';
 (function () {
-  window.ESC_KEYCODE = 27;
-  window.ENTER_KEYCODE = 13;
-  window.TOTAL_PHOTOS = 25;
+  window.constantes = {
+    ESC_KEYCODE: 27,
+    ENTER_KEYCODE: 13,
+    TOTAL_PHOTOS: 25
+  };
 })();

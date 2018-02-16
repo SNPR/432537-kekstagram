@@ -19,8 +19,8 @@
   var picturesElement = document.querySelector('.pictures');
   var fragment = document.createDocumentFragment();
 
-  for (var i = 0; i < TOTAL_PHOTOS; i++) {
-    fragment.appendChild(renderPhotos(pictures[i]));
+  for (var i = 0; i < window.constantes.TOTAL_PHOTOS; i++) {
+    fragment.appendChild(renderPhotos(window.pictures[i]));
   }
 
   picturesElement.appendChild(fragment);

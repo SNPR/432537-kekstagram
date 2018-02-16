@@ -101,5 +101,5 @@
     }
     return photosArray;
   };
-  window.pictures = generatePhotos(LIKES_MIN, LIKES_MAX, MIN_PHOTOS, TOTAL_PHOTOS, COMMENTS);
+  window.pictures = generatePhotos(LIKES_MIN, LIKES_MAX, MIN_PHOTOS, window.constantes.TOTAL_PHOTOS, COMMENTS);
 })();
