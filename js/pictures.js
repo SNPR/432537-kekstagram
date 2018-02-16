@@ -3,8 +3,6 @@ var MIN_PHOTOS = 1;
 var TOTAL_PHOTOS = 25;
 var LIKES_MIN = 15;
 var LIKES_MAX = 200;
-var ESC_KEYCODE = 27;
-var ENTER_KEYCODE = 13;
 var MAX_EFFECT_LEVEL_VALUE = 455;
 var COMMENTS = [
   'Всё отлично!',
