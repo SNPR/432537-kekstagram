@@ -869,3 +869,10 @@ input[type=radio]:checked + .upload-effect-label .upload-effect-preview {
 .footer-social-item-vk {
   background-position: -84px 0;
 }
+
+.disable-selection {
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
