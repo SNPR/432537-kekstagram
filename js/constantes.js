@@ -1,4 +1,5 @@
 'use strict';
+
 (function () {
   window.constantes = {
     ESC_KEYCODE: 27,

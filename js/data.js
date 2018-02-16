@@ -1,4 +1,5 @@
 'use strict';
+
 (function () {
   var MIN_PHOTOS = 1;
   var LIKES_MIN = 15;
@@ -101,5 +102,8 @@
     }
     return photosArray;
   };
-  window.pictures = generatePhotos(LIKES_MIN, LIKES_MAX, MIN_PHOTOS, window.constantes.TOTAL_PHOTOS, COMMENTS);
+  var pictures = generatePhotos(LIKES_MIN, LIKES_MAX, MIN_PHOTOS, window.constantes.TOTAL_PHOTOS, COMMENTS);
+  (function () {
+    window.pictures = pictures;
+  })();
 })();

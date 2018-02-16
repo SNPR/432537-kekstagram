@@ -42,7 +42,7 @@
     effectLevelPin.style.left = MAX_EFFECT_LEVEL_VALUE + 'px';
     effectLevelScale.style.width = '100%';
     uploadEffectsControl.addEventListener('click', onFilterChange);
-    window.hashTagInput.addEventListener('input', window.onHashtagsType);
+    window.validation.hashTagInput.addEventListener('input', window.validation.onHashtagsType);
     effectLevelPin.addEventListener('mousedown', onPinMove);
   };
 
@@ -60,7 +60,7 @@
     effectImagePreview.style.filter = '';
     uploadForm.removeEventListener('click', onResizePhoto);
     uploadEffectsControl.removeEventListener('click', onFilterChange);
-    window.hashTagInput.removeEventListener('input', window.onHashtagsType);
+    window.validation.hashTagInput.removeEventListener('input', window.validation.onHashtagsType);
     effectLevelPin.removeEventListener('mousedown', onPinMove);
   };
 

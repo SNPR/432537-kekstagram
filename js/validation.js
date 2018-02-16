@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var hashTagInput = document.querySelector('.upload-form-hashtags');
   /**
    * Проверяет, если ли в массиве повторяющиеся соседние хэштеги.
    * @param {Array} array Массив строк или чисел.
@@ -15,14 +16,11 @@
     return false;
   };
 
-
-  window.hashTagInput = document.querySelector('.upload-form-hashtags');
-
   /**
    * Функция-обработчик событий, валидирующая поле ввода хэштегов.
    * @param {Object} evt Объект текущего события.
    */
-  window.onHashtagsType = function (evt) {
+  var onHashtagsType = function (evt) {
     var target = evt.target;
     var hashtags = target.value.toLowerCase().split(' ').sort();
 
@@ -45,4 +43,11 @@
       }
     }
   };
+
+  (function () {
+    window.validation = {
+      hashTagInput: hashTagInput,
+      onHashtagsType: onHashtagsType
+    };
+  })();
 })();
