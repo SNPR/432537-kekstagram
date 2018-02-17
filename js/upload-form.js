@@ -149,7 +149,7 @@
    * @param {Object} evt Объект текущего события.
    */
   var onPinMove = function (evt) {
-    var currentPinPosition = parseFloat(effectLevelPin.style.left);
+    var startPinPosition = parseFloat(effectLevelPin.style.left);
     var startCoordinate = evt.clientX;
 
     /**
@@ -159,7 +159,7 @@
     var onMouseMove = function (moveEvt) {
       var shift = moveEvt.clientX - startCoordinate;
 
-      effectLevelPin.style.left = (currentPinPosition + shift / effectLevelProportion) + '%';
+      effectLevelPin.style.left = (startPinPosition + shift / effectLevelProportion) + '%';
       effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
       effectLevelValue.setAttribute('value', parseFloat(effectLevelPin.style.left));
       if (parseFloat(effectLevelPin.style.left) >= 0 && parseFloat(effectLevelPin.style.left) <= 100) {
