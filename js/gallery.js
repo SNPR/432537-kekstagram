@@ -1,5 +1,8 @@
 'use strict';
 
+/**
+ * Открывает диалоговое окно с полномасштабной фотографией.
+ */
 (function () {
   var galleryOverlay = document.querySelector('.gallery-overlay');
   var galleryOverlayClose = document.querySelector('.gallery-overlay-close');

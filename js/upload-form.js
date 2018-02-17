@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * Открывает диалоговое окно редактирования загруженного фото.
+ * Отвечает за редактирование размера фотографии и глубину эффекта выбранного фильтра.
+ */
 (function () {
   var uploadControl = document.querySelector('.upload-control');
   var uploadFile = document.querySelector('#upload-file');

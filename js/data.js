@@ -1,5 +1,8 @@
 'use strict';
 
+/**
+ * Генерирует массив объектов с данными о фотографии.
+ */
 (function () {
   var MIN_PHOTOS = 1;
   var LIKES_MIN = 15;

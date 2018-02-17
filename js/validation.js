@@ -1,5 +1,8 @@
 'use strict';
 
+/**
+ * Проверяет на валидность поле ввода хэштегов.
+ */
 (function () {
   var hashTagInput = document.querySelector('.upload-form-hashtags');
   /**
