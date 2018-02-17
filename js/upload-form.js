@@ -99,6 +99,7 @@
     effectImagePreview.classList.add('effect-' + filterName);
     effectLevelPin.style.left = MAX_EFFECT_LEVEL_VALUE + 'px';
     effectLevelScale.style.width = '100%';
+    effectLevelValue.setAttribute('value', parseFloat(effectLevelScale.style.width));
     if (filterName === 'none') {
       uploadEffectLevel.classList.add('hidden');
     } else {
@@ -141,6 +142,7 @@
 
   var effectLevelPin = document.querySelector('.upload-effect-level-pin');
   var effectLevelScale = document.querySelector('.upload-effect-level-val');
+  var effectLevelValue = document.querySelector('.upload-effect-level-value');
 
   /**
    * Изменяет глубину эффекта при перемещении слайдера.
@@ -158,6 +160,7 @@
       var shift = moveEvt.clientX - startCoordinate;
       effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) / (MAX_EFFECT_LEVEL_VALUE / 100) + '%';
       effectLevelPin.style.left = currentPinPosition + shift + 'px';
+      effectLevelValue.setAttribute('value', parseFloat(effectLevelScale.style.width));
       if (activeFilter === 'chrome') {
         effectImagePreview.style.filter = 'grayscale(' + parseFloat(effectLevelPin.style.left) / MAX_EFFECT_LEVEL_VALUE + ')';
       } else if (activeFilter === 'sepia') {
