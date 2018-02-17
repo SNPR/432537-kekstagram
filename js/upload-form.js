@@ -1,11 +1,12 @@
 'use strict';
 
 (function () {
-  var MAX_EFFECT_LEVEL_VALUE = 455;
   var uploadControl = document.querySelector('.upload-control');
   var uploadFile = document.querySelector('#upload-file');
   var uploadForm = document.querySelector('.upload-overlay');
   var uploadFormClose = uploadForm.querySelector('#upload-cancel');
+  var effectLevelProportion = 4.55;
+  var effectLevelValueShift = 1.8;
 
   /**
    * Определяет текущий активный элемент на странице.
@@ -39,8 +40,8 @@
     uploadForm.classList.remove('hidden');
     document.addEventListener('keydown', onKeyPress);
     uploadEffectLevel.classList.add('hidden');
-    effectLevelPin.style.left = MAX_EFFECT_LEVEL_VALUE + 'px';
-    effectLevelScale.style.width = '100%';
+    effectLevelPin.style.left = '100%';
+    effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
     uploadEffectsControl.addEventListener('click', onFilterChange);
     window.validation.hashTagInput.addEventListener('input', window.validation.onHashtagsType);
     effectLevelPin.addEventListener('mousedown', onPinMove);
@@ -97,9 +98,9 @@
     effectImagePreview.classList = '';
     effectImagePreview.style.filter = '';
     effectImagePreview.classList.add('effect-' + filterName);
-    effectLevelPin.style.left = MAX_EFFECT_LEVEL_VALUE + 'px';
-    effectLevelScale.style.width = '100%';
-    effectLevelValue.setAttribute('value', parseFloat(effectLevelScale.style.width));
+    effectLevelPin.style.left = '100%';
+    effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
+    effectLevelValue.setAttribute('value', parseFloat(effectLevelPin.style.left));
     if (filterName === 'none') {
       uploadEffectLevel.classList.add('hidden');
     } else {
@@ -121,7 +122,6 @@
   var decreasePhotoButton = document.querySelector('.upload-resize-controls-button-dec');
   var increasePhotoButton = document.querySelector('.upload-resize-controls-button-inc');
   var scaleValue = document.querySelector('.upload-resize-controls-value');
-
   var scale = 1;
   var step = 0.25;
 
@@ -151,6 +151,7 @@
   var onPinMove = function (evt) {
     var currentPinPosition = parseFloat(effectLevelPin.style.left);
     var startCoordinate = evt.clientX;
+    var pinLevel = parseFloat(effectLevelPin.style.left);
 
     /**
      * Реагирует на перемещение мыши, позволяет слайдеру двигаться.
@@ -158,26 +159,30 @@
      */
     var onMouseMove = function (moveEvt) {
       var shift = moveEvt.clientX - startCoordinate;
-      effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) / (MAX_EFFECT_LEVEL_VALUE / 100) + '%';
-      effectLevelPin.style.left = currentPinPosition + shift + 'px';
-      effectLevelValue.setAttribute('value', parseFloat(effectLevelScale.style.width));
+
+      effectLevelPin.style.left = (currentPinPosition + shift / effectLevelProportion) + '%';
+      effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
+      effectLevelValue.setAttribute('value', parseFloat(effectLevelPin.style.left));
       if (activeFilter === 'chrome') {
-        effectImagePreview.style.filter = 'grayscale(' + parseFloat(effectLevelPin.style.left) / MAX_EFFECT_LEVEL_VALUE + ')';
+        effectImagePreview.style.filter = 'grayscale(' + parseFloat(effectLevelPin.style.left) / 100 + ')';
       } else if (activeFilter === 'sepia') {
-        effectImagePreview.style.filter = 'sepia(' + parseFloat(effectLevelPin.style.left) / MAX_EFFECT_LEVEL_VALUE + ')';
+        effectImagePreview.style.filter = 'sepia(' + parseFloat(effectLevelPin.style.left) / 100 + ')';
       } else if (activeFilter === 'marvin') {
-        effectImagePreview.style.filter = 'invert(' + parseFloat(effectLevelPin.style.left) / (MAX_EFFECT_LEVEL_VALUE / 100) + '%)';
+        effectImagePreview.style.filter = 'invert(' + parseFloat(effectLevelPin.style.left) + '%)';
       } else if (activeFilter === 'phobos') {
-        effectImagePreview.style.filter = 'blur(' + parseFloat(effectLevelPin.style.left) / (MAX_EFFECT_LEVEL_VALUE / 3) + 'px)';
+        effectImagePreview.style.filter = 'blur(' + parseFloat(effectLevelPin.style.left) / 100 * 3 + 'px)';
       } else if (activeFilter === 'heat') {
-        effectImagePreview.style.filter = 'brightness(' + parseFloat(effectLevelPin.style.left) / (MAX_EFFECT_LEVEL_VALUE / 3) + ')';
+        effectImagePreview.style.filter = 'brightness(' + parseFloat(effectLevelPin.style.left) / 100 * 3 + ')';
       }
 
       if (parseFloat(effectLevelPin.style.left) < 0) {
-        effectLevelPin.style.left = 0;
-      } else if (parseFloat(effectLevelPin.style.left) > MAX_EFFECT_LEVEL_VALUE) {
-        effectLevelPin.style.left = MAX_EFFECT_LEVEL_VALUE + 'px';
-        effectLevelScale.style.width = '100%';
+        effectLevelPin.style.left = '0%';
+        effectLevelScale.style.width = '0%';
+        effectLevelValue.setAttribute('value', 0);
+      } else if (parseFloat(effectLevelPin.style.left) > 100) {
+        effectLevelPin.style.left = '100%';
+        effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
+        effectLevelValue.setAttribute('value', 100);
       }
     };
 
