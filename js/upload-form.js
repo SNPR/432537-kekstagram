@@ -151,7 +151,6 @@
   var onPinMove = function (evt) {
     var currentPinPosition = parseFloat(effectLevelPin.style.left);
     var startCoordinate = evt.clientX;
-    var pinLevel = parseFloat(effectLevelPin.style.left);
 
     /**
      * Реагирует на перемещение мыши, позволяет слайдеру двигаться.
@@ -163,16 +162,18 @@
       effectLevelPin.style.left = (currentPinPosition + shift / effectLevelProportion) + '%';
       effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
       effectLevelValue.setAttribute('value', parseFloat(effectLevelPin.style.left));
-      if (activeFilter === 'chrome') {
-        effectImagePreview.style.filter = 'grayscale(' + parseFloat(effectLevelPin.style.left) / 100 + ')';
-      } else if (activeFilter === 'sepia') {
-        effectImagePreview.style.filter = 'sepia(' + parseFloat(effectLevelPin.style.left) / 100 + ')';
-      } else if (activeFilter === 'marvin') {
-        effectImagePreview.style.filter = 'invert(' + parseFloat(effectLevelPin.style.left) + '%)';
-      } else if (activeFilter === 'phobos') {
-        effectImagePreview.style.filter = 'blur(' + parseFloat(effectLevelPin.style.left) / 100 * 3 + 'px)';
-      } else if (activeFilter === 'heat') {
-        effectImagePreview.style.filter = 'brightness(' + parseFloat(effectLevelPin.style.left) / 100 * 3 + ')';
+      if (parseFloat(effectLevelPin.style.left) >= 0 && parseFloat(effectLevelPin.style.left) <= 100) {
+        if (activeFilter === 'chrome') {
+          effectImagePreview.style.filter = 'grayscale(' + parseFloat(effectLevelPin.style.left) / 100 + ')';
+        } else if (activeFilter === 'sepia') {
+          effectImagePreview.style.filter = 'sepia(' + parseFloat(effectLevelPin.style.left) / 100 + ')';
+        } else if (activeFilter === 'marvin') {
+          effectImagePreview.style.filter = 'invert(' + parseFloat(effectLevelPin.style.left) + '%)';
+        } else if (activeFilter === 'phobos') {
+          effectImagePreview.style.filter = 'blur(' + parseFloat(effectLevelPin.style.left) / 100 * 3 + 'px)';
+        } else if (activeFilter === 'heat') {
+          effectImagePreview.style.filter = 'brightness(' + parseFloat(effectLevelPin.style.left) / 100 * 3 + ')';
+        }
       }
 
       if (parseFloat(effectLevelPin.style.left) < 0) {
