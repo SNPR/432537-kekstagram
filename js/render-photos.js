@@ -20,11 +20,28 @@
   };
 
   var picturesElement = document.querySelector('.pictures');
-  var fragment = document.createDocumentFragment();
 
-  for (var i = 0; i < window.constantes.TOTAL_PHOTOS; i++) {
-    fragment.appendChild(renderPhotos(window.pictures[i]));
-  }
+  var successHandler = function (photos) {
+    var fragment = document.createDocumentFragment();
 
-  picturesElement.appendChild(fragment);
+    for (var i = 0; i < photos.length; i++) {
+      fragment.appendChild(renderPhotos(photos[i]));
+    }
+
+    picturesElement.appendChild(fragment);
+  };
+
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 10; margin: 300px 300px; text-align: center; background-color: blue;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  window.load(successHandler, errorHandler);
 })();
