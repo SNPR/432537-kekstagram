@@ -33,14 +33,11 @@
 
   var errorHandler = function (errorMessage) {
     var node = document.createElement('div');
-    node.style = 'z-index: 10; margin: 300px 300px; text-align: center; background-color: blue;';
-    node.style.position = 'absolute';
-    node.style.left = 0;
-    node.style.right = 0;
+    node.style = 'display: flex; z-index: 10; margin-left: 39%; margin-top: 500px; text-align: center;';
+    node.style.position = 'fixed';
     node.style.fontSize = '30px';
-
     node.textContent = errorMessage;
-    document.body.insertAdjacentElement('afterbegin', node);
+    document.body.insertAdjacentElement('beforeend', node);
   };
 
   window.load(successHandler, errorHandler);
