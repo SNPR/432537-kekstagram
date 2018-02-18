@@ -105,8 +105,5 @@
     }
     return photosArray;
   };
-  var pictures = generatePhotos(LIKES_MIN, LIKES_MAX, MIN_PHOTOS, window.constantes.TOTAL_PHOTOS, COMMENTS);
-  (function () {
-    window.pictures = pictures;
-  })();
+  window.pictures = generatePhotos(LIKES_MIN, LIKES_MAX, MIN_PHOTOS, window.constantes.TOTAL_PHOTOS, COMMENTS);
 })();
