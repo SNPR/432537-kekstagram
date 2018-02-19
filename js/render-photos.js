@@ -21,6 +21,12 @@
 
   var picturesElement = document.querySelector('.pictures');
 
+  /**
+   * Callback - функция. Отрисовывает миниатюры изображений при удачной загрузке
+   * массива объектов с данными о фотографии с сервера. Добавляет на них обработчики
+   * событий, открывающие полную версию изображения.
+   * @param {Array} photos Массив объектов с данными о фотографиях.
+   */
   var onSuccessLoad = function (photos) {
     var fragment = document.createDocumentFragment();
     if (photos) {

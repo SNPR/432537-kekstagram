@@ -1,6 +1,15 @@
 'use strict';
 
 (function () {
+  /**
+   * Универсальная callback-функция. Подходит как для загрузки, так и для отправки данных на сервер.
+   * @param {String} url Адрес для загрузки или отправки данных.
+   * @param {String} method Метод запроса на сервер (GET или POST).
+   * @param {Function} onLoad Callback-функция, запускающаяся случае удачной загрузки данных.
+   * @param {Function} onError Callback-функция, запускающаяся в том случае, если при взаимодействии
+   * с сервером что-то пошло не так.
+   * @param {Object} data Объект отправляемых на сервер данных (например FormData).
+   */
   var callback = function (url, method, onLoad, onError, data) {
     var xhr = new XMLHttpRequest();
     var TIMEOUT = 10000;
@@ -46,14 +55,32 @@
   };
 
   window.backend = {
+    /**
+     * Callback-функция, загружающая данные с сервера.
+     * @param {Function} onLoad Callback-функция, запускающаяся случае удачной загрузки данных.
+     * @param {Function} onError Callback-функция, запускающаяся в том случае, если при взаимодействии
+     * с сервером что-то пошло не так.
+     */
     load: function (onLoad, onError) {
       callback('https://js.dump.academy/kekstagram/data', 'GET', onLoad, onError);
     },
 
+    /**
+     * Callback-функция, отправляющая данные на сервер.
+     * @param {Object} data Объект данных, отправляемый на сервер.
+     * @param {Function} onLoad Callback-функция, запускающаяся случае удачной загрузки данных.
+     * @param {Function} onError Callback-функция, запускающаяся в том случае, если при взаимодействии
+     * с сервером что-то пошло не так.
+     */
     upload: function (data, onLoad, onError) {
       callback('https://js.dump.academy/kekstagram', 'POST', onLoad, onError, data);
     },
 
+    /**
+     * Callback-функция, запускающаяся в том случае, если при взаимодействии
+     * с сервером что-то пошло не так.
+     * @param {string} errorMessage Сообщение об ошибке, полученное с сервера.
+     */
     onError: function (errorMessage) {
       var errorNode = document.createElement('div');
       var removeNode = function () {
