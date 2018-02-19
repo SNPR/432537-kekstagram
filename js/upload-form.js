@@ -201,4 +201,22 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   };
+
+  var errorHandler = function (errorMessage) {
+    closeUploadForm();
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; text-align: center;';
+    node.style.fontSize = '26px';
+    node.style.position = 'absolute';
+    node.style.left = '40%';
+    node.style.top = '10px';
+    node.textContent = errorMessage;
+    document.body.appendChild(node);
+  };
+
+  var form = document.querySelector('#upload-select-image');
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.backend.upload(new FormData(form), closeUploadForm, errorHandler);
+  });
 })();
