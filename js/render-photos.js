@@ -21,14 +21,14 @@
 
   var picturesElement = document.querySelector('.pictures');
 
-  var successHandler = function (photos) {
+  var onSuccessLoad = function (photos) {
     var fragment = document.createDocumentFragment();
     if (photos) {
       for (var i = 0; i < photos.length; i++) {
         fragment.appendChild(renderPhotos(photos[i]));
       }
     } else {
-      window.backend.errorHandler('По запрашиваему адресу нет данных');
+      window.backend.onError('По запрашиваему адресу нет данных');
     }
 
     picturesElement.appendChild(fragment);
@@ -37,5 +37,5 @@
     document.body.appendChild(galleryModule);
   };
 
-  window.backend.load(successHandler, window.backend.errorHandler);
+  window.backend.load(onSuccessLoad, window.backend.onError);
 })();

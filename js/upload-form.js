@@ -204,8 +204,9 @@
   };
 
   var form = document.querySelector('#upload-select-image');
+
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.backend.upload(new FormData(form), closeUploadForm, window.backend.errorHandler);
+    window.backend.upload(new FormData(form), closeUploadForm, window.backend.onError);
   });
 })();
