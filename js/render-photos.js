@@ -21,26 +21,28 @@
 
   var picturesElement = document.querySelector('.pictures');
 
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 10; margin-left: auto; margin-top: 500px; text-align: center;';
+    node.style.fontSize = '26px';
+    node.textContent = errorMessage;
+    document.body.appendChild(node);
+  };
+
   var successHandler = function (photos) {
     var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < photos.length; i++) {
-      fragment.appendChild(renderPhotos(photos[i]));
+    if (photos) {
+      for (var i = 0; i < photos.length; i++) {
+        fragment.appendChild(renderPhotos(photos[i]));
+      }
+    } else {
+      errorHandler('По запрашиваему адресу нет данных');
     }
 
     picturesElement.appendChild(fragment);
     var galleryModule = document.createElement('script');
     galleryModule.src = 'js/gallery.js';
     document.body.appendChild(galleryModule);
-  };
-
-  var errorHandler = function (errorMessage) {
-    var node = document.createElement('div');
-    node.style = 'display: flex; z-index: 10; margin-left: 39%; margin-top: 500px; text-align: center;';
-    node.style.position = 'fixed';
-    node.style.fontSize = '30px';
-    node.textContent = errorMessage;
-    document.body.insertAdjacentElement('beforeend', node);
   };
 
   window.load(successHandler, errorHandler);
