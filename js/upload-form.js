@@ -206,11 +206,9 @@
   var errorHandler = function (errorMessage) {
     closeUploadForm();
     var node = document.createElement('div');
-    node.style = 'z-index: 100; text-align: center;';
-    node.style.fontSize = '26px';
     node.style.position = 'absolute';
-    node.style.left = '40%';
-    node.style.top = '10px';
+    node.style = 'z-index: 1100; margin-left: auto; margin-top: -500px; text-align: center;';
+    node.style.fontSize = '26px';
     node.textContent = errorMessage;
     document.body.appendChild(node);
   };

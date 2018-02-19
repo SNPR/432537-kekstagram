@@ -22,11 +22,16 @@
   var picturesElement = document.querySelector('.pictures');
 
   var errorHandler = function (errorMessage) {
-    var node = document.createElement('div');
-    node.style = 'z-index: 10; margin-left: auto; margin-top: 500px; text-align: center;';
-    node.style.fontSize = '26px';
-    node.textContent = errorMessage;
-    document.body.appendChild(node);
+    var errorNode = document.createElement('div');
+    var removeNode = function () {
+      document.body.removeChild(errorNode);
+    };
+
+    errorNode.style = 'z-index: 10; margin-left: auto; margin-top: 500px; text-align: center;';
+    errorNode.style.fontSize = '26px';
+    errorNode.textContent = errorMessage;
+    document.body.appendChild(errorNode);
+    setTimeout(removeNode, 5000);
   };
 
   var successHandler = function (photos) {

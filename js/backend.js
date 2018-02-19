@@ -9,7 +9,7 @@
      */
     load: function (onLoad, onError) {
       var xhr = new XMLHttpRequest();
-      var URL_GET = 'https://js.dump.academy/kekstagram/data';
+      var URL_GET = 'https://js.dump.academy/kekstagram/dataq';
       var TIMEOUT = 10000;
       xhr.responseType = 'json';
       xhr.timeout = TIMEOUT;
@@ -52,7 +52,7 @@
       xhr.send();
     },
     upload: function (data, onLoad, onError) {
-      var URL_SEND = 'https://js.dump.academy/kekstagram';
+      var URL_SEND = 'https://js.dump.academy/kekstagramq';
       var xhr = new XMLHttpRequest();
       xhr.responseType = 'json';
 
