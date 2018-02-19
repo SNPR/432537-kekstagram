@@ -29,6 +29,9 @@
     }
 
     picturesElement.appendChild(fragment);
+    var galleryModule = document.createElement('script');
+    galleryModule.src = 'js/gallery.js';
+    document.body.appendChild(galleryModule);
   };
 
   var errorHandler = function (errorMessage) {
