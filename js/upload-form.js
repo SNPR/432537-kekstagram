@@ -42,10 +42,15 @@
   var openUploadForm = function () {
     uploadForm.addEventListener('click', onResizePhoto);
     uploadForm.classList.remove('hidden');
-    document.addEventListener('keydown', onKeyPress);
+    scale = 1;
+    effectImagePreview.style.transform = 'scale(1)';
+    effectImagePreview.classList = '';
+    effectImagePreview.classList.add('effect-none');
+    effectImagePreview.style.filter = '';
     uploadEffectLevel.classList.add('hidden');
     effectLevelPin.style.left = '100%';
     effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
+    document.addEventListener('keydown', onKeyPress);
     uploadEffectsControl.addEventListener('click', onFilterChange);
     window.validation.hashTagInput.addEventListener('input', window.validation.onHashtagsType);
     effectLevelPin.addEventListener('mousedown', onPinMove);
@@ -59,10 +64,6 @@
     uploadFile.value = '';
     uploadForm.classList.add('hidden');
     document.removeEventListener('keydown', onKeyPress);
-    scale = 1;
-    effectImagePreview.style.transform = 'scale(1)';
-    effectImagePreview.classList = '';
-    effectImagePreview.style.filter = '';
     uploadForm.removeEventListener('click', onResizePhoto);
     uploadEffectsControl.removeEventListener('click', onFilterChange);
     window.validation.hashTagInput.removeEventListener('input', window.validation.onHashtagsType);
