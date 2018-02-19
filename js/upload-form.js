@@ -203,19 +203,9 @@
     document.addEventListener('mouseup', onMouseUp);
   };
 
-  var errorHandler = function (errorMessage) {
-    closeUploadForm();
-    var node = document.createElement('div');
-    node.style.position = 'absolute';
-    node.style = 'z-index: 1100; margin-left: auto; margin-top: -500px; text-align: center;';
-    node.style.fontSize = '26px';
-    node.textContent = errorMessage;
-    document.body.appendChild(node);
-  };
-
   var form = document.querySelector('#upload-select-image');
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.backend.upload(new FormData(form), closeUploadForm, errorHandler);
+    window.backend.upload(new FormData(form), closeUploadForm, window.backend.errorHandler);
   });
 })();

@@ -21,19 +21,6 @@
 
   var picturesElement = document.querySelector('.pictures');
 
-  var errorHandler = function (errorMessage) {
-    var errorNode = document.createElement('div');
-    var removeNode = function () {
-      document.body.removeChild(errorNode);
-    };
-
-    errorNode.style = 'z-index: 10; margin-left: auto; margin-top: 500px; text-align: center;';
-    errorNode.style.fontSize = '26px';
-    errorNode.textContent = errorMessage;
-    document.body.appendChild(errorNode);
-    setTimeout(removeNode, 5000);
-  };
-
   var successHandler = function (photos) {
     var fragment = document.createDocumentFragment();
     if (photos) {
@@ -41,7 +28,7 @@
         fragment.appendChild(renderPhotos(photos[i]));
       }
     } else {
-      errorHandler('По запрашиваему адресу нет данных');
+      window.backend.errorHandler('По запрашиваему адресу нет данных');
     }
 
     picturesElement.appendChild(fragment);
@@ -50,5 +37,5 @@
     document.body.appendChild(galleryModule);
   };
 
-  window.backend.load(successHandler, errorHandler);
+  window.backend.load(successHandler, window.backend.errorHandler);
 })();
