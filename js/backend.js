@@ -87,7 +87,7 @@
         document.body.removeChild(errorNode);
       };
 
-      errorNode.style = 'z-index: 10; position: fixed; top:0; text-align: center; width: 100%; font-size: 26px;';
+      errorNode.style = 'z-index: 10; position: fixed; top:0; text-align: center; width: 100%; font-size: 26px; color: orange';
       errorNode.textContent = errorMessage;
       document.body.insertAdjacentElement('afterbegin', errorNode);
       setTimeout(removeNode, 5000);
