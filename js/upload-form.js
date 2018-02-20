@@ -166,7 +166,7 @@
 
       effectLevelPin.style.left = (startPinPosition + shift / effectLevelProportion) + '%';
       effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
-      effectLevelValue.setAttribute('value', parseFloat(effectLevelPin.style.left));
+      effectLevelValue.setAttribute('value', parseInt(effectLevelPin.style.left, 10) + '');
       if (parseFloat(effectLevelPin.style.left) >= 0 && parseFloat(effectLevelPin.style.left) <= 100) {
         if (activeFilter === 'chrome') {
           effectImagePreview.style.filter = 'grayscale(' + parseFloat(effectLevelPin.style.left) / 100 + ')';
@@ -184,11 +184,11 @@
       if (parseFloat(effectLevelPin.style.left) < 0) {
         effectLevelPin.style.left = '0%';
         effectLevelScale.style.width = '0%';
-        effectLevelValue.setAttribute('value', 0);
+        effectLevelValue.setAttribute('value', '0');
       } else if (parseFloat(effectLevelPin.style.left) > 100) {
         effectLevelPin.style.left = '100%';
         effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
-        effectLevelValue.setAttribute('value', 100);
+        effectLevelValue.setAttribute('value', '100');
       }
     };
 
