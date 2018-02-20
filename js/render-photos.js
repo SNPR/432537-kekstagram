@@ -38,10 +38,7 @@
     }
 
     picturesElement.appendChild(fragment);
-    var galleryModule = document.createElement('script');
-    galleryModule.src = 'js/gallery.js';
-    document.body.appendChild(galleryModule);
-    document.querySelector('.filters-inactive').classList.remove('filters-inactive');
+    window.addThumbnailEventListener();
   };
 
   window.backend.load(onSuccessLoad, window.backend.onError);
