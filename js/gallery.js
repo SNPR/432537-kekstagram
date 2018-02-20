@@ -1,18 +1,29 @@
 'use strict';
 
+/**
+ * Открывает диалоговое окно с полномасштабной фотографией.
+ */
 (function () {
   var galleryOverlay = document.querySelector('.gallery-overlay');
   var galleryOverlayClose = document.querySelector('.gallery-overlay-close');
-  var thumbnails = document.querySelectorAll('.picture');
+  var thumbnails;
+
+  /**
+   * Вспомогательная функция для обработчиков событий. Скрывает полномасштабное изображение
+   * и удаляет обработчики событий.
+   */
+  var removeGalleryEventListeners = function () {
+    galleryOverlay.classList.add('hidden');
+    galleryOverlayClose.removeEventListener('click', onCloseClickInGallery);
+    galleryOverlayClose.removeEventListener('keydown', onClosePressInGallery);
+    document.removeEventListener('keydown', onEscPressInGallery);
+  };
 
   /**
    * Функция-обработчик событий, реагирующая на клик по кнопке закрытия полномасштабного изображения.
    */
   var onCloseClickInGallery = function () {
-    galleryOverlay.classList.add('hidden');
-    galleryOverlayClose.removeEventListener('click', onCloseClickInGallery);
-    galleryOverlayClose.removeEventListener('keydown', onClosePressInGallery);
-    document.removeEventListener('keydown', onEscPressInGallery);
+    removeGalleryEventListeners();
   };
 
   /**
@@ -21,10 +32,7 @@
    */
   var onClosePressInGallery = function (evt) {
     if (evt.keyCode === window.constantes.ENTER_KEYCODE) {
-      galleryOverlay.classList.add('hidden');
-      galleryOverlayClose.removeEventListener('click', onCloseClickInGallery);
-      galleryOverlayClose.removeEventListener('keydown', onClosePressInGallery);
-      document.removeEventListener('keydown', onEscPressInGallery);
+      removeGalleryEventListeners();
     }
   };
 
@@ -34,10 +42,7 @@
    */
   var onEscPressInGallery = function (evt) {
     if (evt.keyCode === window.constantes.ESC_KEYCODE) {
-      galleryOverlay.classList.add('hidden');
-      galleryOverlayClose.removeEventListener('click', onCloseClickInGallery);
-      galleryOverlayClose.removeEventListener('keydown', onClosePressInGallery);
-      document.removeEventListener('keydown', onEscPressInGallery);
+      removeGalleryEventListeners();
     }
   };
 
@@ -56,7 +61,10 @@
     document.addEventListener('keydown', onEscPressInGallery);
   };
 
-  for (var i = 0; i < thumbnails.length; i++) {
-    thumbnails[i].addEventListener('click', onGalleryOverlayOpen);
-  }
+  window.addThumbnailEventListener = function () {
+    thumbnails = document.querySelectorAll('.picture');
+    for (var i = 0; i < thumbnails.length; i++) {
+      thumbnails[i].addEventListener('click', onGalleryOverlayOpen);
+    }
+  };
 })();
