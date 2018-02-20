@@ -30,7 +30,7 @@
       if (getActiveElement() === 'INPUT' || getActiveElement() === 'TEXTAREA') {
         return;
       } else {
-        closeUploadForm();
+        uploadFormClose.click();
       }
     }
   };
@@ -204,9 +204,12 @@
   };
 
   var form = document.querySelector('#upload-select-image');
+  var onSuccessSend = function () {
+    uploadFormClose.click();
+  };
 
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.backend.upload(new FormData(form), closeUploadForm, window.backend.onError);
+    window.backend.upload(new FormData(form), onSuccessSend, window.backend.onError);
   });
 })();
