@@ -6,7 +6,6 @@
 (function () {
   var galleryOverlay = document.querySelector('.gallery-overlay');
   var galleryOverlayClose = document.querySelector('.gallery-overlay-close');
-  var thumbnails;
 
   /**
    * Вспомогательная функция для обработчиков событий. Скрывает полномасштабное изображение
@@ -62,7 +61,7 @@
   };
 
   window.addThumbnailEventListener = function () {
-    thumbnails = document.querySelectorAll('.picture');
+    var thumbnails = document.querySelectorAll('.picture');
     for (var i = 0; i < thumbnails.length; i++) {
       thumbnails[i].addEventListener('click', onGalleryOverlayOpen);
     }
