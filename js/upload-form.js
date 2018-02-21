@@ -27,9 +27,7 @@
    */
   var onKeyPress = function (evt) {
     if (evt.keyCode === window.constantes.ESC_KEYCODE) {
-      if (getActiveElement() === 'INPUT' || getActiveElement() === 'TEXTAREA') {
-        return;
-      } else {
+      if (getActiveElement() !== 'INPUT' && getActiveElement() !== 'TEXTAREA') {
         uploadFormClose.click();
       }
     }
