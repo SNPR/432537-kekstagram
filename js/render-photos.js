@@ -20,6 +20,7 @@
   };
 
   var picturesElement = document.querySelector('.pictures');
+  var filters = document.querySelector('.filters');
 
   /**
    * Callback - функция. Отрисовывает миниатюры изображений при удачной загрузке
@@ -39,6 +40,7 @@
 
     picturesElement.appendChild(fragment);
     window.addThumbnailEventListener();
+    filters.classList.remove('filters-inactive');
   };
 
   window.backend.load(onSuccessLoad, window.backend.onError);
