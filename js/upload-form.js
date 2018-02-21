@@ -166,7 +166,7 @@
 
       effectLevelPin.style.left = (startPinPosition + shift / effectLevelProportion) + '%';
       effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
-      effectLevelValue.setAttribute('value', parseInt(effectLevelPin.style.left, 10) + '');
+      effectLevelValue.setAttribute('value', parseInt(effectLevelPin.style.left, 10));
       if (parseFloat(effectLevelPin.style.left) >= 0 && parseFloat(effectLevelPin.style.left) <= 100) {
         if (activeFilter === 'chrome') {
           effectImagePreview.style.filter = 'grayscale(' + parseFloat(effectLevelPin.style.left) / 100 + ')';
