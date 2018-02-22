@@ -22,7 +22,10 @@
   var picturesElement = document.querySelector('.pictures');
   var filters = document.querySelector('.filters');
 
-
+  /**
+   * Загружаем миниатюры на страницу.
+   * @param {Array} photos Массив объектов с параметрами фотографий.
+   */
   var loadThumbnails = function (photos) {
     var fragment = document.createDocumentFragment();
     if (photos) {
@@ -72,32 +75,39 @@
    */
   var onSuccessLoad = function (photos) {
     var defaultPhotos = photos.slice(0);
+    var lastTimeout;
     loadThumbnails(photos);
 
     filters.addEventListener('click', function (evt) {
-      if (evt.target.type === 'radio') {
-        var target = evt.target.value;
-        picturesElement.innerHTML = '';
-
-        if (target === 'popular') {
-          photos = defaultPhotos.slice(0);
-          photos.sort(function (a, b) {
-            return b.likes - a.likes;
-          });
-          loadThumbnails(photos);
-        } else if (target === 'recommend') {
-          loadThumbnails(defaultPhotos);
-        } else if (target === 'discussed') {
-          photos = defaultPhotos.slice(0);
-          photos.sort(function (a, b) {
-            return b.comments.length - a.comments.length;
-          });
-          loadThumbnails(photos);
-        } else if (target === 'random') {
-          photos = shuffleArray(photos);
-          loadThumbnails(photos);
-        }
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
       }
+
+      lastTimeout = window.setTimeout(function () {
+        if (evt.target.type === 'radio') {
+          var target = evt.target.value;
+          picturesElement.innerHTML = '';
+
+          if (target === 'popular') {
+            photos = defaultPhotos.slice(0);
+            photos.sort(function (a, b) {
+              return b.likes - a.likes;
+            });
+            loadThumbnails(photos);
+          } else if (target === 'recommend') {
+            loadThumbnails(defaultPhotos);
+          } else if (target === 'discussed') {
+            photos = defaultPhotos.slice(0);
+            photos.sort(function (a, b) {
+              return b.comments.length - a.comments.length;
+            });
+            loadThumbnails(photos);
+          } else if (target === 'random') {
+            photos = shuffleArray(photos);
+            loadThumbnails(photos);
+          }
+        }
+      }, 500);
     });
   };
 
