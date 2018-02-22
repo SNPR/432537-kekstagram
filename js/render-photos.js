@@ -76,25 +76,24 @@
 
     filters.addEventListener('click', function (evt) {
       if (evt.target.type === 'radio') {
+        var target = evt.target.value;
         picturesElement.innerHTML = '';
-        if (evt.target.value === 'popular') {
+
+        if (target === 'popular') {
+          photos = defaultPhotos.slice(0);
           photos.sort(function (a, b) {
             return b.likes - a.likes;
           });
           loadThumbnails(photos);
-        } else if (evt.target.value === 'recommend') {
-          picturesElement.innerHTML = '';
+        } else if (target === 'recommend') {
           loadThumbnails(defaultPhotos);
-        } else if (evt.target.value === 'discussed') {
-          picturesElement.innerHTML = '';
+        } else if (target === 'discussed') {
           photos = defaultPhotos.slice(0);
           photos.sort(function (a, b) {
             return b.comments.length - a.comments.length;
           });
           loadThumbnails(photos);
-        } else if (evt.target.value === 'random') {
-          picturesElement.innerHTML = '';
-          photos = defaultPhotos.slice(0);
+        } else if (target === 'random') {
           photos = shuffleArray(photos);
           loadThumbnails(photos);
         }
