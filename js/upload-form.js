@@ -27,9 +27,7 @@
    */
   var onKeyPress = function (evt) {
     if (evt.keyCode === window.constantes.ESC_KEYCODE) {
-      if (getActiveElement() === 'INPUT' || getActiveElement() === 'TEXTAREA') {
-        return;
-      } else {
+      if (getActiveElement() !== 'INPUT' && getActiveElement() !== 'TEXTAREA') {
         uploadFormClose.click();
       }
     }
@@ -49,10 +47,12 @@
     effectImagePreview.style.filter = '';
     uploadEffectLevel.classList.add('hidden');
     effectLevelPin.style.left = '100%';
+    window.validation.hashTagInput.style.border = '';
     effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
     document.addEventListener('keydown', onKeyPress);
     uploadEffectsControl.addEventListener('click', onFilterChange);
     window.validation.hashTagInput.addEventListener('input', window.validation.onHashtagsType);
+    window.validation.hashTagInput.addEventListener('invalid', window.validation.onValidationCheck);
     effectLevelPin.addEventListener('mousedown', onPinMove);
   };
 
@@ -67,6 +67,7 @@
     uploadForm.removeEventListener('click', onResizePhoto);
     uploadEffectsControl.removeEventListener('click', onFilterChange);
     window.validation.hashTagInput.removeEventListener('input', window.validation.onHashtagsType);
+    window.validation.hashTagInput.removeEventListener('invalid', window.validation.onValidationCheck);
     effectLevelPin.removeEventListener('mousedown', onPinMove);
   };
 
@@ -166,7 +167,7 @@
 
       effectLevelPin.style.left = (startPinPosition + shift / effectLevelProportion) + '%';
       effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
-      effectLevelValue.setAttribute('value', parseInt(effectLevelPin.style.left, 10) + '');
+      effectLevelValue.setAttribute('value', parseInt(effectLevelPin.style.left, 10));
       if (parseFloat(effectLevelPin.style.left) >= 0 && parseFloat(effectLevelPin.style.left) <= 100) {
         if (activeFilter === 'chrome') {
           effectImagePreview.style.filter = 'grayscale(' + parseFloat(effectLevelPin.style.left) / 100 + ')';

@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+  var URL_GET = 'https://js.dump.academy/kekstagram/data';
+  var URL_POST = 'https://js.dump.academy/kekstagram';
+
   /**
    * Универсальная callback-функция. Подходит как для загрузки, так и для отправки данных на сервер.
    * @param {String} url Адрес для загрузки или отправки данных.
@@ -62,7 +65,7 @@
      * с сервером что-то пошло не так.
      */
     load: function (onLoad, onError) {
-      callback('https://js.dump.academy/kekstagram/data', 'GET', onLoad, onError);
+      callback(URL_GET, 'GET', onLoad, onError);
     },
 
     /**
@@ -73,7 +76,7 @@
      * с сервером что-то пошло не так.
      */
     upload: function (data, onLoad, onError) {
-      callback('https://js.dump.academy/kekstagram', 'POST', onLoad, onError, data);
+      callback(URL_POST, 'POST', onLoad, onError, data);
     },
 
     /**
