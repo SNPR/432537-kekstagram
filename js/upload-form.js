@@ -47,10 +47,12 @@
     effectImagePreview.style.filter = '';
     uploadEffectLevel.classList.add('hidden');
     effectLevelPin.style.left = '100%';
+    window.validation.hashTagInput.style.border = '';
     effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
     document.addEventListener('keydown', onKeyPress);
     uploadEffectsControl.addEventListener('click', onFilterChange);
     window.validation.hashTagInput.addEventListener('input', window.validation.onHashtagsType);
+    window.validation.hashTagInput.addEventListener('invalid', window.validation.onValidationCheck);
     effectLevelPin.addEventListener('mousedown', onPinMove);
   };
 
@@ -65,6 +67,7 @@
     uploadForm.removeEventListener('click', onResizePhoto);
     uploadEffectsControl.removeEventListener('click', onFilterChange);
     window.validation.hashTagInput.removeEventListener('input', window.validation.onHashtagsType);
+    window.validation.hashTagInput.removeEventListener('invalid', window.validation.onValidationCheck);
     effectLevelPin.removeEventListener('mousedown', onPinMove);
   };
 

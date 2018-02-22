@@ -20,6 +20,18 @@
   };
 
   /**
+   * Функция-обработчик событий, подсвечивающая поле ввода хэштегов,
+   * в случае некорректного ввода значения.
+   * @param {Object} evt Объект текущего события.
+   */
+  var onValidationCheck = function (evt) {
+    var target = evt.target;
+    if (target.validity) {
+      target.style.border = '3px solid red';
+    }
+  };
+
+  /**
    * Функция-обработчик событий, валидирующая поле ввода хэштегов.
    * @param {Object} evt Объект текущего события.
    */
@@ -43,6 +55,7 @@
         target.setCustomValidity('Хэштеги не должны повторяться');
       } else {
         target.setCustomValidity('');
+        target.style.border = '';
       }
     }
   };
@@ -50,7 +63,8 @@
   (function () {
     window.validation = {
       hashTagInput: hashTagInput,
-      onHashtagsType: onHashtagsType
+      onHashtagsType: onHashtagsType,
+      onValidationCheck: onValidationCheck
     };
   })();
 })();
