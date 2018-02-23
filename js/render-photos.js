@@ -78,7 +78,11 @@
     var lastTimeout;
     loadThumbnails(photos);
 
-    filters.addEventListener('click', function (evt) {
+    /**
+     * Функция-обработчик событий. Реагирует на изменение фильтров сортировки изображений.
+     * @param {Object} evt Объект текущего события.
+     */
+    var onFiltersChange = function (evt) {
       if (lastTimeout) {
         window.clearTimeout(lastTimeout);
       }
@@ -108,7 +112,9 @@
           }
         }
       }, 500);
-    });
+    };
+
+    filters.addEventListener('click', onFiltersChange);
 
     filters.addEventListener('keydown', function (evt) {
       if (evt.keyCode === window.constantes.ENTER_KEYCODE) {
