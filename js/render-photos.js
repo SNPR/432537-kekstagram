@@ -109,6 +109,12 @@
         }
       }, 500);
     });
+
+    filters.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.constantes.ENTER_KEYCODE) {
+        evt.target.click();
+      }
+    });
   };
 
   window.backend.load(onSuccessLoad, window.backend.onError);
