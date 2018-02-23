@@ -34,10 +34,31 @@
   };
 
   /**
+   * Позволяет выбрать с диска собственное изображение. В случае, если выбранный
+   * файл не является изображением, загружает пустое поле.
+   */
+  var getImageFromDisk = function () {
+    var reader = new FileReader();
+    var file = uploadFile.files[0];
+
+    reader.addEventListener('load', function () {
+      effectImagePreview.src = reader.result;
+      effectImagePreview.style = 'min-height: 300px; max-height: 586px';
+    });
+
+    if (file && file.type.match('image.*')) {
+      reader.readAsDataURL(file);
+    } else {
+      effectImagePreview.src = '';
+    }
+  };
+
+  /**
    * Вспомогательная функция, открывающая окно загрузки файла
    * и добавляющая обработчик события, ожидающий нажатия Escape.
    */
   var openUploadForm = function () {
+    getImageFromDisk();
     uploadForm.addEventListener('click', onResizePhoto);
     uploadForm.classList.remove('hidden');
     scale = 1;

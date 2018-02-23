@@ -3,6 +3,7 @@
 (function () {
   var URL_GET = 'https://js.dump.academy/kekstagram/data';
   var URL_POST = 'https://js.dump.academy/kekstagram';
+  var TIMEOUT = 10000;
   var Code = {
     SUCCESS: 200,
     BAD_REQUEST: 400,
@@ -21,7 +22,6 @@
    */
   var callback = function (url, method, onLoad, onError, data) {
     var xhr = new XMLHttpRequest();
-    var TIMEOUT = 10000;
     xhr.responseType = 'json';
     xhr.timeout = TIMEOUT;
 
