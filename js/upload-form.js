@@ -43,7 +43,7 @@
     scale = 1;
     effectImagePreview.style.transform = 'scale(1)';
     effectImagePreview.classList = '';
-    effectImagePreview.classList.add('effect-none');
+    effectImagePreview.classList.add('effect-image-preview');
     effectImagePreview.style.filter = '';
     uploadEffectLevel.classList.add('hidden');
     effectLevelPin.style.left = '100%';
@@ -101,9 +101,11 @@
    * @param {string} filterName Имя фильтра.
    */
   var applyFilter = function (filterName) {
-    effectImagePreview.classList = '';
-    effectImagePreview.style.filter = '';
+    if (activeFilter) {
+      effectImagePreview.classList.remove('effect-' + activeFilter);
+    }
     effectImagePreview.classList.add('effect-' + filterName);
+    effectImagePreview.style.filter = '';
     effectLevelPin.style.left = '100%';
     effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
     effectLevelValue.setAttribute('value', parseFloat(effectLevelPin.style.left));
@@ -112,7 +114,6 @@
     } else {
       uploadEffectLevel.classList.remove('hidden');
     }
-    activeFilter = filterName;
   };
 
   /**
@@ -122,6 +123,7 @@
   var onFilterChange = function (evt) {
     if (evt.target.type === 'radio') {
       applyFilter(evt.target.value);
+      activeFilter = evt.target.value;
     }
   };
 
