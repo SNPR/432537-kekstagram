@@ -50,7 +50,8 @@
     window.validation.hashTagInput.style.border = '';
     effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
     document.addEventListener('keydown', onKeyPress);
-    uploadEffectsControl.addEventListener('click', onFilterChange);
+    uploadEffectsControl.addEventListener('click', onFilterClick);
+    uploadEffectsControl.addEventListener('keydown', onFilterPress);
     window.validation.hashTagInput.addEventListener('input', window.validation.onHashtagsType);
     window.validation.hashTagInput.addEventListener('invalid', window.validation.onValidationCheck);
     effectLevelPin.addEventListener('mousedown', onPinMove);
@@ -65,7 +66,8 @@
     uploadForm.classList.add('hidden');
     document.removeEventListener('keydown', onKeyPress);
     uploadForm.removeEventListener('click', onResizePhoto);
-    uploadEffectsControl.removeEventListener('click', onFilterChange);
+    uploadEffectsControl.removeEventListener('click', onFilterClick);
+    uploadEffectsControl.removeEventListener('keydown', onFilterPress);
     window.validation.hashTagInput.removeEventListener('input', window.validation.onHashtagsType);
     window.validation.hashTagInput.removeEventListener('invalid', window.validation.onValidationCheck);
     effectLevelPin.removeEventListener('mousedown', onPinMove);
@@ -120,10 +122,20 @@
    * Функция-обработчик событий. Помогает менять фильтры изображений.
    * @param {Object} evt Объект текущего события.
    */
-  var onFilterChange = function (evt) {
+  var onFilterClick = function (evt) {
     if (evt.target.type === 'radio') {
       applyFilter(evt.target.value);
       activeFilter = evt.target.value;
+    }
+  };
+
+  /**
+   * Функция-обработчик событий. Помогает менять фильтры изображений.
+   * @param {Object} evt Объект текущего события.
+   */
+  var onFilterPress = function (evt) {
+    if (evt.keyCode === window.constantes.ENTER_KEYCODE) {
+      evt.target.click();
     }
   };
 
