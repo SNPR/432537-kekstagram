@@ -3,6 +3,12 @@
 (function () {
   var URL_GET = 'https://js.dump.academy/kekstagram/data';
   var URL_POST = 'https://js.dump.academy/kekstagram';
+  var Code = {
+    SUCCESS: 200,
+    BAD_REQUEST: 400,
+    UNAUTHORIZED: 401,
+    NOT_FOUND_ERROR: 404
+  };
 
   /**
    * Универсальная callback-функция. Подходит как для загрузки, так и для отправки данных на сервер.
@@ -22,17 +28,17 @@
     xhr.addEventListener('load', function () {
       var error;
       switch (xhr.status) {
-        case 200:
+        case Code.SUCCESS:
           onLoad(xhr.response);
           break;
 
-        case 400:
+        case Code.BAD_REQUEST:
           error = 'Неверный запрос';
           break;
-        case 401:
+        case Code.UNAUTHORIZED:
           error = 'Пользователь не авторизован';
           break;
-        case 404:
+        case Code.NOT_FOUND_ERROR:
           error = 'По заданному адресу ничего не найдено';
           break;
 
