@@ -62,8 +62,8 @@
 
   window.addThumbnailEventListener = function () {
     var thumbnails = document.querySelectorAll('.picture');
-    for (var i = 0; i < thumbnails.length; i++) {
-      thumbnails[i].addEventListener('click', onGalleryOverlayOpen);
-    }
+    thumbnails.forEach(function (item) {
+      item.addEventListener('click', onGalleryOverlayOpen);
+    });
   };
 })();
