@@ -15,7 +15,7 @@
 
   /**
    * Определяет текущий активный элемент на странице.
-   * @return{string} Наименование текущего активного элемента.
+   * @return {string} Наименование текущего активного элемента.
    */
   var getActiveElement = function () {
     return document.activeElement.tagName;
@@ -72,6 +72,23 @@
   };
 
   /**
+   * Закрывает форму загрузки фотографии при клике на крестик.
+   */
+  var onCloseClick = function () {
+    closeUploadForm();
+  };
+
+  /**
+   * Закрывает форму загрузки фотографии при нажатии клавишей Enter на крестик.
+   * @param {Object} evt Объект текущего события.
+   */
+  var onClosePress = function (evt) {
+    if (evt.target === uploadFormClose && evt.keyCode === window.constantes.ENTER_KEYCODE) {
+      closeUploadForm();
+    }
+  };
+
+  /**
    * Вспомогательная функция, открывающая окно загрузки файла
    * и добавляющая различные обработчики событий.
    */
@@ -93,6 +110,8 @@
     form.addEventListener('submit', onFormSubmit);
     document.addEventListener('keydown', onKeyPress);
     uploadForm.addEventListener('click', onResizePhoto);
+    uploadForm.addEventListener('keydown', onClosePress);
+    uploadFormClose.addEventListener('click', onCloseClick);
     effectLevelPin.addEventListener('mousedown', onPinMove);
     uploadEffectsControl.addEventListener('click', onFilterClick);
     uploadEffectsControl.addEventListener('keydown', onFilterPress);
@@ -111,6 +130,8 @@
     form.removeEventListener('submit', onFormSubmit);
     document.removeEventListener('keydown', onKeyPress);
     uploadForm.removeEventListener('click', onResizePhoto);
+    uploadForm.removeEventListener('keydown', onClosePress);
+    uploadFormClose.removeEventListener('click', onCloseClick);
     effectLevelPin.removeEventListener('mousedown', onPinMove);
     uploadEffectsControl.removeEventListener('click', onFilterClick);
     uploadEffectsControl.removeEventListener('keydown', onFilterPress);
@@ -122,19 +143,9 @@
     openUploadForm();
   });
 
-  uploadFormClose.addEventListener('click', function () {
-    closeUploadForm();
-  });
-
   uploadControl.addEventListener('keydown', function (evt) {
     if (evt.keyCode === window.constantes.ENTER_KEYCODE) {
       uploadFile.click();
-    }
-  });
-
-  uploadForm.addEventListener('keydown', function (evt) {
-    if (evt.target === uploadFormClose && evt.keyCode === window.constantes.ENTER_KEYCODE) {
-      closeUploadForm();
     }
   });
 
