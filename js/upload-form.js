@@ -9,6 +9,7 @@
   var uploadFile = document.querySelector('#upload-file');
   var uploadForm = document.querySelector('.upload-overlay');
   var uploadFormClose = uploadForm.querySelector('#upload-cancel');
+  var form = document.querySelector('#upload-select-image');
   var effectLevelProportion = 4.55;
   var effectLevelValueShift = 1.8;
 
@@ -54,6 +55,23 @@
   };
 
   /**
+   * Callback-функция. Закрывает форму редактирования фото при успешной отправке данных.
+   */
+  var onSuccessSend = function () {
+    uploadFormClose.click();
+  };
+
+  /**
+   * Реагирует на отправку формы пользователем. В случае успешной отправки закрывает форму.
+   * В обратном случае, выдаёт ошибку.
+   * @param {Object} evt Объект текущего события.
+   */
+  var onFormSubmit = function (evt) {
+    evt.preventDefault();
+    window.backend.upload(new FormData(form), onSuccessSend, window.backend.onError);
+  };
+
+  /**
    * Вспомогательная функция, открывающая окно загрузки файла
    * и добавляющая различные обработчики событий.
    */
@@ -72,6 +90,7 @@
     uploadEffectLevel.classList.add('hidden');
     effectImagePreview.classList.add('effect-image-preview');
 
+    form.addEventListener('submit', onFormSubmit);
     document.addEventListener('keydown', onKeyPress);
     uploadForm.addEventListener('click', onResizePhoto);
     effectLevelPin.addEventListener('mousedown', onPinMove);
@@ -89,6 +108,7 @@
     uploadFile.value = '';
     uploadForm.classList.add('hidden');
 
+    form.removeEventListener('submit', onFormSubmit);
     document.removeEventListener('keydown', onKeyPress);
     uploadForm.removeEventListener('click', onResizePhoto);
     effectLevelPin.removeEventListener('mousedown', onPinMove);
@@ -242,18 +262,4 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   };
-
-  var form = document.querySelector('#upload-select-image');
-
-  /**
-   * Callback-функция. Закрывает форму редактирования фото при успешной отправке данных.
-   */
-  var onSuccessSend = function () {
-    uploadFormClose.click();
-  };
-
-  form.addEventListener('submit', function (evt) {
-    evt.preventDefault();
-    window.backend.upload(new FormData(form), onSuccessSend, window.backend.onError);
-  });
 })();
