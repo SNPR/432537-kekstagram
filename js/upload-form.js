@@ -55,43 +55,47 @@
 
   /**
    * Вспомогательная функция, открывающая окно загрузки файла
-   * и добавляющая обработчик события, ожидающий нажатия Escape.
+   * и добавляющая различные обработчики событий.
    */
   var openUploadForm = function () {
     getImageFromDisk();
-    uploadForm.addEventListener('click', onResizePhoto);
-    uploadForm.classList.remove('hidden');
+
     scale = 1;
     effectImagePreview.style.transform = 'scale(1)';
     effectImagePreview.classList = '';
-    effectImagePreview.classList.add('effect-image-preview');
     effectImagePreview.style.filter = '';
-    uploadEffectLevel.classList.add('hidden');
-    effectLevelPin.style.left = '100%';
     window.validation.hashtagInput.style.border = '';
+    effectLevelPin.style.left = '100%';
     effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
+
+    uploadForm.classList.remove('hidden');
+    uploadEffectLevel.classList.add('hidden');
+    effectImagePreview.classList.add('effect-image-preview');
+
     document.addEventListener('keydown', onKeyPress);
+    uploadForm.addEventListener('click', onResizePhoto);
+    effectLevelPin.addEventListener('mousedown', onPinMove);
     uploadEffectsControl.addEventListener('click', onFilterClick);
     uploadEffectsControl.addEventListener('keydown', onFilterPress);
     window.validation.hashtagInput.addEventListener('input', window.validation.onHashtagsType);
     window.validation.hashtagInput.addEventListener('invalid', window.validation.onValidationCheck);
-    effectLevelPin.addEventListener('mousedown', onPinMove);
   };
 
   /**
    * Вспомогательная функция, скрывающая окно загрузки файла
-   * и удаляющая обработчик события, ожидающий нажатия Escape.
+   * и удаляющая различные обработчики событий.
    */
   var closeUploadForm = function () {
     uploadFile.value = '';
     uploadForm.classList.add('hidden');
+
     document.removeEventListener('keydown', onKeyPress);
     uploadForm.removeEventListener('click', onResizePhoto);
+    effectLevelPin.removeEventListener('mousedown', onPinMove);
     uploadEffectsControl.removeEventListener('click', onFilterClick);
     uploadEffectsControl.removeEventListener('keydown', onFilterPress);
     window.validation.hashtagInput.removeEventListener('input', window.validation.onHashtagsType);
     window.validation.hashtagInput.removeEventListener('invalid', window.validation.onValidationCheck);
-    effectLevelPin.removeEventListener('mousedown', onPinMove);
   };
 
   uploadFile.addEventListener('change', function () {
