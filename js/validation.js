@@ -45,14 +45,19 @@
         i--;
       } else if (hashtags.length > 5) {
         target.setCustomValidity('Хэштегов должно быть не больше пяти');
+        break;
       } else if (hashtags[i] && hashtags[i].charAt(0) !== '#') {
         target.setCustomValidity('Хэштеги должны начинаться с символа "#"');
+        break;
       } else if (hashtags[i].length > 20) {
         target.setCustomValidity('Длина хэштега должна быть не более 20 символов');
+        break;
       } else if (hashtags[i].lastIndexOf('#') !== 0) {
         target.setCustomValidity('Хэштеги должны разделяться пробелами');
+        break;
       } else if (checkSimilarHashtags(hashtags)) {
         target.setCustomValidity('Хэштеги не должны повторяться');
+        break;
       } else {
         target.setCustomValidity('');
         target.style.border = '';

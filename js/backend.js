@@ -13,14 +13,14 @@
 
   /**
    * Универсальная callback-функция. Подходит как для загрузки, так и для отправки данных на сервер.
-   * @param {String} url Адрес для загрузки или отправки данных.
    * @param {String} method Метод запроса на сервер (GET или POST).
+   * @param {String} url Адрес для загрузки или отправки данных.
    * @param {Function} onLoad Callback-функция, запускающаяся случае удачной загрузки данных.
    * @param {Function} onError Callback-функция, запускающаяся в том случае, если при взаимодействии
    * с сервером что-то пошло не так.
    * @param {Object} data Объект отправляемых на сервер данных (например FormData).
    */
-  var callback = function (url, method, onLoad, onError, data) {
+  var callback = function (method, url, onLoad, onError, data) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.timeout = TIMEOUT;
@@ -39,7 +39,7 @@
           error = 'Пользователь не авторизован';
           break;
         case Code.NOT_FOUND_ERROR:
-          error = 'По заданному адресу ничего не найдено';
+          error = 'Сервер с фотографиями временно недоступен';
           break;
 
         default:
@@ -71,7 +71,7 @@
      * с сервером что-то пошло не так.
      */
     load: function (onLoad, onError) {
-      callback(URL_GET, 'GET', onLoad, onError);
+      callback('GET', URL_GET, onLoad, onError);
     },
 
     /**
@@ -82,7 +82,7 @@
      * с сервером что-то пошло не так.
      */
     upload: function (data, onLoad, onError) {
-      callback(URL_POST, 'POST', onLoad, onError, data);
+      callback('POST', URL_POST, onLoad, onError, data);
     },
 
     /**
