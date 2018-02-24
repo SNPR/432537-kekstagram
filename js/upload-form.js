@@ -68,13 +68,13 @@
     effectImagePreview.style.filter = '';
     uploadEffectLevel.classList.add('hidden');
     effectLevelPin.style.left = '100%';
-    window.validation.hashTagInput.style.border = '';
+    window.validation.hashtagInput.style.border = '';
     effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
     document.addEventListener('keydown', onKeyPress);
     uploadEffectsControl.addEventListener('click', onFilterClick);
     uploadEffectsControl.addEventListener('keydown', onFilterPress);
-    window.validation.hashTagInput.addEventListener('input', window.validation.onHashtagsType);
-    window.validation.hashTagInput.addEventListener('invalid', window.validation.onValidationCheck);
+    window.validation.hashtagInput.addEventListener('input', window.validation.onHashtagsType);
+    window.validation.hashtagInput.addEventListener('invalid', window.validation.onValidationCheck);
     effectLevelPin.addEventListener('mousedown', onPinMove);
   };
 
@@ -89,8 +89,8 @@
     uploadForm.removeEventListener('click', onResizePhoto);
     uploadEffectsControl.removeEventListener('click', onFilterClick);
     uploadEffectsControl.removeEventListener('keydown', onFilterPress);
-    window.validation.hashTagInput.removeEventListener('input', window.validation.onHashtagsType);
-    window.validation.hashTagInput.removeEventListener('invalid', window.validation.onValidationCheck);
+    window.validation.hashtagInput.removeEventListener('input', window.validation.onHashtagsType);
+    window.validation.hashtagInput.removeEventListener('invalid', window.validation.onValidationCheck);
     effectLevelPin.removeEventListener('mousedown', onPinMove);
   };
 

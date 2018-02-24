@@ -4,7 +4,7 @@
  * Проверяет на валидность поле ввода хэштегов.
  */
 (function () {
-  var hashTagInput = document.querySelector('.upload-form-hashtags');
+  var hashtagInput = document.querySelector('.upload-form-hashtags');
   /**
    * Проверяет, если ли в массиве повторяющиеся соседние хэштеги.
    * @param {Array} array Массив строк или чисел.
@@ -62,7 +62,7 @@
 
   (function () {
     window.validation = {
-      hashTagInput: hashTagInput,
+      hashtagInput: hashtagInput,
       onHashtagsType: onHashtagsType,
       onValidationCheck: onValidationCheck
     };
