@@ -58,6 +58,7 @@
     galleryOverlayClose.addEventListener('click', onCloseClickInGallery);
     galleryOverlayClose.addEventListener('keydown', onClosePressInGallery);
     document.addEventListener('keydown', onEscPressInGallery);
+    galleryOverlay.focus();
   };
 
   window.addThumbnailEventListener = function () {
