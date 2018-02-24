@@ -244,6 +244,10 @@
   };
 
   var form = document.querySelector('#upload-select-image');
+
+  /**
+   * Callback-функция. Закрывает форму редактирования фото при успешной отправке данных.
+   */
   var onSuccessSend = function () {
     uploadFormClose.click();
   };
