@@ -4,6 +4,8 @@
  * Отрисовывает на странице сгенерированные фотографии.
  */
 (function () {
+  var DEBOUNCE_INTERVAL = 500;
+
   /**
    * Заполняет шаблон фотографии данными из объекта фотографии.
    * @param {Object} photo Объект с параметрами фотографии.
@@ -78,12 +80,16 @@
     var lastTimeout;
     loadThumbnails(photos);
 
-    filters.addEventListener('click', function (evt) {
+    /**
+     * Функция-обработчик событий. Реагирует на изменение фильтров сортировки изображений.
+     * @param {Object} evt Объект текущего события.
+     */
+    var onFiltersChange = function (evt) {
       if (lastTimeout) {
-        window.clearTimeout(lastTimeout);
+        clearTimeout(lastTimeout);
       }
 
-      lastTimeout = window.setTimeout(function () {
+      lastTimeout = setTimeout(function () {
         if (evt.target.type === 'radio') {
           var target = evt.target.value;
           picturesElement.innerHTML = '';
@@ -107,7 +113,15 @@
             loadThumbnails(photos);
           }
         }
-      }, 500);
+      }, DEBOUNCE_INTERVAL);
+    };
+
+    filters.addEventListener('click', onFiltersChange);
+
+    filters.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.constantes.ENTER_KEYCODE) {
+        evt.target.click();
+      }
     });
   };
 

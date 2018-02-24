@@ -13,9 +13,9 @@
    */
   var removeGalleryEventListeners = function () {
     galleryOverlay.classList.add('hidden');
+    document.removeEventListener('keydown', onEscPressInGallery);
     galleryOverlayClose.removeEventListener('click', onCloseClickInGallery);
     galleryOverlayClose.removeEventListener('keydown', onClosePressInGallery);
-    document.removeEventListener('keydown', onEscPressInGallery);
   };
 
   /**
@@ -50,20 +50,25 @@
    * @param {object} evt Объект текущего события.
    */
   var onGalleryOverlayOpen = function (evt) {
+    evt.preventDefault();
+
     document.querySelector('.gallery-overlay-image').src = evt.currentTarget.querySelector('img').src;
     document.querySelector('.likes-count').textContent = evt.target.parentNode.querySelector('.picture-likes').textContent;
     document.querySelector('.comments-count').textContent = evt.target.parentNode.querySelector('.picture-comments').textContent;
-    evt.preventDefault();
+
     galleryOverlay.classList.remove('hidden');
+    document.addEventListener('keydown', onEscPressInGallery);
     galleryOverlayClose.addEventListener('click', onCloseClickInGallery);
     galleryOverlayClose.addEventListener('keydown', onClosePressInGallery);
-    document.addEventListener('keydown', onEscPressInGallery);
+
+    galleryOverlay.focus();
   };
 
   window.addThumbnailEventListener = function () {
     var thumbnails = document.querySelectorAll('.picture');
-    for (var i = 0; i < thumbnails.length; i++) {
-      thumbnails[i].addEventListener('click', onGalleryOverlayOpen);
-    }
+
+    thumbnails.forEach(function (thumbnail) {
+      thumbnail.addEventListener('click', onGalleryOverlayOpen);
+    });
   };
 })();

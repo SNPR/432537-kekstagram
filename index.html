@@ -11,16 +11,16 @@
 
 <form class="filters filters-inactive" action="index.html" method="get" autocomplete="off">
   <input type="radio" id="filter-recommend" class="filters-radio" name="filter" value="recommend" checked>
-  <label for="filter-recommend" class="filters-item">Рекомендуемые</label>
+  <label for="filter-recommend" class="filters-item" tabindex="0">Рекомендуемые</label>
 
   <input type="radio" id="filter-popular" class="filters-radio" name="filter" value="popular">
-  <label for="filter-popular" class="filters-item">Популярные</label>
+  <label for="filter-popular" class="filters-item" tabindex="0">Популярные</label>
 
   <input type="radio" id="filter-discussed" class="filters-radio" name="filter" value="discussed">
-  <label for="filter-discussed" class="filters-item">Обсуждаемые</label>
+  <label for="filter-discussed" class="filters-item" tabindex="0">Обсуждаемые</label>
 
   <input type="radio" id="filter-random" class="filters-radio" name="filter" value="random">
-  <label for="filter-random" class="filters-item">Случайные</label>
+  <label for="filter-random" class="filters-item" tabindex="0">Случайные</label>
 </form>
 
 <form class="upload-form" id="upload-select-image" method="post" enctype="multipart/form-data" autocomplete="off">
@@ -32,13 +32,13 @@
   <div class="upload-overlay hidden">
     <div class="upload-effect">
       <div class="upload-effect__container disable-selection">
-        <fieldset class="upload-resize-controls">
+        <fieldset class="upload-resize-controls" tabindex="0">
           <button type="button"
-                  class="upload-resize-control upload-resize-controls-button upload-resize-controls-button-dec">–
+                  class="upload-resize-control upload-resize-controls-button upload-resize-controls-button-dec" tabindex="0">–
           </button><!--
           --><input type="text" class="upload-resize-control upload-resize-controls-value" value="100%" readonly title="Image Scale" name="scale"><!--
           --><button type="button"
-                  class="upload-resize-control upload-resize-controls-button upload-resize-controls-button-inc">+
+                  class="upload-resize-control upload-resize-controls-button upload-resize-controls-button-inc" tabindex="0">+
           </button>
         </fieldset>
 
@@ -57,37 +57,37 @@
           </div>
 
           <input type="radio" name="effect" id="upload-effect-none" value="none" checked>
-          <label class="upload-effect-label" for="upload-effect-none">
+          <label class="upload-effect-label" for="upload-effect-none" tabindex="0">
             <div class="upload-effect-preview"></div>
             Оригинал
           </label>
 
           <input type="radio" name="effect" id="upload-effect-chrome" value="chrome">
-          <label class="upload-effect-label upload-effect-label-chrome" for="upload-effect-chrome">
+          <label class="upload-effect-label upload-effect-label-chrome" for="upload-effect-chrome" tabindex="0">
             <div class="upload-effect-preview"></div>
             Хром
           </label>
 
           <input type="radio" name="effect" id="upload-effect-sepia" value="sepia">
-          <label class="upload-effect-label upload-effect-label-sepia" for="upload-effect-sepia">
+          <label class="upload-effect-label upload-effect-label-sepia" for="upload-effect-sepia" tabindex="0">
             <div class="upload-effect-preview"></div>
             Сепия
           </label>
 
           <input type="radio" name="effect" id="upload-effect-marvin" value="marvin">
-          <label class="upload-effect-label upload-effect-label-marvin" for="upload-effect-marvin">
+          <label class="upload-effect-label upload-effect-label-marvin" for="upload-effect-marvin" tabindex="0">
             <div class="upload-effect-preview"></div>
             Марвин
           </label>
 
           <input type="radio" name="effect" id="upload-effect-phobos" value="phobos">
-          <label class="upload-effect-label upload-effect-label-phobos" for="upload-effect-phobos">
+          <label class="upload-effect-label upload-effect-label-phobos" for="upload-effect-phobos" tabindex="0">
             <div class="upload-effect-preview"></div>
             Фобос
           </label>
 
           <input type="radio" name="effect" id="upload-effect-heat" value="heat">
-          <label class="upload-effect-label upload-effect-label-heat" for="upload-effect-heat">
+          <label class="upload-effect-label upload-effect-label-heat" for="upload-effect-heat" tabindex="0">
             <div class="upload-effect-preview"></div>
             Зной
           </label>
@@ -129,12 +129,12 @@
 </footer>
 
 
-<div class="gallery-overlay hidden">
+<div class="gallery-overlay hidden" tabindex="0">
   <span class="gallery-overlay-close" tabindex="0">&times;</span>
   <div class="gallery-overlay-preview">
     <img src="" class="gallery-overlay-image" alt="">
-    <div class="gallery-overlay-controls">
-      <div class="gallery-overlay-controls-like">Нравится <span class="likes-count">0</span></div>
+    <div class="gallery-overlay-controls" tabindex="0">
+      <div class="gallery-overlay-controls-like">Нравится <span class="likes-count" tabindex="0">0</span></div>
       <div class="gallery-overlay-controls-comments"><span class="comments-count">125</span> комментариев</div>
     </div>
   </div>

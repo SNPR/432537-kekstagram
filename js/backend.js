@@ -3,37 +3,43 @@
 (function () {
   var URL_GET = 'https://js.dump.academy/kekstagram/data';
   var URL_POST = 'https://js.dump.academy/kekstagram';
+  var TIMEOUT = 10000;
+  var Code = {
+    SUCCESS: 200,
+    BAD_REQUEST: 400,
+    UNAUTHORIZED: 401,
+    NOT_FOUND_ERROR: 404
+  };
 
   /**
    * Универсальная callback-функция. Подходит как для загрузки, так и для отправки данных на сервер.
-   * @param {String} url Адрес для загрузки или отправки данных.
    * @param {String} method Метод запроса на сервер (GET или POST).
+   * @param {String} url Адрес для загрузки или отправки данных.
    * @param {Function} onLoad Callback-функция, запускающаяся случае удачной загрузки данных.
    * @param {Function} onError Callback-функция, запускающаяся в том случае, если при взаимодействии
    * с сервером что-то пошло не так.
    * @param {Object} data Объект отправляемых на сервер данных (например FormData).
    */
-  var callback = function (url, method, onLoad, onError, data) {
+  var callback = function (method, url, onLoad, onError, data) {
     var xhr = new XMLHttpRequest();
-    var TIMEOUT = 10000;
     xhr.responseType = 'json';
     xhr.timeout = TIMEOUT;
 
     xhr.addEventListener('load', function () {
       var error;
       switch (xhr.status) {
-        case 200:
+        case Code.SUCCESS:
           onLoad(xhr.response);
           break;
 
-        case 400:
+        case Code.BAD_REQUEST:
           error = 'Неверный запрос';
           break;
-        case 401:
+        case Code.UNAUTHORIZED:
           error = 'Пользователь не авторизован';
           break;
-        case 404:
-          error = 'По заданному адресу ничего не найдено';
+        case Code.NOT_FOUND_ERROR:
+          error = 'Сервер с фотографиями временно недоступен';
           break;
 
         default:
@@ -65,7 +71,7 @@
      * с сервером что-то пошло не так.
      */
     load: function (onLoad, onError) {
-      callback(URL_GET, 'GET', onLoad, onError);
+      callback('GET', URL_GET, onLoad, onError);
     },
 
     /**
@@ -76,7 +82,7 @@
      * с сервером что-то пошло не так.
      */
     upload: function (data, onLoad, onError) {
-      callback(URL_POST, 'POST', onLoad, onError, data);
+      callback('POST', URL_POST, onLoad, onError, data);
     },
 
     /**

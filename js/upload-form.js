@@ -9,12 +9,13 @@
   var uploadFile = document.querySelector('#upload-file');
   var uploadForm = document.querySelector('.upload-overlay');
   var uploadFormClose = uploadForm.querySelector('#upload-cancel');
+  var form = document.querySelector('#upload-select-image');
   var effectLevelProportion = 4.55;
   var effectLevelValueShift = 1.8;
 
   /**
    * Определяет текущий активный элемент на странице.
-   * @return{string} Наименование текущего активного элемента.
+   * @return {string} Наименование текущего активного элемента.
    */
   var getActiveElement = function () {
     return document.activeElement.tagName;
@@ -34,60 +35,117 @@
   };
 
   /**
+   * Позволяет выбрать с диска собственное изображение. В случае, если выбранный
+   * файл не является изображением, загружает пустое поле.
+   */
+  var getImageFromDisk = function () {
+    var reader = new FileReader();
+    var file = uploadFile.files[0];
+
+    reader.addEventListener('load', function () {
+      effectImagePreview.src = reader.result;
+      effectImagePreview.style = 'min-height: 300px; max-height: 586px';
+    });
+
+    if (file && file.type.match('image.*')) {
+      reader.readAsDataURL(file);
+    } else {
+      effectImagePreview.src = '';
+    }
+  };
+
+  /**
+   * Callback-функция. Закрывает форму редактирования фото при успешной отправке данных.
+   */
+  var onSuccessSend = function () {
+    uploadFormClose.click();
+  };
+
+  /**
+   * Реагирует на отправку формы пользователем. В случае успешной отправки закрывает форму.
+   * В обратном случае, выдаёт ошибку.
+   * @param {Object} evt Объект текущего события.
+   */
+  var onFormSubmit = function (evt) {
+    evt.preventDefault();
+    window.backend.upload(new FormData(form), onSuccessSend, window.backend.onError);
+  };
+
+  /**
+   * Закрывает форму загрузки фотографии при клике на крестик.
+   */
+  var onCloseClick = function () {
+    closeUploadForm();
+  };
+
+  /**
+   * Закрывает форму загрузки фотографии при нажатии клавишей Enter на крестик.
+   * @param {Object} evt Объект текущего события.
+   */
+  var onClosePress = function (evt) {
+    if (evt.target === uploadFormClose && evt.keyCode === window.constantes.ENTER_KEYCODE) {
+      closeUploadForm();
+    }
+  };
+
+  /**
    * Вспомогательная функция, открывающая окно загрузки файла
-   * и добавляющая обработчик события, ожидающий нажатия Escape.
+   * и добавляющая различные обработчики событий.
    */
   var openUploadForm = function () {
-    uploadForm.addEventListener('click', onResizePhoto);
-    uploadForm.classList.remove('hidden');
+    getImageFromDisk();
+
     scale = 1;
     effectImagePreview.style.transform = 'scale(1)';
     effectImagePreview.classList = '';
-    effectImagePreview.classList.add('effect-none');
     effectImagePreview.style.filter = '';
-    uploadEffectLevel.classList.add('hidden');
+    window.validation.hashtagInput.style.border = '';
     effectLevelPin.style.left = '100%';
-    window.validation.hashTagInput.style.border = '';
     effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
+
+    uploadForm.classList.remove('hidden');
+    uploadEffectLevel.classList.add('hidden');
+    effectImagePreview.classList.add('effect-image-preview');
+
+    form.addEventListener('submit', onFormSubmit);
     document.addEventListener('keydown', onKeyPress);
-    uploadEffectsControl.addEventListener('click', onFilterChange);
-    window.validation.hashTagInput.addEventListener('input', window.validation.onHashtagsType);
-    window.validation.hashTagInput.addEventListener('invalid', window.validation.onValidationCheck);
+    uploadForm.addEventListener('click', onResizePhoto);
+    uploadForm.addEventListener('keydown', onClosePress);
+    uploadFormClose.addEventListener('click', onCloseClick);
     effectLevelPin.addEventListener('mousedown', onPinMove);
+    uploadEffectsControl.addEventListener('click', onFilterClick);
+    uploadEffectsControl.addEventListener('keydown', onFilterPress);
+    window.validation.hashtagInput.addEventListener('input', window.validation.onHashtagsType);
+    window.validation.hashtagInput.addEventListener('invalid', window.validation.onValidationCheck);
   };
 
   /**
    * Вспомогательная функция, скрывающая окно загрузки файла
-   * и удаляющая обработчик события, ожидающий нажатия Escape.
+   * и удаляющая различные обработчики событий.
    */
   var closeUploadForm = function () {
     uploadFile.value = '';
     uploadForm.classList.add('hidden');
+
+    form.removeEventListener('submit', onFormSubmit);
     document.removeEventListener('keydown', onKeyPress);
     uploadForm.removeEventListener('click', onResizePhoto);
-    uploadEffectsControl.removeEventListener('click', onFilterChange);
-    window.validation.hashTagInput.removeEventListener('input', window.validation.onHashtagsType);
-    window.validation.hashTagInput.removeEventListener('invalid', window.validation.onValidationCheck);
+    uploadForm.removeEventListener('keydown', onClosePress);
+    uploadFormClose.removeEventListener('click', onCloseClick);
     effectLevelPin.removeEventListener('mousedown', onPinMove);
+    uploadEffectsControl.removeEventListener('click', onFilterClick);
+    uploadEffectsControl.removeEventListener('keydown', onFilterPress);
+    window.validation.hashtagInput.removeEventListener('input', window.validation.onHashtagsType);
+    window.validation.hashtagInput.removeEventListener('invalid', window.validation.onValidationCheck);
   };
 
   uploadFile.addEventListener('change', function () {
     openUploadForm();
   });
 
-  uploadFormClose.addEventListener('click', function () {
-    closeUploadForm();
-  });
-
   uploadControl.addEventListener('keydown', function (evt) {
     if (evt.keyCode === window.constantes.ENTER_KEYCODE) {
       uploadFile.click();
-    }
-  });
-
-  uploadForm.addEventListener('keydown', function (evt) {
-    if (evt.target === uploadFormClose && evt.keyCode === window.constantes.ENTER_KEYCODE) {
-      closeUploadForm();
     }
   });
 
@@ -101,9 +159,11 @@
    * @param {string} filterName Имя фильтра.
    */
   var applyFilter = function (filterName) {
-    effectImagePreview.classList = '';
-    effectImagePreview.style.filter = '';
+    if (activeFilter) {
+      effectImagePreview.classList.remove('effect-' + activeFilter);
+    }
     effectImagePreview.classList.add('effect-' + filterName);
+    effectImagePreview.style.filter = '';
     effectLevelPin.style.left = '100%';
     effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
     effectLevelValue.setAttribute('value', parseFloat(effectLevelPin.style.left));
@@ -112,16 +172,26 @@
     } else {
       uploadEffectLevel.classList.remove('hidden');
     }
-    activeFilter = filterName;
   };
 
   /**
    * Функция-обработчик событий. Помогает менять фильтры изображений.
    * @param {Object} evt Объект текущего события.
    */
-  var onFilterChange = function (evt) {
+  var onFilterClick = function (evt) {
     if (evt.target.type === 'radio') {
       applyFilter(evt.target.value);
+      activeFilter = evt.target.value;
+    }
+  };
+
+  /**
+   * Функция-обработчик событий. Помогает менять фильтры изображений.
+   * @param {Object} evt Объект текущего события.
+   */
+  var onFilterPress = function (evt) {
+    if (evt.keyCode === window.constantes.ENTER_KEYCODE) {
+      evt.target.click();
     }
   };
 
@@ -203,14 +273,4 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   };
-
-  var form = document.querySelector('#upload-select-image');
-  var onSuccessSend = function () {
-    uploadFormClose.click();
-  };
-
-  form.addEventListener('submit', function (evt) {
-    evt.preventDefault();
-    window.backend.upload(new FormData(form), onSuccessSend, window.backend.onError);
-  });
 })();
