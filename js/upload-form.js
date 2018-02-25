@@ -99,7 +99,7 @@
 
     scale = 1;
     effectImagePreview.style.transform = 'scale(1)';
-    effectImagePreview.classList = '';
+    effectImagePreview.classList.remove('effect-' + activeFilter);
     effectImagePreview.style.filter = '';
     window.validation.hashtagInput.style.border = '';
     effectLevelPin.style.left = '100%';
@@ -107,7 +107,6 @@
 
     uploadForm.classList.remove('hidden');
     uploadEffectLevel.classList.add('hidden');
-    effectImagePreview.classList.add('effect-image-preview');
 
     form.addEventListener('submit', onFormSubmit);
     document.addEventListener('keydown', onKeyPress);
