@@ -22,7 +22,7 @@
   };
 
   var picturesElement = document.querySelector('.pictures');
-  var filters = document.querySelector('.filters');
+  var filterArea = document.querySelector('.filters');
 
   /**
    * Загружаем миниатюры на страницу.
@@ -39,7 +39,7 @@
     }
 
     picturesElement.appendChild(fragment);
-    filters.classList.remove('filters-inactive');
+    filterArea.classList.remove('filters-inactive');
     window.addThumbnailEventListener();
   };
 
@@ -116,9 +116,9 @@
       }, DEBOUNCE_INTERVAL);
     };
 
-    filters.addEventListener('click', onFiltersChange);
+    filterArea.addEventListener('click', onFiltersChange);
 
-    filters.addEventListener('keydown', function (evt) {
+    filterArea.addEventListener('keydown', function (evt) {
       if (evt.keyCode === window.constantes.ENTER_KEYCODE) {
         evt.target.click();
       }
