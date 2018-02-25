@@ -39,11 +39,12 @@
     var target = evt.target;
     var hashtags = target.value.toLowerCase().split(' ').sort();
 
+    hashtags = hashtags.filter(function (hashtag) {
+      return hashtag !== '';
+    });
+
     for (var i = 0; i < hashtags.length; i++) {
-      if (hashtags[i] === '') {
-        hashtags.splice(i, 1);
-        i--;
-      } else if (hashtags.length > 5) {
+      if (hashtags.length > 5) {
         target.setCustomValidity('Хэштегов должно быть не больше пяти');
         break;
       } else if (hashtags[i] && hashtags[i].charAt(0) !== '#') {
