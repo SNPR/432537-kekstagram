@@ -221,7 +221,7 @@
   var effectLevelValue = document.querySelector('.upload-effect-level-value');
 
   /**
-   * Сбрасывает ползунок уровеня эффекта при достижении минимального и масксимального значений.
+   * Сбрасывает ползунок уровеня эффекта при достижении минимального и максимального значений.
    * @param {string} pinPosition Положение пина.
    * @param {string} scaleLevel Ширина шкалы глубины эффекта.
    * @param {string} levelValue Величина глубины эффекта.
