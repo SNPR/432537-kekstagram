@@ -47,7 +47,6 @@
 
     reader.addEventListener('load', function () {
       effectImagePreview.src = reader.result;
-      effectImagePreview.style = 'min-height: 300px; max-height: 586px';
     });
 
     if (file && file.type.match('image.*')) {
