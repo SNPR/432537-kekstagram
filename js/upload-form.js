@@ -8,6 +8,7 @@
   var SCALE_STEP = 0.25;
   var EFFECT_LEVEL_PROPORTION = 4.55;
   var EFFECT_LEVEL_VALUE_SHIFT = 1.8;
+  var EFFECT_LEVEL_SCALE_MAX_WIDTH = '98.2%';
   var uploadControl = document.querySelector('.upload-control');
   var uploadFile = document.querySelector('#upload-file');
   var uploadForm = document.querySelector('.upload-overlay');
@@ -103,7 +104,7 @@
     effectImagePreview.style.filter = '';
     window.validation.hashtagInput.style.border = '';
     effectLevelPin.style.left = '100%';
-    effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - EFFECT_LEVEL_VALUE_SHIFT + '%';
+    effectLevelScale.style.width = EFFECT_LEVEL_SCALE_MAX_WIDTH;
 
     uploadForm.classList.remove('hidden');
     uploadEffectLevel.classList.add('hidden');
@@ -167,7 +168,7 @@
     effectImagePreview.classList.add('effect-' + filterName);
     effectImagePreview.style.filter = '';
     effectLevelPin.style.left = '100%';
-    effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - EFFECT_LEVEL_VALUE_SHIFT + '%';
+    effectLevelScale.style.width = EFFECT_LEVEL_SCALE_MAX_WIDTH;
     effectLevelValue.setAttribute('value', parseFloat(effectLevelPin.style.left));
     if (filterName === 'none') {
       uploadEffectLevel.classList.add('hidden');
@@ -222,6 +223,18 @@
   var effectLevelValue = document.querySelector('.upload-effect-level-value');
 
   /**
+   * Сбрасывает ползунок уровеня эффекта при достижении минимального и масксимального значений.
+   * @param {string} pinPosition Положение пина.
+   * @param {string} scaleLevel Ширина шкалы глубины эффекта.
+   * @param {string} levelValue Величина глубины эффекта.
+   */
+  var resetEffectLevel = function (pinPosition, scaleLevel, levelValue) {
+    effectLevelPin.style.left = pinPosition;
+    effectLevelScale.style.width = scaleLevel;
+    effectLevelValue.setAttribute('value', levelValue);
+  };
+
+  /**
    * Изменяет глубину эффекта при перемещении слайдера.
    * @param {Object} evt Объект текущего события.
    */
@@ -239,6 +252,7 @@
       effectLevelPin.style.left = (startPinPosition + shift / EFFECT_LEVEL_PROPORTION) + '%';
       effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - EFFECT_LEVEL_VALUE_SHIFT + '%';
       effectLevelValue.setAttribute('value', parseInt(effectLevelPin.style.left, 10));
+
       if (parseFloat(effectLevelPin.style.left) >= 0 && parseFloat(effectLevelPin.style.left) <= 100) {
         if (activeFilter === 'chrome') {
           effectImagePreview.style.filter = 'grayscale(' + parseFloat(effectLevelPin.style.left) / 100 + ')';
@@ -254,13 +268,9 @@
       }
 
       if (parseFloat(effectLevelPin.style.left) < 0) {
-        effectLevelPin.style.left = '0%';
-        effectLevelScale.style.width = '0%';
-        effectLevelValue.setAttribute('value', '0');
+        resetEffectLevel('0%', '0%', '0');
       } else if (parseFloat(effectLevelPin.style.left) > 100) {
-        effectLevelPin.style.left = '100%';
-        effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - EFFECT_LEVEL_VALUE_SHIFT + '%';
-        effectLevelValue.setAttribute('value', '100');
+        resetEffectLevel('100%', EFFECT_LEVEL_SCALE_MAX_WIDTH, '100');
       }
     };
 
