@@ -169,7 +169,7 @@
     effectImagePreview.style.filter = '';
     effectLevelPin.style.left = '100%';
     effectLevelScale.style.width = EFFECT_LEVEL_SCALE_MAX_WIDTH;
-    effectLevelValue.setAttribute('value', parseFloat(effectLevelPin.style.left));
+    effectLevelValue.setAttribute('value', parseInt(effectLevelPin.style.left, 10));
     if (filterName === 'none') {
       uploadEffectLevel.classList.add('hidden');
     } else {
@@ -248,28 +248,29 @@
      */
     var onMouseMove = function (moveEvt) {
       var shift = moveEvt.clientX - startCoordinate;
+      var currentPinPosition = startPinPosition + shift / EFFECT_LEVEL_PROPORTION;
 
-      effectLevelPin.style.left = (startPinPosition + shift / EFFECT_LEVEL_PROPORTION) + '%';
-      effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - EFFECT_LEVEL_VALUE_SHIFT + '%';
+      effectLevelPin.style.left = currentPinPosition + '%';
+      effectLevelScale.style.width = currentPinPosition - EFFECT_LEVEL_VALUE_SHIFT + '%';
       effectLevelValue.setAttribute('value', parseInt(effectLevelPin.style.left, 10));
 
-      if (parseFloat(effectLevelPin.style.left) >= 0 && parseFloat(effectLevelPin.style.left) <= 100) {
+      if (currentPinPosition >= 0 && currentPinPosition <= 100) {
         if (activeFilter === 'chrome') {
-          effectImagePreview.style.filter = 'grayscale(' + parseFloat(effectLevelPin.style.left) / 100 + ')';
+          effectImagePreview.style.filter = 'grayscale(' + currentPinPosition / 100 + ')';
         } else if (activeFilter === 'sepia') {
-          effectImagePreview.style.filter = 'sepia(' + parseFloat(effectLevelPin.style.left) / 100 + ')';
+          effectImagePreview.style.filter = 'sepia(' + currentPinPosition / 100 + ')';
         } else if (activeFilter === 'marvin') {
-          effectImagePreview.style.filter = 'invert(' + parseFloat(effectLevelPin.style.left) + '%)';
+          effectImagePreview.style.filter = 'invert(' + currentPinPosition + '%)';
         } else if (activeFilter === 'phobos') {
-          effectImagePreview.style.filter = 'blur(' + parseFloat(effectLevelPin.style.left) / 100 * 3 + 'px)';
+          effectImagePreview.style.filter = 'blur(' + currentPinPosition / 100 * 3 + 'px)';
         } else if (activeFilter === 'heat') {
-          effectImagePreview.style.filter = 'brightness(' + parseFloat(effectLevelPin.style.left) / 100 * 3 + ')';
+          effectImagePreview.style.filter = 'brightness(' + currentPinPosition / 100 * 3 + ')';
         }
       }
 
-      if (parseFloat(effectLevelPin.style.left) < 0) {
+      if (currentPinPosition < 0) {
         resetEffectLevel('0%', '0%', '0');
-      } else if (parseFloat(effectLevelPin.style.left) > 100) {
+      } else if (currentPinPosition > 100) {
         resetEffectLevel('100%', EFFECT_LEVEL_SCALE_MAX_WIDTH, '100');
       }
     };
