@@ -9,9 +9,9 @@
   /**
    * Заполняет шаблон фотографии данными из объекта фотографии.
    * @param {Object} photo Объект с параметрами фотографии.
-   * @return {*} Заполенный данными элемент фотографии.
+   * @return {HTMLElement} Заполенный данными элемент фотографии.
    */
-  var renderPhotos = function (photo) {
+  var renderPhoto = function (photo) {
     var photoTemplate = document.querySelector('#picture-template').content;
     var photoElement = photoTemplate.cloneNode(true);
 
@@ -22,7 +22,7 @@
   };
 
   var picturesElement = document.querySelector('.pictures');
-  var filters = document.querySelector('.filters');
+  var filterArea = document.querySelector('.filters');
 
   /**
    * Загружаем миниатюры на страницу.
@@ -32,14 +32,14 @@
     var fragment = document.createDocumentFragment();
     if (photos) {
       for (var i = 0; i < photos.length; i++) {
-        fragment.appendChild(renderPhotos(photos[i]));
+        fragment.appendChild(renderPhoto(photos[i]));
       }
     } else {
       window.backend.onError('По запрашиваему адресу нет данных');
     }
 
     picturesElement.appendChild(fragment);
-    filters.classList.remove('filters-inactive');
+    filterArea.classList.remove('filters-inactive');
     window.addThumbnailEventListener();
   };
 
@@ -116,9 +116,9 @@
       }, DEBOUNCE_INTERVAL);
     };
 
-    filters.addEventListener('click', onFiltersChange);
+    filterArea.addEventListener('click', onFiltersChange);
 
-    filters.addEventListener('keydown', function (evt) {
+    filterArea.addEventListener('keydown', function (evt) {
       if (evt.keyCode === window.constantes.ENTER_KEYCODE) {
         evt.target.click();
       }

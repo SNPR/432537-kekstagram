@@ -5,13 +5,15 @@
  * Отвечает за редактирование размера фотографии и глубину эффекта выбранного фильтра.
  */
 (function () {
+  var SCALE_STEP = 0.25;
+  var EFFECT_LEVEL_PROPORTION = 4.55;
+  var EFFECT_LEVEL_VALUE_SHIFT = 1.8;
   var uploadControl = document.querySelector('.upload-control');
   var uploadFile = document.querySelector('#upload-file');
   var uploadForm = document.querySelector('.upload-overlay');
   var uploadFormClose = uploadForm.querySelector('#upload-cancel');
   var form = document.querySelector('#upload-select-image');
-  var effectLevelProportion = 4.55;
-  var effectLevelValueShift = 1.8;
+
 
   /**
    * Определяет текущий активный элемент на странице.
@@ -101,7 +103,7 @@
     effectImagePreview.style.filter = '';
     window.validation.hashtagInput.style.border = '';
     effectLevelPin.style.left = '100%';
-    effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
+    effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - EFFECT_LEVEL_VALUE_SHIFT + '%';
 
     uploadForm.classList.remove('hidden');
     uploadEffectLevel.classList.add('hidden');
@@ -165,7 +167,7 @@
     effectImagePreview.classList.add('effect-' + filterName);
     effectImagePreview.style.filter = '';
     effectLevelPin.style.left = '100%';
-    effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
+    effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - EFFECT_LEVEL_VALUE_SHIFT + '%';
     effectLevelValue.setAttribute('value', parseFloat(effectLevelPin.style.left));
     if (filterName === 'none') {
       uploadEffectLevel.classList.add('hidden');
@@ -199,18 +201,17 @@
   var increasePhotoButton = document.querySelector('.upload-resize-controls-button-inc');
   var scaleValue = document.querySelector('.upload-resize-controls-value');
   var scale = 1;
-  var step = 0.25;
 
   /**
    * Увеличивает фото при нажатии на '+' и уменьшает при нажатии на '-'.
    * @param {Object} evt Объект текущего события.
    */
   var onResizePhoto = function (evt) {
-    if (evt.target === decreasePhotoButton && scale > step) {
-      scale -= step;
+    if (evt.target === decreasePhotoButton && scale > SCALE_STEP) {
+      scale -= SCALE_STEP;
     }
     if (evt.target === increasePhotoButton && scale < 1) {
-      scale += step;
+      scale += SCALE_STEP;
     }
     effectImagePreview.style.transform = 'scale(' + scale + ')';
     scaleValue.value = scale * 100 + '%';
@@ -235,8 +236,8 @@
     var onMouseMove = function (moveEvt) {
       var shift = moveEvt.clientX - startCoordinate;
 
-      effectLevelPin.style.left = (startPinPosition + shift / effectLevelProportion) + '%';
-      effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
+      effectLevelPin.style.left = (startPinPosition + shift / EFFECT_LEVEL_PROPORTION) + '%';
+      effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - EFFECT_LEVEL_VALUE_SHIFT + '%';
       effectLevelValue.setAttribute('value', parseInt(effectLevelPin.style.left, 10));
       if (parseFloat(effectLevelPin.style.left) >= 0 && parseFloat(effectLevelPin.style.left) <= 100) {
         if (activeFilter === 'chrome') {
@@ -258,7 +259,7 @@
         effectLevelValue.setAttribute('value', '0');
       } else if (parseFloat(effectLevelPin.style.left) > 100) {
         effectLevelPin.style.left = '100%';
-        effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
+        effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - EFFECT_LEVEL_VALUE_SHIFT + '%';
         effectLevelValue.setAttribute('value', '100');
       }
     };
