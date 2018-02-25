@@ -118,7 +118,7 @@
     uploadEffectsControl.addEventListener('click', onFilterClick);
     uploadEffectsControl.addEventListener('keydown', onFilterPress);
     window.validation.hashtagInput.addEventListener('input', window.validation.onHashtagsType);
-    window.validation.hashtagInput.addEventListener('invalid', window.validation.onValidationCheck);
+    window.validation.hashtagInput.addEventListener('invalid', window.validation.onErrorCheck);
   };
 
   /**
@@ -138,7 +138,7 @@
     uploadEffectsControl.removeEventListener('click', onFilterClick);
     uploadEffectsControl.removeEventListener('keydown', onFilterPress);
     window.validation.hashtagInput.removeEventListener('input', window.validation.onHashtagsType);
-    window.validation.hashtagInput.removeEventListener('invalid', window.validation.onValidationCheck);
+    window.validation.hashtagInput.removeEventListener('invalid', window.validation.onErrorCheck);
   };
 
   uploadFile.addEventListener('change', function () {

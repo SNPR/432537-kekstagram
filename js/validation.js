@@ -24,7 +24,7 @@
    * в случае некорректного ввода значения.
    * @param {Object} evt Объект текущего события.
    */
-  var onValidationCheck = function (evt) {
+  var onErrorCheck = function (evt) {
     var target = evt.target;
     if (target.validity) {
       target.style.border = '3px solid red';
@@ -69,7 +69,7 @@
     window.validation = {
       hashtagInput: hashtagInput,
       onHashtagsType: onHashtagsType,
-      onValidationCheck: onValidationCheck
+      onErrorCheck: onErrorCheck
     };
   })();
 })();
