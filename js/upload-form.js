@@ -28,7 +28,7 @@
    * Обработчик события, необходим для закрытия окна редактирования фото, при нажатии клавиши 'ESC'.
    * @param {object} evt Объект текущего события.
    */
-  var onEscPressInUploadForm = function (evt) {
+  var onEscPress = function (evt) {
     window.util.isEscEvent(evt, function () {
       if (getActiveElement() !== 'INPUT' && getActiveElement() !== 'TEXTAREA') {
         uploadFormClose.click();
@@ -83,7 +83,7 @@
    * Закрывает форму загрузки фотографии при нажатии клавишей Enter на крестик.
    * @param {Object} evt Объект текущего события.
    */
-  var onClosePressInUploadForm = function (evt) {
+  var onClosePress = function (evt) {
     window.util.isEnterEvent(evt, function () {
       if (evt.target === uploadFormClose) {
         closeUploadForm();
@@ -110,13 +110,13 @@
     uploadEffectLevel.classList.add('hidden');
 
     form.addEventListener('submit', onFormSubmit);
+    document.addEventListener('keydown', onEscPress);
     uploadForm.addEventListener('click', onResizePhoto);
+    uploadForm.addEventListener('keydown', onClosePress);
     uploadFormClose.addEventListener('click', onCloseClick);
     effectLevelPin.addEventListener('mousedown', onPinMove);
-    document.addEventListener('keydown', onEscPressInUploadForm);
     uploadEffectsControl.addEventListener('click', onFilterClick);
     uploadEffectsControl.addEventListener('keydown', onFilterPress);
-    uploadForm.addEventListener('keydown', onClosePressInUploadForm);
     window.validation.hashtagInput.addEventListener('input', window.validation.onHashtagsType);
     window.validation.hashtagInput.addEventListener('invalid', window.validation.onErrorCheck);
   };
@@ -130,13 +130,13 @@
     uploadForm.classList.add('hidden');
 
     form.removeEventListener('submit', onFormSubmit);
+    document.removeEventListener('keydown', onEscPress);
     uploadForm.removeEventListener('click', onResizePhoto);
+    uploadForm.removeEventListener('keydown', onClosePress);
     uploadFormClose.removeEventListener('click', onCloseClick);
     effectLevelPin.removeEventListener('mousedown', onPinMove);
-    document.removeEventListener('keydown', onEscPressInUploadForm);
     uploadEffectsControl.removeEventListener('click', onFilterClick);
     uploadEffectsControl.removeEventListener('keydown', onFilterPress);
-    uploadForm.removeEventListener('keydown', onClosePressInUploadForm);
     window.validation.hashtagInput.removeEventListener('input', window.validation.onHashtagsType);
     window.validation.hashtagInput.removeEventListener('invalid', window.validation.onErrorCheck);
   };
@@ -275,7 +275,7 @@
     };
 
     /**
-     * Удаляет обработчики событий движения и опускания мыши.
+     * Удаляет обработчики событий движения и отпускания мыши.
      */
     var onMouseUp = function () {
       document.removeEventListener('mousemove', onMouseMove);
