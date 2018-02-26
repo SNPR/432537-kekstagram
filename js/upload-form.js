@@ -24,23 +24,16 @@
     return document.activeElement.tagName;
   };
 
-
-  /**
-   * Вспомогательная функция для обработчика события закрытия окна при нажатии клавиши 'ESC'.
-   * Нажатие 'ESC' не срабатывает, если фокус находится в поле ввода хэш-тега или комментария.
-   */
-  var closeUploadFormByEsc = function () {
-    if (getActiveElement() !== 'INPUT' && getActiveElement() !== 'TEXTAREA') {
-      uploadFormClose.click();
-    }
-  };
-
   /**
    * Обработчик события, необходим для закрытия окна редактирования фото, при нажатии клавиши 'ESC'.
    * @param {object} evt Объект текущего события.
    */
-  var onEscPress = function (evt) {
-    window.util.isEscEvent(evt, closeUploadFormByEsc);
+  var onEscPressInUploadForm = function (evt) {
+    window.util.isEscEvent(evt, function () {
+      if (getActiveElement() !== 'INPUT' && getActiveElement() !== 'TEXTAREA') {
+        uploadFormClose.click();
+      }
+    });
   };
 
   /**
@@ -115,11 +108,11 @@
     uploadEffectLevel.classList.add('hidden');
 
     form.addEventListener('submit', onFormSubmit);
-    document.addEventListener('keydown', onEscPress);
     uploadForm.addEventListener('click', onResizePhoto);
     uploadForm.addEventListener('keydown', onClosePress);
     uploadFormClose.addEventListener('click', onCloseClick);
     effectLevelPin.addEventListener('mousedown', onPinMove);
+    document.addEventListener('keydown', onEscPressInUploadForm);
     uploadEffectsControl.addEventListener('click', onFilterClick);
     uploadEffectsControl.addEventListener('keydown', onFilterPress);
     window.validation.hashtagInput.addEventListener('input', window.validation.onHashtagsType);
@@ -135,11 +128,11 @@
     uploadForm.classList.add('hidden');
 
     form.removeEventListener('submit', onFormSubmit);
-    document.removeEventListener('keydown', onEscPress);
     uploadForm.removeEventListener('click', onResizePhoto);
     uploadForm.removeEventListener('keydown', onClosePress);
     uploadFormClose.removeEventListener('click', onCloseClick);
     effectLevelPin.removeEventListener('mousedown', onPinMove);
+    document.removeEventListener('keydown', onEscPressInUploadForm);
     uploadEffectsControl.removeEventListener('click', onFilterClick);
     uploadEffectsControl.removeEventListener('keydown', onFilterPress);
     window.validation.hashtagInput.removeEventListener('input', window.validation.onHashtagsType);
