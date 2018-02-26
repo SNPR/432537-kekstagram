@@ -119,9 +119,9 @@
     filterArea.addEventListener('click', onFiltersChange);
 
     filterArea.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.constantes.ENTER_KEYCODE) {
+      window.util.isEnterEvent(evt, function () {
         evt.target.click();
-      }
+      });
     });
   };
 
