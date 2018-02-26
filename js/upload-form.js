@@ -259,7 +259,11 @@
       effectLevelScale.style.width = currentPinPosition - EFFECT_LEVEL_VALUE_SHIFT + '%';
       effectLevelValue.setAttribute('value', parseInt(effectLevelPin.style.left, 10));
 
-      if (currentPinPosition >= 0 && currentPinPosition <= 100) {
+      if (currentPinPosition < 0) {
+        resetEffectLevel('0%', '0%', '0');
+      } else if (currentPinPosition > 100) {
+        resetEffectLevel('100%', EFFECT_LEVEL_SCALE_MAX_WIDTH, '100');
+      } else {
         if (activeFilter === 'chrome') {
           effectImagePreview.style.filter = 'grayscale(' + currentPinPosition / Proportion.GRAYSCALE + ')';
         } else if (activeFilter === 'sepia') {
@@ -271,12 +275,6 @@
         } else if (activeFilter === 'heat') {
           effectImagePreview.style.filter = 'brightness(' + currentPinPosition / Proportion.BRIGHTNESS + ')';
         }
-      }
-
-      if (currentPinPosition < 0) {
-        resetEffectLevel('0%', '0%', '0');
-      } else if (currentPinPosition > 100) {
-        resetEffectLevel('100%', EFFECT_LEVEL_SCALE_MAX_WIDTH, '100');
       }
     };
 
