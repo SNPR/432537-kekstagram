@@ -83,10 +83,12 @@
    * Закрывает форму загрузки фотографии при нажатии клавишей Enter на крестик.
    * @param {Object} evt Объект текущего события.
    */
-  var onClosePress = function (evt) {
-    if (evt.target === uploadFormClose && evt.keyCode === window.constantes.ENTER_KEYCODE) {
-      closeUploadForm();
-    }
+  var onClosePressInUploadForm = function (evt) {
+    window.util.isEnterEvent(evt, function () {
+      if (evt.target === uploadFormClose) {
+        closeUploadForm();
+      }
+    });
   };
 
   /**
@@ -109,12 +111,12 @@
 
     form.addEventListener('submit', onFormSubmit);
     uploadForm.addEventListener('click', onResizePhoto);
-    uploadForm.addEventListener('keydown', onClosePress);
     uploadFormClose.addEventListener('click', onCloseClick);
     effectLevelPin.addEventListener('mousedown', onPinMove);
     document.addEventListener('keydown', onEscPressInUploadForm);
     uploadEffectsControl.addEventListener('click', onFilterClick);
     uploadEffectsControl.addEventListener('keydown', onFilterPress);
+    uploadForm.addEventListener('keydown', onClosePressInUploadForm);
     window.validation.hashtagInput.addEventListener('input', window.validation.onHashtagsType);
     window.validation.hashtagInput.addEventListener('invalid', window.validation.onErrorCheck);
   };
@@ -129,12 +131,12 @@
 
     form.removeEventListener('submit', onFormSubmit);
     uploadForm.removeEventListener('click', onResizePhoto);
-    uploadForm.removeEventListener('keydown', onClosePress);
     uploadFormClose.removeEventListener('click', onCloseClick);
     effectLevelPin.removeEventListener('mousedown', onPinMove);
     document.removeEventListener('keydown', onEscPressInUploadForm);
     uploadEffectsControl.removeEventListener('click', onFilterClick);
     uploadEffectsControl.removeEventListener('keydown', onFilterPress);
+    uploadForm.removeEventListener('keydown', onClosePressInUploadForm);
     window.validation.hashtagInput.removeEventListener('input', window.validation.onHashtagsType);
     window.validation.hashtagInput.removeEventListener('invalid', window.validation.onErrorCheck);
   };
@@ -144,9 +146,9 @@
   });
 
   uploadControl.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === window.constantes.ENTER_KEYCODE) {
+    window.util.isEnterEvent(evt, function () {
       uploadFile.click();
-    }
+    });
   });
 
   var effectImagePreview = document.querySelector('.effect-image-preview');
@@ -190,9 +192,9 @@
    * @param {Object} evt Объект текущего события.
    */
   var onFilterPress = function (evt) {
-    if (evt.keyCode === window.constantes.ENTER_KEYCODE) {
+    window.util.isEnterEvent(evt, function () {
       evt.target.click();
-    }
+    });
   };
 
   var decreasePhotoButton = document.querySelector('.upload-resize-controls-button-dec');
