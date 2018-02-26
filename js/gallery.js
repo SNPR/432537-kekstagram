@@ -60,11 +60,9 @@
     galleryOverlay.focus();
   };
 
-  window.addThumbnailEventListener = function () {
-    var thumbnails = document.querySelectorAll('.picture');
-
-    thumbnails.forEach(function (thumbnail) {
-      thumbnail.addEventListener('click', onGalleryOverlayOpen);
-    });
+  window.addThumbnailEventListener = function (thumbnails) {
+    for (var i = 0; i < thumbnails.length; i++) {
+      thumbnails[i].addEventListener('click', onGalleryOverlayOpen);
+    }
   };
 })();

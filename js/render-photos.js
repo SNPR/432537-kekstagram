@@ -40,8 +40,8 @@
     }
 
     picturesElement.appendChild(fragment);
+    window.addThumbnailEventListener(picturesElement.children);
     filterArea.classList.remove('filters-inactive');
-    window.addThumbnailEventListener();
   };
 
   /**
