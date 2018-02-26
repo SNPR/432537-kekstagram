@@ -30,9 +30,7 @@
    * @param {object} evt Объект текущего события.
    */
   var onClosePressInGallery = function (evt) {
-    if (evt.keyCode === window.constantes.ENTER_KEYCODE) {
-      removeGalleryEventListeners();
-    }
+    window.util.isEnterEvent(evt, removeGalleryEventListeners);
   };
 
   /**
@@ -40,9 +38,7 @@
    * @param {object} evt Объект текущего события.
    */
   var onEscPressInGallery = function (evt) {
-    if (evt.keyCode === window.constantes.ESC_KEYCODE) {
-      removeGalleryEventListeners();
-    }
+    window.util.isEscEvent(evt, removeGalleryEventListeners);
   };
 
   /**

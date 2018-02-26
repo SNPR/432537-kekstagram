@@ -24,17 +24,23 @@
     return document.activeElement.tagName;
   };
 
+
   /**
-   * Вспомогательная функция обработчика события для закрытия окна при нажатии клавиши 'ESC'.
+   * Вспомогательная функция для обработчика события закрытия окна при нажатии клавиши 'ESC'.
    * Нажатие 'ESC' не срабатывает, если фокус находится в поле ввода хэш-тега или комментария.
+   */
+  var closeUploadFormByEsc = function () {
+    if (getActiveElement() !== 'INPUT' && getActiveElement() !== 'TEXTAREA') {
+      uploadFormClose.click();
+    }
+  };
+
+  /**
+   * Обработчик события, необходим для закрытия окна редактирования фото, при нажатии клавиши 'ESC'.
    * @param {object} evt Объект текущего события.
    */
-  var onKeyPress = function (evt) {
-    if (evt.keyCode === window.constantes.ESC_KEYCODE) {
-      if (getActiveElement() !== 'INPUT' && getActiveElement() !== 'TEXTAREA') {
-        uploadFormClose.click();
-      }
-    }
+  var onEscPress = function (evt) {
+    window.util.isEscEvent(evt, closeUploadFormByEsc);
   };
 
   /**
@@ -109,7 +115,7 @@
     uploadEffectLevel.classList.add('hidden');
 
     form.addEventListener('submit', onFormSubmit);
-    document.addEventListener('keydown', onKeyPress);
+    document.addEventListener('keydown', onEscPress);
     uploadForm.addEventListener('click', onResizePhoto);
     uploadForm.addEventListener('keydown', onClosePress);
     uploadFormClose.addEventListener('click', onCloseClick);
@@ -129,7 +135,7 @@
     uploadForm.classList.add('hidden');
 
     form.removeEventListener('submit', onFormSubmit);
-    document.removeEventListener('keydown', onKeyPress);
+    document.removeEventListener('keydown', onEscPress);
     uploadForm.removeEventListener('click', onResizePhoto);
     uploadForm.removeEventListener('keydown', onClosePress);
     uploadFormClose.removeEventListener('click', onCloseClick);
