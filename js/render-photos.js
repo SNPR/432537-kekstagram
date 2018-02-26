@@ -80,6 +80,30 @@
     var lastTimeout;
     loadThumbnails(photos);
 
+    var filterValueToSortMethod = {
+      'popular': function () {
+        photos = defaultPhotos.slice(0);
+        photos.sort(function (a, b) {
+          return b.likes - a.likes;
+        });
+        loadThumbnails(photos);
+      },
+      'recommend': function () {
+        loadThumbnails(defaultPhotos);
+      },
+      'discussed': function () {
+        photos = defaultPhotos.slice(0);
+        photos.sort(function (a, b) {
+          return b.comments.length - a.comments.length;
+        });
+        loadThumbnails(photos);
+      },
+      'random': function () {
+        photos = shuffleArray(photos);
+        loadThumbnails(photos);
+      }
+    };
+
     /**
      * Функция-обработчик событий. Реагирует на изменение фильтров сортировки изображений.
      * @param {Object} evt Объект текущего события.
@@ -93,25 +117,7 @@
         if (evt.target.type === 'radio') {
           var target = evt.target.value;
           picturesElement.innerHTML = '';
-
-          if (target === 'popular') {
-            photos = defaultPhotos.slice(0);
-            photos.sort(function (a, b) {
-              return b.likes - a.likes;
-            });
-            loadThumbnails(photos);
-          } else if (target === 'recommend') {
-            loadThumbnails(defaultPhotos);
-          } else if (target === 'discussed') {
-            photos = defaultPhotos.slice(0);
-            photos.sort(function (a, b) {
-              return b.comments.length - a.comments.length;
-            });
-            loadThumbnails(photos);
-          } else if (target === 'random') {
-            photos = shuffleArray(photos);
-            loadThumbnails(photos);
-          }
+          filterValueToSortMethod[target]();
         }
       }, DEBOUNCE_INTERVAL);
     };
