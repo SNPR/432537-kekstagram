@@ -9,6 +9,12 @@
   var EFFECT_LEVEL_PROPORTION = 4.55;
   var EFFECT_LEVEL_VALUE_SHIFT = 1.8;
   var EFFECT_LEVEL_SCALE_MAX_WIDTH = '98.2%';
+  var Proportion = {
+    GRAYSCALE: 100,
+    SEPIA: 100,
+    BLUR: 100 / 3,
+    BRIGHTNESS: 100 / 3
+  };
   var uploadControl = document.querySelector('.upload-control');
   var uploadFile = document.querySelector('#upload-file');
   var uploadForm = document.querySelector('.upload-overlay');
@@ -255,15 +261,15 @@
 
       if (currentPinPosition >= 0 && currentPinPosition <= 100) {
         if (activeFilter === 'chrome') {
-          effectImagePreview.style.filter = 'grayscale(' + currentPinPosition / 100 + ')';
+          effectImagePreview.style.filter = 'grayscale(' + currentPinPosition / Proportion.GRAYSCALE + ')';
         } else if (activeFilter === 'sepia') {
-          effectImagePreview.style.filter = 'sepia(' + currentPinPosition / 100 + ')';
+          effectImagePreview.style.filter = 'sepia(' + currentPinPosition / Proportion.SEPIA + ')';
         } else if (activeFilter === 'marvin') {
           effectImagePreview.style.filter = 'invert(' + currentPinPosition + '%)';
         } else if (activeFilter === 'phobos') {
-          effectImagePreview.style.filter = 'blur(' + currentPinPosition / 100 * 3 + 'px)';
+          effectImagePreview.style.filter = 'blur(' + currentPinPosition / Proportion.BLUR + 'px)';
         } else if (activeFilter === 'heat') {
-          effectImagePreview.style.filter = 'brightness(' + currentPinPosition / 100 * 3 + ')';
+          effectImagePreview.style.filter = 'brightness(' + currentPinPosition / Proportion.BRIGHTNESS + ')';
         }
       }
 
