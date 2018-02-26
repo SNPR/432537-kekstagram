@@ -9,9 +9,9 @@
   /**
    * Заполняет шаблон фотографии данными из объекта фотографии.
    * @param {Object} photo Объект с параметрами фотографии.
-   * @return {*} Заполенный данными элемент фотографии.
+   * @return {HTMLElement} Заполенный данными элемент фотографии.
    */
-  var renderPhotos = function (photo) {
+  var renderPhoto = function (photo) {
     var photoTemplate = document.querySelector('#picture-template').content;
     var photoElement = photoTemplate.cloneNode(true);
 
@@ -22,7 +22,7 @@
   };
 
   var picturesElement = document.querySelector('.pictures');
-  var filters = document.querySelector('.filters');
+  var filterArea = document.querySelector('.filters');
 
   /**
    * Загружаем миниатюры на страницу.
@@ -30,17 +30,18 @@
    */
   var loadThumbnails = function (photos) {
     var fragment = document.createDocumentFragment();
+
     if (photos) {
-      for (var i = 0; i < photos.length; i++) {
-        fragment.appendChild(renderPhotos(photos[i]));
-      }
+      photos.forEach(function (photo) {
+        fragment.appendChild(renderPhoto(photo));
+      });
     } else {
       window.backend.onError('По запрашиваему адресу нет данных');
     }
 
     picturesElement.appendChild(fragment);
-    filters.classList.remove('filters-inactive');
-    window.addThumbnailEventListener();
+    window.addThumbnailEventListener(picturesElement.children);
+    filterArea.classList.remove('filters-inactive');
   };
 
   /**
@@ -80,6 +81,30 @@
     var lastTimeout;
     loadThumbnails(photos);
 
+    var filterValueToSortMethod = {
+      'popular': function () {
+        photos = defaultPhotos.slice(0);
+        photos.sort(function (a, b) {
+          return b.likes - a.likes;
+        });
+        loadThumbnails(photos);
+      },
+      'recommend': function () {
+        loadThumbnails(defaultPhotos);
+      },
+      'discussed': function () {
+        photos = defaultPhotos.slice(0);
+        photos.sort(function (a, b) {
+          return b.comments.length - a.comments.length;
+        });
+        loadThumbnails(photos);
+      },
+      'random': function () {
+        photos = shuffleArray(photos);
+        loadThumbnails(photos);
+      }
+    };
+
     /**
      * Функция-обработчик событий. Реагирует на изменение фильтров сортировки изображений.
      * @param {Object} evt Объект текущего события.
@@ -93,35 +118,17 @@
         if (evt.target.type === 'radio') {
           var target = evt.target.value;
           picturesElement.innerHTML = '';
-
-          if (target === 'popular') {
-            photos = defaultPhotos.slice(0);
-            photos.sort(function (a, b) {
-              return b.likes - a.likes;
-            });
-            loadThumbnails(photos);
-          } else if (target === 'recommend') {
-            loadThumbnails(defaultPhotos);
-          } else if (target === 'discussed') {
-            photos = defaultPhotos.slice(0);
-            photos.sort(function (a, b) {
-              return b.comments.length - a.comments.length;
-            });
-            loadThumbnails(photos);
-          } else if (target === 'random') {
-            photos = shuffleArray(photos);
-            loadThumbnails(photos);
-          }
+          filterValueToSortMethod[target]();
         }
       }, DEBOUNCE_INTERVAL);
     };
 
-    filters.addEventListener('click', onFiltersChange);
+    filterArea.addEventListener('click', onFiltersChange);
 
-    filters.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.constantes.ENTER_KEYCODE) {
+    filterArea.addEventListener('keydown', function (evt) {
+      window.util.isEnterEvent(evt, function () {
         evt.target.click();
-      }
+      });
     });
   };
 

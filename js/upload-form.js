@@ -5,13 +5,22 @@
  * Отвечает за редактирование размера фотографии и глубину эффекта выбранного фильтра.
  */
 (function () {
+  var SCALE_STEP = 0.25;
+  var EFFECT_LEVEL_PROPORTION = 4.55;
+  var EFFECT_LEVEL_VALUE_SHIFT = 1.8;
+  var EFFECT_LEVEL_SCALE_MAX_WIDTH = '98.2%';
+  var Proportion = {
+    GRAYSCALE: 100,
+    SEPIA: 100,
+    BLUR: 100 / 3,
+    BRIGHTNESS: 100 / 3
+  };
   var uploadControl = document.querySelector('.upload-control');
   var uploadFile = document.querySelector('#upload-file');
   var uploadForm = document.querySelector('.upload-overlay');
   var uploadFormClose = uploadForm.querySelector('#upload-cancel');
   var form = document.querySelector('#upload-select-image');
-  var effectLevelProportion = 4.55;
-  var effectLevelValueShift = 1.8;
+
 
   /**
    * Определяет текущий активный элемент на странице.
@@ -22,16 +31,15 @@
   };
 
   /**
-   * Вспомогательная функция обработчика события для закрытия окна при нажатии клавиши 'ESC'.
-   * Нажатие 'ESC' не срабатывает, если фокус находится в поле ввода хэш-тега или комментария.
+   * Обработчик события, необходим для закрытия окна редактирования фото, при нажатии клавиши 'ESC'.
    * @param {object} evt Объект текущего события.
    */
-  var onKeyPress = function (evt) {
-    if (evt.keyCode === window.constantes.ESC_KEYCODE) {
+  var onEscPress = function (evt) {
+    window.util.isEscEvent(evt, function () {
       if (getActiveElement() !== 'INPUT' && getActiveElement() !== 'TEXTAREA') {
         uploadFormClose.click();
       }
-    }
+    });
   };
 
   /**
@@ -44,7 +52,6 @@
 
     reader.addEventListener('load', function () {
       effectImagePreview.src = reader.result;
-      effectImagePreview.style = 'min-height: 300px; max-height: 586px';
     });
 
     if (file && file.type.match('image.*')) {
@@ -83,9 +90,11 @@
    * @param {Object} evt Объект текущего события.
    */
   var onClosePress = function (evt) {
-    if (evt.target === uploadFormClose && evt.keyCode === window.constantes.ENTER_KEYCODE) {
-      closeUploadForm();
-    }
+    window.util.isEnterEvent(evt, function () {
+      if (evt.target === uploadFormClose) {
+        closeUploadForm();
+      }
+    });
   };
 
   /**
@@ -97,18 +106,17 @@
 
     scale = 1;
     effectImagePreview.style.transform = 'scale(1)';
-    effectImagePreview.classList = '';
+    effectImagePreview.classList.remove('effect-' + activeFilter);
     effectImagePreview.style.filter = '';
     window.validation.hashtagInput.style.border = '';
     effectLevelPin.style.left = '100%';
-    effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
+    effectLevelScale.style.width = EFFECT_LEVEL_SCALE_MAX_WIDTH;
 
     uploadForm.classList.remove('hidden');
     uploadEffectLevel.classList.add('hidden');
-    effectImagePreview.classList.add('effect-image-preview');
 
     form.addEventListener('submit', onFormSubmit);
-    document.addEventListener('keydown', onKeyPress);
+    document.addEventListener('keydown', onEscPress);
     uploadForm.addEventListener('click', onResizePhoto);
     uploadForm.addEventListener('keydown', onClosePress);
     uploadFormClose.addEventListener('click', onCloseClick);
@@ -116,7 +124,7 @@
     uploadEffectsControl.addEventListener('click', onFilterClick);
     uploadEffectsControl.addEventListener('keydown', onFilterPress);
     window.validation.hashtagInput.addEventListener('input', window.validation.onHashtagsType);
-    window.validation.hashtagInput.addEventListener('invalid', window.validation.onValidationCheck);
+    window.validation.hashtagInput.addEventListener('invalid', window.validation.onErrorCheck);
   };
 
   /**
@@ -128,7 +136,7 @@
     uploadForm.classList.add('hidden');
 
     form.removeEventListener('submit', onFormSubmit);
-    document.removeEventListener('keydown', onKeyPress);
+    document.removeEventListener('keydown', onEscPress);
     uploadForm.removeEventListener('click', onResizePhoto);
     uploadForm.removeEventListener('keydown', onClosePress);
     uploadFormClose.removeEventListener('click', onCloseClick);
@@ -136,7 +144,7 @@
     uploadEffectsControl.removeEventListener('click', onFilterClick);
     uploadEffectsControl.removeEventListener('keydown', onFilterPress);
     window.validation.hashtagInput.removeEventListener('input', window.validation.onHashtagsType);
-    window.validation.hashtagInput.removeEventListener('invalid', window.validation.onValidationCheck);
+    window.validation.hashtagInput.removeEventListener('invalid', window.validation.onErrorCheck);
   };
 
   uploadFile.addEventListener('change', function () {
@@ -144,9 +152,9 @@
   });
 
   uploadControl.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === window.constantes.ENTER_KEYCODE) {
+    window.util.isEnterEvent(evt, function () {
       uploadFile.click();
-    }
+    });
   });
 
   var effectImagePreview = document.querySelector('.effect-image-preview');
@@ -165,8 +173,8 @@
     effectImagePreview.classList.add('effect-' + filterName);
     effectImagePreview.style.filter = '';
     effectLevelPin.style.left = '100%';
-    effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
-    effectLevelValue.setAttribute('value', parseFloat(effectLevelPin.style.left));
+    effectLevelScale.style.width = EFFECT_LEVEL_SCALE_MAX_WIDTH;
+    effectLevelValue.setAttribute('value', parseInt(effectLevelPin.style.left, 10));
     if (filterName === 'none') {
       uploadEffectLevel.classList.add('hidden');
     } else {
@@ -190,27 +198,26 @@
    * @param {Object} evt Объект текущего события.
    */
   var onFilterPress = function (evt) {
-    if (evt.keyCode === window.constantes.ENTER_KEYCODE) {
+    window.util.isEnterEvent(evt, function () {
       evt.target.click();
-    }
+    });
   };
 
   var decreasePhotoButton = document.querySelector('.upload-resize-controls-button-dec');
   var increasePhotoButton = document.querySelector('.upload-resize-controls-button-inc');
   var scaleValue = document.querySelector('.upload-resize-controls-value');
   var scale = 1;
-  var step = 0.25;
 
   /**
    * Увеличивает фото при нажатии на '+' и уменьшает при нажатии на '-'.
    * @param {Object} evt Объект текущего события.
    */
   var onResizePhoto = function (evt) {
-    if (evt.target === decreasePhotoButton && scale > step) {
-      scale -= step;
+    if (evt.target === decreasePhotoButton && scale > SCALE_STEP) {
+      scale -= SCALE_STEP;
     }
     if (evt.target === increasePhotoButton && scale < 1) {
-      scale += step;
+      scale += SCALE_STEP;
     }
     effectImagePreview.style.transform = 'scale(' + scale + ')';
     scaleValue.value = scale * 100 + '%';
@@ -219,6 +226,18 @@
   var effectLevelPin = document.querySelector('.upload-effect-level-pin');
   var effectLevelScale = document.querySelector('.upload-effect-level-val');
   var effectLevelValue = document.querySelector('.upload-effect-level-value');
+
+  /**
+   * Сбрасывает ползунок уровеня эффекта при достижении минимального и максимального значений.
+   * @param {string} pinPosition Положение пина.
+   * @param {string} scaleLevel Ширина шкалы глубины эффекта.
+   * @param {string} levelValue Величина глубины эффекта.
+   */
+  var resetEffectLevel = function (pinPosition, scaleLevel, levelValue) {
+    effectLevelPin.style.left = pinPosition;
+    effectLevelScale.style.width = scaleLevel;
+    effectLevelValue.setAttribute('value', levelValue);
+  };
 
   /**
    * Изменяет глубину эффекта при перемещении слайдера.
@@ -234,37 +253,33 @@
      */
     var onMouseMove = function (moveEvt) {
       var shift = moveEvt.clientX - startCoordinate;
+      var currentPinPosition = startPinPosition + shift / EFFECT_LEVEL_PROPORTION;
 
-      effectLevelPin.style.left = (startPinPosition + shift / effectLevelProportion) + '%';
-      effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
+      effectLevelPin.style.left = currentPinPosition + '%';
+      effectLevelScale.style.width = currentPinPosition - EFFECT_LEVEL_VALUE_SHIFT + '%';
       effectLevelValue.setAttribute('value', parseInt(effectLevelPin.style.left, 10));
-      if (parseFloat(effectLevelPin.style.left) >= 0 && parseFloat(effectLevelPin.style.left) <= 100) {
-        if (activeFilter === 'chrome') {
-          effectImagePreview.style.filter = 'grayscale(' + parseFloat(effectLevelPin.style.left) / 100 + ')';
-        } else if (activeFilter === 'sepia') {
-          effectImagePreview.style.filter = 'sepia(' + parseFloat(effectLevelPin.style.left) / 100 + ')';
-        } else if (activeFilter === 'marvin') {
-          effectImagePreview.style.filter = 'invert(' + parseFloat(effectLevelPin.style.left) + '%)';
-        } else if (activeFilter === 'phobos') {
-          effectImagePreview.style.filter = 'blur(' + parseFloat(effectLevelPin.style.left) / 100 * 3 + 'px)';
-        } else if (activeFilter === 'heat') {
-          effectImagePreview.style.filter = 'brightness(' + parseFloat(effectLevelPin.style.left) / 100 * 3 + ')';
-        }
-      }
 
-      if (parseFloat(effectLevelPin.style.left) < 0) {
-        effectLevelPin.style.left = '0%';
-        effectLevelScale.style.width = '0%';
-        effectLevelValue.setAttribute('value', '0');
-      } else if (parseFloat(effectLevelPin.style.left) > 100) {
-        effectLevelPin.style.left = '100%';
-        effectLevelScale.style.width = parseFloat(effectLevelPin.style.left) - effectLevelValueShift + '%';
-        effectLevelValue.setAttribute('value', '100');
+      if (currentPinPosition < 0) {
+        resetEffectLevel('0%', '0%', '0');
+      } else if (currentPinPosition > 100) {
+        resetEffectLevel('100%', EFFECT_LEVEL_SCALE_MAX_WIDTH, '100');
+      } else {
+        if (activeFilter === 'chrome') {
+          effectImagePreview.style.filter = 'grayscale(' + currentPinPosition / Proportion.GRAYSCALE + ')';
+        } else if (activeFilter === 'sepia') {
+          effectImagePreview.style.filter = 'sepia(' + currentPinPosition / Proportion.SEPIA + ')';
+        } else if (activeFilter === 'marvin') {
+          effectImagePreview.style.filter = 'invert(' + currentPinPosition + '%)';
+        } else if (activeFilter === 'phobos') {
+          effectImagePreview.style.filter = 'blur(' + currentPinPosition / Proportion.BLUR + 'px)';
+        } else if (activeFilter === 'heat') {
+          effectImagePreview.style.filter = 'brightness(' + currentPinPosition / Proportion.BRIGHTNESS + ')';
+        }
       }
     };
 
     /**
-     * Удаляет обработчики событий движения и опускания мыши.
+     * Удаляет обработчики событий движения и отпускания мыши.
      */
     var onMouseUp = function () {
       document.removeEventListener('mousemove', onMouseMove);

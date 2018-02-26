@@ -4,6 +4,7 @@
   var URL_GET = 'https://js.dump.academy/kekstagram/data';
   var URL_POST = 'https://js.dump.academy/kekstagram';
   var TIMEOUT = 10000;
+  var ERROR_MESSAGE_TIMEOUT = 5000;
   var Code = {
     SUCCESS: 200,
     BAD_REQUEST: 400,
@@ -99,7 +100,7 @@
       errorNode.style = 'z-index: 10; position: fixed; top:0; text-align: center; width: 100%; font-size: 26px; color: orange';
       errorNode.textContent = errorMessage;
       document.body.insertAdjacentElement('afterbegin', errorNode);
-      setTimeout(removeNode, 5000);
+      setTimeout(removeNode, ERROR_MESSAGE_TIMEOUT);
     }
   };
 })();

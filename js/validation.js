@@ -4,7 +4,10 @@
  * Проверяет на валидность поле ввода хэштегов.
  */
 (function () {
+  var MAX_HASHTAG_COUNT = 5;
+  var MAX_HASHTAG_LENGTH = 20;
   var hashtagInput = document.querySelector('.upload-form-hashtags');
+
   /**
    * Проверяет, если ли в массиве повторяющиеся соседние хэштеги.
    * @param {Array} array Массив строк или чисел.
@@ -24,7 +27,7 @@
    * в случае некорректного ввода значения.
    * @param {Object} evt Объект текущего события.
    */
-  var onValidationCheck = function (evt) {
+  var onErrorCheck = function (evt) {
     var target = evt.target;
     if (target.validity) {
       target.style.border = '3px solid red';
@@ -39,17 +42,18 @@
     var target = evt.target;
     var hashtags = target.value.toLowerCase().split(' ').sort();
 
+    hashtags = hashtags.filter(function (hashtag) {
+      return hashtag !== '';
+    });
+
     for (var i = 0; i < hashtags.length; i++) {
-      if (hashtags[i] === '') {
-        hashtags.splice(i, 1);
-        i--;
-      } else if (hashtags.length > 5) {
+      if (hashtags.length > MAX_HASHTAG_COUNT) {
         target.setCustomValidity('Хэштегов должно быть не больше пяти');
         break;
       } else if (hashtags[i] && hashtags[i].charAt(0) !== '#') {
         target.setCustomValidity('Хэштеги должны начинаться с символа "#"');
         break;
-      } else if (hashtags[i].length > 20) {
+      } else if (hashtags[i].length > MAX_HASHTAG_LENGTH) {
         target.setCustomValidity('Длина хэштега должна быть не более 20 символов');
         break;
       } else if (hashtags[i].lastIndexOf('#') !== 0) {
@@ -69,7 +73,7 @@
     window.validation = {
       hashtagInput: hashtagInput,
       onHashtagsType: onHashtagsType,
-      onValidationCheck: onValidationCheck
+      onErrorCheck: onErrorCheck
     };
   })();
 })();
