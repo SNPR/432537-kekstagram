@@ -239,6 +239,24 @@
     effectLevelValue.setAttribute('value', levelValue);
   };
 
+  var filterToEffect = {
+    'chrome': function (currentPinPosition) {
+      effectImagePreview.style.filter = 'grayscale(' + currentPinPosition / Proportion.GRAYSCALE + ')';
+    },
+    'sepia': function (currentPinPosition) {
+      effectImagePreview.style.filter = 'sepia(' + currentPinPosition / Proportion.SEPIA + ')';
+    },
+    'marvin': function (currentPinPosition) {
+      effectImagePreview.style.filter = 'invert(' + currentPinPosition + '%)';
+    },
+    'phobos': function (currentPinPosition) {
+      effectImagePreview.style.filter = 'blur(' + currentPinPosition / Proportion.BLUR + 'px)';
+    },
+    'heat': function (currentPinPosition) {
+      effectImagePreview.style.filter = 'brightness(' + currentPinPosition / Proportion.BRIGHTNESS + ')';
+    }
+  };
+
   /**
    * Изменяет глубину эффекта при перемещении слайдера.
    * @param {Object} evt Объект текущего события.
@@ -264,17 +282,7 @@
       } else if (currentPinPosition > 100) {
         resetEffectLevel('100%', EFFECT_LEVEL_SCALE_MAX_WIDTH, '100');
       } else {
-        if (activeFilter === 'chrome') {
-          effectImagePreview.style.filter = 'grayscale(' + currentPinPosition / Proportion.GRAYSCALE + ')';
-        } else if (activeFilter === 'sepia') {
-          effectImagePreview.style.filter = 'sepia(' + currentPinPosition / Proportion.SEPIA + ')';
-        } else if (activeFilter === 'marvin') {
-          effectImagePreview.style.filter = 'invert(' + currentPinPosition + '%)';
-        } else if (activeFilter === 'phobos') {
-          effectImagePreview.style.filter = 'blur(' + currentPinPosition / Proportion.BLUR + 'px)';
-        } else if (activeFilter === 'heat') {
-          effectImagePreview.style.filter = 'brightness(' + currentPinPosition / Proportion.BRIGHTNESS + ')';
-        }
+        filterToEffect[activeFilter](currentPinPosition);
       }
     };
 
