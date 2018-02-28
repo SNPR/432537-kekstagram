@@ -61,8 +61,8 @@
   };
 
   window.addThumbnailEventListener = function (thumbnails) {
-    for (var i = 0; i < thumbnails.length; i++) {
-      thumbnails[i].addEventListener('click', onGalleryOverlayOpen);
-    }
+    Array.prototype.forEach.call(thumbnails, function (thumbnail) {
+      thumbnail.addEventListener('click', onGalleryOverlayOpen);
+    });
   };
 })();
