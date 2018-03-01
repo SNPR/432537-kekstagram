@@ -5,12 +5,6 @@
   var URL_POST = 'https://js.dump.academy/kekstagram';
   var TIMEOUT = 10000;
   var ERROR_MESSAGE_TIMEOUT = 5000;
-  var Code = {
-    SUCCESS: 200,
-    BAD_REQUEST: 400,
-    UNAUTHORIZED: 401,
-    NOT_FOUND_ERROR: 404
-  };
 
   /**
    * Универсальная callback-функция. Подходит как для загрузки, так и для отправки данных на сервер.
@@ -28,24 +22,22 @@
 
     xhr.addEventListener('load', function () {
       var error;
-      switch (xhr.status) {
-        case Code.SUCCESS:
+      var serverResponseToAction = {
+        '200': function () {
           onLoad(xhr.response);
-          break;
-
-        case Code.BAD_REQUEST:
+        },
+        '400': function () {
           error = 'Неверный запрос';
-          break;
-        case Code.UNAUTHORIZED:
+        },
+        '401': function () {
           error = 'Пользователь не авторизован';
-          break;
-        case Code.NOT_FOUND_ERROR:
+        },
+        '404': function () {
           error = 'Сервер с фотографиями временно недоступен';
-          break;
+        }
+      };
 
-        default:
-          error = 'Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText;
-      }
+      serverResponseToAction[xhr.status]();
 
       if (error) {
         onError(error);
