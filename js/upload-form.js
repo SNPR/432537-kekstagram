@@ -175,11 +175,7 @@
     effectLevelPin.style.left = '100%';
     effectLevelScale.style.width = EFFECT_LEVEL_SCALE_MAX_WIDTH;
     effectLevelValue.setAttribute('value', parseInt(effectLevelPin.style.left, 10));
-    if (filterName === 'none') {
-      uploadEffectLevel.classList.add('hidden');
-    } else {
-      uploadEffectLevel.classList.remove('hidden');
-    }
+    uploadEffectLevel.classList.toggle('hidden', filterName === 'none');
   };
 
   /**
